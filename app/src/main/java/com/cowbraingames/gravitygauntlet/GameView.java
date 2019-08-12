@@ -1,6 +1,8 @@
 package com.cowbraingames.gravitygauntlet;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -10,12 +12,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Context context;
     private MainThread thread;
     private StartScreen startScreen;
+    private GameScreen gameScreen;
     private int gameState = 0;
+    private Bitmap star = BitmapFactory.decodeResource(getResources(),R.drawable.star);
+
+
 
     public GameView(Context context){
         super(context);
         this.context = context;
-        startScreen = new StartScreen();
+        startScreen = new StartScreen(star);
+        gameScreen = new GameScreen();
 
         getHolder().addCallback(this);
         thread = new MainThread(getHolder(), this);
@@ -54,6 +61,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if(canvas != null){
             if(gameState == 0){
                 startScreen.render(canvas);
+            }else if(gameState ==1){
+                gameScreen.render(canvas);
             }
         }
     }
@@ -61,12 +70,24 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     void update(){
         if(gameState == 0){
             startScreen.tick();
+        }else if(gameState == 1){
+            gameScreen.tick();
         }
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
+        if(gameState == 0){
+            startScreen.touched(e,this);
+        }else if(gameState == 1){
+            gameScreen.touched(e);
+        }
+
         return true;
+    }
+
+    void setGameState(int gameState){
+        this.gameState = gameState;
     }
 
 
