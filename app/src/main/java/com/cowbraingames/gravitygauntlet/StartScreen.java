@@ -95,14 +95,16 @@ class StartScreen {
     }
 
     void touched(MotionEvent e, GameView gameView){
-        gameView.setGameState(1);
+        if(e.getX() > x[0]-X(300) && e.getX() < x[0]+X(300) && e.getY()> y[0]-Y(100) && e.getY()< y[0]+(100)){
+            gameView.setGameState(1);
+        }
     }
 
-    private float X(int X){
+    private float X(float X){
         return X * width/2000f;
     }
 
-    private float Y(int Y){
+    private float Y(float Y){
         return Y* height/1000f;
     }
 }

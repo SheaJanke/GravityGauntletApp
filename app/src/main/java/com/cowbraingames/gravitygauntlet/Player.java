@@ -18,9 +18,14 @@ public class Player {
     private int tickCounter = 0;
     private float x = X(1000);
     private float y = Y(500);
+    private double weight;
+    private int size;
+    private String maxHealth = "100";
+    private String health;
 
-    public Player(){
-
+    public Player(double weight, int size){
+        this.weight = weight;
+        this.size = size;
     }
     public void tick(){
         tickCounter++;
@@ -29,7 +34,7 @@ public class Player {
     public void render(Canvas canvas){
         Paint paint = new Paint();
         paint.setColor(Color.BLUE);
-        canvas.drawCircle(x,y,(int)X(100),paint);
+        canvas.drawCircle(x,y,size,paint);
     }
 
     private float X(int X){
@@ -38,6 +43,41 @@ public class Player {
 
     private float Y(int Y){
         return Y* height/1000f;
+    }
+    public void setX(float x){
+        this.x = x;
+    }
+    public void setY(float y){
+        this.y = y;
+    }
+    public float getX(){
+        return x;
+    }
+    public float getY(){
+        return y;
+    }
+
+    public double getWeight(){
+        return weight;
+    }
+
+    public void setWeight(double weight){
+        this.weight = weight;
+    }
+    public int getSize(){
+        return size;
+    }
+    public String getHealth(){
+        return health;
+    }
+    public String getMaxHealth(){
+        return maxHealth;
+    }
+    public void setMaxHealth(String maxHealth){
+        this.maxHealth = maxHealth;
+    }
+    public void setHealth(String health){
+        this.health = health;
     }
 
     void touched(MotionEvent e){
@@ -49,5 +89,6 @@ public class Player {
         lastTouchedX = e.getX();
         lastTouchedY = e.getY();
     }
+
 
 }
