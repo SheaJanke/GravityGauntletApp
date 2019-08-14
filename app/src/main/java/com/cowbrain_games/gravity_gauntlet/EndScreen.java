@@ -1,4 +1,4 @@
-package com.cowbraingames.gravitygauntlet;
+package com.cowbrain_games.gravity_gauntlet;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -8,7 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.view.MotionEvent;
 
-class StartScreen {
+public class EndScreen {
     private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
     private int[][] colors = {{255,255,0,0},{255,255,165,0},{255,255,255,0},{255,0,128,0},{255,0,0,255}};
@@ -16,11 +16,13 @@ class StartScreen {
     private float[] y = new float[4];
     private double angle = 0;
     private Bitmap star;
+    private Bitmap coin;
     private float[] starX = new float[40];
     private float[] starY = new float[40];
     private int[] starSize = new int[40];
-    StartScreen(Bitmap star){
+    EndScreen(Bitmap star, Bitmap coin){
         this.star = star;
+        this.coin = coin;
         for(int a = 0; a < starX.length;a++){
             starX[a] = (float)Math.random()*X(2000);
             starY[a] = (float)Math.random()*Y(1000);
@@ -94,8 +96,9 @@ class StartScreen {
 
     }
 
-    void touched(MotionEvent e, GameView gameView){
+    void touched(MotionEvent e, GameView gameView, GameScreen gameScreen){
         if(e.getX() > x[0]-X(300) && e.getX() < x[0]+X(300) && e.getY()> y[0]-Y(100) && e.getY()< y[0]+(100)){
+            gameScreen.reset();
             gameView.setGameState(1);
         }
     }

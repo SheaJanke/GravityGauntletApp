@@ -1,4 +1,4 @@
-package com.cowbraingames.gravitygauntlet;
+package com.cowbrain_games.gravity_gauntlet;
 
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;

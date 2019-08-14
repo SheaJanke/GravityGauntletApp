@@ -1,4 +1,4 @@
-package com.cowbraingames.gravitygauntlet;
+package com.cowbrain_games.gravity_gauntlet;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -20,12 +20,13 @@ public class Player {
     private float y = Y(500);
     private double weight;
     private int size;
-    private String maxHealth = "100";
+    private String maxHealth = "10";
     private String health;
 
-    public Player(double weight, int size){
+    public Player(double weight, int size, String health){
         this.weight = weight;
         this.size = size;
+        this.health = health;
     }
     public void tick(){
         tickCounter++;

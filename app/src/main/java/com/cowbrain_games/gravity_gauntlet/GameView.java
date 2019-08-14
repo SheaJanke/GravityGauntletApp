@@ -1,4 +1,4 @@
-package com.cowbraingames.gravitygauntlet;
+package com.cowbrain_games.gravity_gauntlet;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -13,9 +13,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
     private StartScreen startScreen;
     private GameScreen gameScreen;
+    private EndScreen endScreen;
     private int gameState = 0;
     private Bitmap star = BitmapFactory.decodeResource(getResources(),R.drawable.star);
-
+    private Bitmap coin = BitmapFactory.decodeResource(getResources(),R.drawable.coin);
 
 
     public GameView(Context context){
@@ -23,6 +24,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         this.context = context;
         startScreen = new StartScreen(star);
         gameScreen = new GameScreen();
+        endScreen = new EndScreen(star,coin);
+
 
         getHolder().addCallback(this);
         thread = new MainThread(getHolder(), this);
@@ -63,6 +66,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 startScreen.render(canvas);
             }else if(gameState ==1){
                 gameScreen.render(canvas);
+            }else if(gameState == 2){
+                endScreen.render(canvas);
             }
         }
     }
@@ -71,7 +76,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if(gameState == 0){
             startScreen.tick();
         }else if(gameState == 1){
-            gameScreen.tick();
+            gameScreen.tick(this);
+        }else if(gameState == 2){
+            endScreen.tick();
         }
     }
 
@@ -81,6 +88,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             startScreen.touched(e,this);
         }else if(gameState == 1){
             gameScreen.touched(e);
+        }else if(gameState == 2){
+            endScreen.touched(e,this, gameScreen);
         }
 
         return true;

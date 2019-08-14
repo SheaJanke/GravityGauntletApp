@@ -1,4 +1,4 @@
-package com.cowbraingames.gravitygauntlet;
+package com.cowbrain_games.gravity_gauntlet;
 
 import android.graphics.Color;
 
@@ -14,9 +14,8 @@ public class Upgrades {
     private double[] lvlMultiplier = new double[100];
     private double[] playerWeight = new double[100];
     private String[] playerWeightCost = new String[100];
-    //private Color[] ballColor = {Color.RED, Color., Color.yellow, Color.green, Color.cyan, Color.blue, Color.pink, Color.LIGHT_GRAY, Color.DARK_GRAY, Color.black};
-    //private Color[] outlineColor = {Color.red, Color.ORANGE, Color.yellow, Color.green, Color.cyan, Color.blue, Color.pink, Color.LIGHT_GRAY, Color.DARK_GRAY, Color.black};
-    private ArrayList<String> scoreEndings = new ArrayList<String>(Arrays.asList("K","M","B","t","q","Q","s","S","o","n","d"));
+    private int[][] meteorColor = {{255,0,0},{255,128,0},{255,255,0},{0,255,0},{0,255,255},{0,128,255},{0,0,255},{127,0,225},{255,0,255},{128,128,128}};
+    private ArrayList<String> scoreEndings = new ArrayList<>(Arrays.asList("K","M","B","t","q","Q","s","S","o","n","d"));
     public Upgrades(){
         healthCost[0] = "1K";
         scoreMultiplierCost[0] = "3K";
@@ -86,13 +85,9 @@ public class Upgrades {
         return lvlMultiplier[lvl];
     }
 
-   /* public Color[] getBallColor(){
-        return ballColor;
+    int[][] getMeteorColor(){
+        return meteorColor;
     }
-
-    public Color[] getOutlineColor(){
-        return outlineColor;
-    }*/
 
     /*public double getPlayerWeight(){
         return playerWeight[data.getPlayerWeightLvl()];
@@ -211,7 +206,7 @@ public class Upgrades {
         }
     }
 
-    public String simplifyScore(String score){
+    String simplifyScore(String score){
         double num;
         int end = scoreEndings.indexOf(score.substring(score.length()-1));
         if(end != -1){
@@ -220,18 +215,18 @@ public class Upgrades {
             num = Double.parseDouble(score);
         }
         if(num >= 1000){
-            return String.format("%.2f", num/1000) + scoreEndings.get(scoreEndings.indexOf(score.substring(score.length()-1)) + 1);
+            return num/1000 + scoreEndings.get(scoreEndings.indexOf(score.substring(score.length()-1)) + 1);
         }else if(num <= 1 && num >=0){
             if(end > 0){
-                return String.format("%.2f", num*1000) + scoreEndings.get(scoreEndings.indexOf(score.substring(score.length()-1)) - 1);
+                return num*1000 + scoreEndings.get(scoreEndings.indexOf(score.substring(score.length()-1)) - 1);
             }else if(end == 0){
-                return String.format("%.2f", num*1000);
+                return Double.toString(num * 1000);
             }
         }
         if(end != -1){
-            return String.format("%.2f", num) + score.substring(score.length()-1);
+            return num + score.substring(score.length()-1);
         }else{
-            return String.format("%.2f", num);
+            return Double.toString(num);
         }
     }
 
