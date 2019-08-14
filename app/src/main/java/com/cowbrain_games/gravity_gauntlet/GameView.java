@@ -14,6 +14,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private StartScreen startScreen;
     private GameScreen gameScreen;
     private EndScreen endScreen;
+    private Data data;
     private int gameState = 0;
     private Bitmap star = BitmapFactory.decodeResource(getResources(),R.drawable.star);
     private Bitmap coin = BitmapFactory.decodeResource(getResources(),R.drawable.coin);
@@ -22,8 +23,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public GameView(Context context){
         super(context);
         this.context = context;
+        data = new Data(context);
         startScreen = new StartScreen(star);
-        gameScreen = new GameScreen();
+        gameScreen = new GameScreen(data);
         endScreen = new EndScreen(star,coin);
 
 

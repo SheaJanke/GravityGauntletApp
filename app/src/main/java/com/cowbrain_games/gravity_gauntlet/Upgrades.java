@@ -4,8 +4,9 @@ import android.graphics.Color;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 
-public class Upgrades {
+class Upgrades {
     private String[] health = new String[100];
     private String[] healthCost = new String[100];
     private String[] startLvlCost = new String[100];
@@ -14,9 +15,8 @@ public class Upgrades {
     private double[] lvlMultiplier = new double[100];
     private double[] playerWeight = new double[100];
     private String[] playerWeightCost = new String[100];
-    private int[][] meteorColor = {{255,0,0},{255,128,0},{255,255,0},{0,255,0},{0,255,255},{0,128,255},{0,0,255},{127,0,225},{255,0,255},{128,128,128}};
     private ArrayList<String> scoreEndings = new ArrayList<>(Arrays.asList("K","M","B","t","q","Q","s","S","o","n","d"));
-    public Upgrades(){
+    Upgrades(){
         healthCost[0] = "1K";
         scoreMultiplierCost[0] = "3K";
         startLvlCost[0] = "1.5K";
@@ -81,12 +81,8 @@ public class Upgrades {
         return scoreMultiplierCost[data.getScoreMultiplierLvl()];
     }*/
 
-    public double getLvlMultiplier(int lvl){
+    double getLvlMultiplier(int lvl){
         return lvlMultiplier[lvl];
-    }
-
-    int[][] getMeteorColor(){
-        return meteorColor;
     }
 
     /*public double getPlayerWeight(){
@@ -99,7 +95,7 @@ public class Upgrades {
         return playerWeightCost[data.getPlayerWeightLvl()];
     }*/
 
-    public String addScores(String s1, String s2){
+    String addScores(String s1, String s2){
         double num1;
         double num2;
         String total;
@@ -118,23 +114,23 @@ public class Upgrades {
         if(end1 == end2){
             num1 += num2;
             if(end1 != -1){
-                total = Double.toString(num1) + s1.substring(s1.length()-1);
+                total = num1 + s1.substring(s1.length()-1);
             }else{
                 total = Double.toString(num1);
             }
             return simplifyScore(total);
         }else if(end1 > end2){
             num1 += num2 * Math.pow(1000, end2-end1);
-            total = Double.toString(num1) + s1.substring(s1.length()-1);
+            total = num1 + s1.substring(s1.length()-1);
             return total;
         }else{
             num2 += num1 * Math.pow(1000, end1-end2);
-            total = Double.toString(num2) + s2.substring(s2.length()-1);
+            total = num2 + s2.substring(s2.length()-1);
             return total;
         }
     }
 
-    public String subtractScore(String s1, String s2){
+    String subtractScore(String s1, String s2){
         double num1;
         double num2;
         String total;
@@ -165,7 +161,7 @@ public class Upgrades {
         }
     }
 
-    public String multiplyScore(String score, Double mult){
+    String multiplyScore(String score, Double mult){
         double num;
         if(scoreEndings.indexOf(score.substring(score.length()-1)) != -1){
             num = Double.parseDouble(score.substring(0, score.length()-1));
@@ -174,17 +170,16 @@ public class Upgrades {
         }
         num *= mult;
         if(scoreEndings.indexOf(score.substring(score.length()-1)) != -1){
-            return Double.toString(num) + score.substring(score.length()-1);
+            return num + score.substring(score.length()-1);
         }else{
             return Double.toString(num);
         }
 
     }
 
-    public double divideScores(String s1, String s2){
+    double divideScores(String s1, String s2){
         double num1;
         double num2;
-        String total;
         int end1 = scoreEndings.indexOf(s1.substring(s1.length()-1));
         int end2 = scoreEndings.indexOf(s2.substring(s2.length()-1));
         if(end1 != -1){
@@ -215,22 +210,22 @@ public class Upgrades {
             num = Double.parseDouble(score);
         }
         if(num >= 1000){
-            return num/1000 + scoreEndings.get(scoreEndings.indexOf(score.substring(score.length()-1)) + 1);
+            return formatNum(num/1000) + scoreEndings.get(scoreEndings.indexOf(score.substring(score.length()-1)) + 1);
         }else if(num <= 1 && num >=0){
             if(end > 0){
-                return num*1000 + scoreEndings.get(scoreEndings.indexOf(score.substring(score.length()-1)) - 1);
+                return formatNum(num*1000) + scoreEndings.get(scoreEndings.indexOf(score.substring(score.length()-1)) - 1);
             }else if(end == 0){
-                return Double.toString(num * 1000);
+                return formatNum(num*1000);
             }
         }
         if(end != -1){
-            return num + score.substring(score.length()-1);
+            return formatNum(num) + score.substring(score.length()-1);
         }else{
-            return Double.toString(num);
+            return formatNum(num);
         }
     }
 
-    public boolean scoreLarger(String s1, String s2){
+    boolean scoreLarger(String s1, String s2){
         s1 = simplifyScore(s1);
         s2 = simplifyScore(s2);
         double num1;
@@ -252,12 +247,18 @@ public class Upgrades {
         }else if(end1 < end2){
             return false;
         }else{
-            if(num1 > num2){
-                return true;
-            }else{
-                return false;
-            }
+            return (num1 > num2);
         }
 
+    }
+
+    private String formatNum(double num){
+        if(num<10){
+            return String.format(Locale.getDefault(),"%.2f",num);
+        }else if(num < 100){
+            return String.format(Locale.getDefault(),"%.1f",num);
+        }else{
+            return String.format(Locale.getDefault(),"%.0f",num);
+        }
     }
 }

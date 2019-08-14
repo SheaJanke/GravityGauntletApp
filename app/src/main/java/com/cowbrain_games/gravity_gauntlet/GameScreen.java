@@ -14,15 +14,18 @@ class GameScreen {
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
     private Player player;
     private Upgrades upgrades;
+    private Data data;
     private LinkedList<Meteor> meteors = new LinkedList<>();
     private ArrayList<Meteor> remove = new ArrayList<>();
     private int meteorLvl;
     private int lvlCounter = 0;
     private long lastMeteor = System.currentTimeMillis();
+    private String goldEarned = "0";
 
-    GameScreen(){
+    GameScreen(Data data){
         player = new Player(100,(int)X(100),"10");
         upgrades = new Upgrades();
+        this.data = data;
         meteorLvl = 0;
         for(int a = 0; a < 5; a ++){
             meteors.add(new Meteor(30,upgrades,meteorLvl));
@@ -31,6 +34,7 @@ class GameScreen {
     }
 
     void tick(GameView gameView){
+        goldEarned = upgrades.addScores(goldEarned, Double.toString(upgrades.getLvlMultiplier(meteorLvl)));
         player.tick();
         if(System.currentTimeMillis()-lastMeteor>3000){
             addMeteor();
@@ -72,6 +76,16 @@ class GameScreen {
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(X(5));
         canvas.drawRect(X(1600),Y(50),X(1950),Y(150),paint);
+        paint.setTextSize(X(80));
+        paint.setStyle(Paint.Style.FILL);
+        paint.setARGB(255,212,175,55);
+        paint.setTextAlign(Paint.Align.CENTER);
+        canvas.drawText(upgrades.simplifyScore(goldEarned),X(100),Y(50),paint);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.YELLOW);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(X(3));
+        canvas.drawText(upgrades.simplifyScore(goldEarned),X(100),Y(50),paint);
 
     }
 
@@ -100,7 +114,8 @@ class GameScreen {
         meteors.clear();
         meteorLvl = 0;
         lvlCounter = 0;
-        for(int a = 0; a < 30; a ++){
+        goldEarned = "0";
+        for(int a = 0; a < 5; a ++){
             meteors.add(new Meteor(30,upgrades,meteorLvl));
         }
         player.setX(X(1000));
