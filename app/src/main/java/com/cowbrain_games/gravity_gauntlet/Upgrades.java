@@ -1,7 +1,5 @@
 package com.cowbrain_games.gravity_gauntlet;
 
-import android.graphics.Color;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
@@ -16,7 +14,10 @@ class Upgrades {
     private double[] playerWeight = new double[100];
     private String[] playerWeightCost = new String[100];
     private ArrayList<String> scoreEndings = new ArrayList<>(Arrays.asList("K","M","B","t","q","Q","s","S","o","n","d"));
-    Upgrades(){
+    private Data data;
+
+    Upgrades(Data data){
+        this.data = data;
         healthCost[0] = "1K";
         scoreMultiplierCost[0] = "3K";
         startLvlCost[0] = "1.5K";
@@ -53,7 +54,7 @@ class Upgrades {
 
     }
 
-    /*public String getNextHealth(){
+    public String getNextHealth(){
         return health[data.getMaxHealthLvl()+1];
     }
 
@@ -79,13 +80,13 @@ class Upgrades {
 
     public String getNextScoreMultiplierCost(){
         return scoreMultiplierCost[data.getScoreMultiplierLvl()];
-    }*/
+    }
 
     double getLvlMultiplier(int lvl){
         return lvlMultiplier[lvl];
     }
 
-    /*public double getPlayerWeight(){
+    public double getPlayerWeight(){
         return playerWeight[data.getPlayerWeightLvl()];
     }
     public double getNextPlayerWeight(){
@@ -93,7 +94,7 @@ class Upgrades {
     }
     public String getNextPlayerWeightCost(){
         return playerWeightCost[data.getPlayerWeightLvl()];
-    }*/
+    }
 
     String addScores(String s1, String s2){
         double num1;

@@ -1,6 +1,7 @@
 package com.cowbrain_games.gravity_gauntlet;
 
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -22,12 +23,12 @@ class GameScreen {
     private long lastMeteor = System.currentTimeMillis();
     private String goldEarned = "0";
 
-    GameScreen(Data data){
+    GameScreen(Data data, Upgrades upgrades){
         player = new Player(100,(int)X(100),"10");
-        upgrades = new Upgrades();
+        this.upgrades = upgrades;
         this.data = data;
         meteorLvl = 0;
-        for(int a = 0; a < 5; a ++){
+        for(int a = 0; a < 50; a ++){
             meteors.add(new Meteor(30,upgrades,meteorLvl));
         }
 
@@ -50,11 +51,12 @@ class GameScreen {
         }
         if(!upgrades.scoreLarger(player.getHealth(),"0")){
             gameView.setGameState(2);
+            data.setGold(upgrades.simplifyScore(upgrades.addScores(data.getGold(),goldEarned)));
         }
 
     }
 
-    void render(Canvas canvas){
+    void render(Canvas canvas, Bitmap coin){
         Paint paint = new Paint();
         paint.setColor(Color.RED);
         paint.setTextSize(X(60));
@@ -78,14 +80,13 @@ class GameScreen {
         canvas.drawRect(X(1600),Y(50),X(1950),Y(150),paint);
         paint.setTextSize(X(80));
         paint.setStyle(Paint.Style.FILL);
-        paint.setARGB(255,212,175,55);
         paint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText(upgrades.simplifyScore(goldEarned),X(100),Y(50),paint);
+        canvas.drawText(upgrades.simplifyScore(goldEarned),X(150),Y(100),paint);
+        canvas.drawBitmap(Bitmap.createScaledBitmap(coin,(int)X(80),(int)X(80),true),X(160)+ getGoldEarned().length()*X(20),Y(35),paint);
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.YELLOW);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(X(3));
-        canvas.drawText(upgrades.simplifyScore(goldEarned),X(100),Y(50),paint);
+        canvas.drawText(upgrades.simplifyScore(goldEarned),X(150),Y(100),paint);
 
     }
 
@@ -122,4 +123,7 @@ class GameScreen {
         player.setY(Y(500));
     }
 
+    public String getGoldEarned() {
+        return upgrades.simplifyScore(goldEarned);
+    }
 }
