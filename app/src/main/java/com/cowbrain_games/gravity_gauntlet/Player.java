@@ -9,7 +9,7 @@ import android.view.MotionEvent;
 
 
 public class Player {
-    private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+    private int width = Resources.getSystem().getDisplayMetrics().widthPixels+100;
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
     private Bitmap playerImage;
     private float lastTouchedX = X(1000);

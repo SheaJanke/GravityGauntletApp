@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Context context;
@@ -15,6 +16,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private GameScreen gameScreen;
     private EndScreen endScreen;
     private Upgrades upgrades;
+    private UpgradeScreen upgradeScreen;
     private Data data;
     private int gameState = 0;
     private Bitmap star = BitmapFactory.decodeResource(getResources(),R.drawable.star);
@@ -29,6 +31,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         startScreen = new StartScreen(star);
         gameScreen = new GameScreen(data,upgrades);
         endScreen = new EndScreen(star,coin,data,gameScreen);
+        upgradeScreen = new UpgradeScreen();
 
 
         getHolder().addCallback(this);
@@ -72,6 +75,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 gameScreen.render(canvas,coin);
             }else if(gameState == 2){
                 endScreen.render(canvas);
+            }else if(gameState == 3){
+                upgradeScreen.render(canvas,upgrades,data);
             }
         }
     }
@@ -83,6 +88,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             gameScreen.tick(this);
         }else if(gameState == 2){
             endScreen.tick();
+        }else if(gameState == 3){
+            upgradeScreen.tick();
         }
     }
 
@@ -94,6 +101,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             gameScreen.touched(e);
         }else if(gameState == 2){
             endScreen.touched(e,this, gameScreen);
+        }else if(gameState == 3){
+            upgradeScreen.touched(e);
         }
 
         return true;
@@ -102,7 +111,5 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     void setGameState(int gameState){
         this.gameState = gameState;
     }
-
-
 
 }

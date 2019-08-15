@@ -8,8 +8,8 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.view.MotionEvent;
 
-public class EndScreen {
-    private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+class EndScreen {
+    private int width = Resources.getSystem().getDisplayMetrics().widthPixels+100;
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
     private int[][] colors = {{255,255,0,0},{255,255,165,0},{255,255,255,0},{255,0,128,0},{255,0,0,255}};
     private float[] x = new float[4];

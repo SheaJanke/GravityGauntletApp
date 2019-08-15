@@ -7,7 +7,7 @@ import android.graphics.Paint;
 import java.util.LinkedList;
 
 public class Meteor {
-    private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+    private int width = Resources.getSystem().getDisplayMetrics().widthPixels+100;
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
 
     private Upgrades upgrades;

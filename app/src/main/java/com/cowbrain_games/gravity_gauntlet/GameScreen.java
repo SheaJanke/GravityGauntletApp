@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 class GameScreen {
-    private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+    private int width = Resources.getSystem().getDisplayMetrics().widthPixels+100;
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
     private Player player;
     private Upgrades upgrades;
