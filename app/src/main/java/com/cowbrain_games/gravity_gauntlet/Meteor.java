@@ -48,7 +48,7 @@ public class Meteor {
 
         if(distanceFromPlayer(player) < (size + player.getSize())){
             if(upgrades.scoreLarger(player.getHealth(), "0")){
-                player.setHealth(upgrades.subtractScore(player.getHealth(), Double.toString(Math.pow(1.5,lvl))));
+                player.setHealth(upgrades.subtractScore(player.getHealth(), Double.toString(Math.pow(1.6,lvl)*10)));
             }
             gameScreen.removeMeteor(this);
             return;

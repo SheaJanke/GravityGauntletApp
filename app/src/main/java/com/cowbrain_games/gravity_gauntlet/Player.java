@@ -11,6 +11,8 @@ import android.view.MotionEvent;
 public class Player {
     private int width = Resources.getSystem().getDisplayMetrics().widthPixels+100;
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+    private Upgrades upgrades;
+    private Data data;
     private Bitmap playerImage;
     private float lastTouchedX = X(1000);
     private float lastTouchedY = Y(500);
@@ -20,64 +22,62 @@ public class Player {
     private float y = Y(500);
     private double weight;
     private int size;
-    private String maxHealth = "10";
+    private String maxHealth;
     private String health;
 
-    public Player(double weight, int size, String health){
-        this.weight = weight;
+    Player(int size, Upgrades upgrades, Data data){
+        this.data = data;
+        this.upgrades = upgrades;
+        this.weight = upgrades.getPlayerWeight();
         this.size = size;
-        this.health = health;
+        this.health = upgrades.getHealth();
+        maxHealth = upgrades.getHealth();
     }
-    public void tick(){
+    void tick(){
         tickCounter++;
     }
 
-    public void render(Canvas canvas){
+    void render(Canvas canvas){
         Paint paint = new Paint();
         paint.setColor(Color.BLUE);
         canvas.drawCircle(x,y,size,paint);
     }
 
-    private float X(int X){
+    private float X(float X){
         return X * width/2000f;
     }
 
-    private float Y(int Y){
+    private float Y(float Y){
         return Y* height/1000f;
     }
-    public void setX(float x){
+    void setX(float x){
         this.x = x;
     }
-    public void setY(float y){
+    void setY(float y){
         this.y = y;
     }
-    public float getX(){
+    float getX(){
         return x;
     }
-    public float getY(){
+    float getY(){
         return y;
     }
-
-    public double getWeight(){
-        return weight;
-    }
-
-    public void setWeight(double weight){
-        this.weight = weight;
-    }
-    public int getSize(){
+    int getSize(){
         return size;
     }
-    public String getHealth(){
+    String getHealth(){
         return health;
     }
-    public String getMaxHealth(){
+    String getMaxHealth(){
         return maxHealth;
     }
-    public void setMaxHealth(String maxHealth){
-        this.maxHealth = maxHealth;
+    double getWeight(){
+        return  weight;
     }
-    public void setHealth(String health){
+    void setWeight(double weight){
+        this.weight = weight;
+    }
+    void setHealth(String health){
         this.health = health;
     }
 
@@ -85,10 +85,25 @@ public class Player {
         if(tickCounter-lastTick <=1){
             x+=e.getX()-lastTouchedX;
             y+=e.getY()-lastTouchedY;
+            if(x-size <0){
+                x = size;
+            }else if(x+size>X(2000)){
+                x = X(2000)-size;
+            }
+            if(y-size < 0){
+                y = size;
+            }else if(y+size>height){
+                y = height-size;
+            }
         }
         lastTick = tickCounter;
         lastTouchedX = e.getX();
         lastTouchedY = e.getY();
+    }
+    void reset(){
+        this.weight = upgrades.getPlayerWeight()*Math.pow(1.2,data.getStartLvl());
+        this.health = upgrades.getHealth();
+        maxHealth = upgrades.getHealth();
     }
 
 

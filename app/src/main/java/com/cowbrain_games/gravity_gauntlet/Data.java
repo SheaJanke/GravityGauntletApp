@@ -73,4 +73,15 @@ class Data {
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return mPreferences.getInt("playerWeightLvl",0);
     }
+
+    void reset(){
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        mEditor = mPreferences.edit();
+        mEditor.putString("Gold", "0");
+        mEditor.putInt("maxHealthLvl",0);
+        mEditor.putInt("startLvl", 0);
+        mEditor.putInt("scoreMultiplierLvl",0);
+        mEditor.putInt("playerWeightLvl",0);
+        mEditor.apply();
+    }
 }

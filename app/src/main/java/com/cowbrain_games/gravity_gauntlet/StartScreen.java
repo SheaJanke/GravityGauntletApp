@@ -19,12 +19,19 @@ class StartScreen {
     private float[] starX = new float[40];
     private float[] starY = new float[40];
     private int[] starSize = new int[40];
+    private boolean[] starIncreaing = new boolean[40];
+    private long tickCounter = 0;
     StartScreen(Bitmap star){
         this.star = star;
         for(int a = 0; a < starX.length;a++){
             starX[a] = (float)Math.random()*X(2000);
             starY[a] = (float)Math.random()*Y(1000);
             starSize[a] = (int)(Math.random()*20) + 20;
+            if(a<20){
+                starIncreaing[a] = true;
+            }else{
+                starIncreaing[a]= false;
+            }
         }
     }
 
@@ -34,19 +41,35 @@ class StartScreen {
             x[a] = X(1000) + X(700)*(float)Math.cos(angle + Math.PI*a/2);
             y[a] = Y(500) + Y(350)*(float)Math.sin(angle + Math.PI*a/2);
         }
+         if(tickCounter>3) {
+             for (int a = 0; a < starIncreaing.length; a++) {
+                 if (starIncreaing[a]) {
+                     starSize[a] = starSize[a] + 1;
+                     if (starSize[a] > 40) {
+                         starIncreaing[a] = false;
+                     }
+                 } else {
+                     starSize[a] = starSize[a] - 1;
+                     if (starSize[a] < 20) {
+                         starIncreaing[a] = true;
+                     }
+                 }
+             }
+             tickCounter = 0;
+         }
         angle+=0.010;
+        tickCounter++;
     }
 
     void render(Canvas canvas){
         Paint paint = new Paint();
         canvas.drawColor(Color.BLACK);
         for(int a = 0; a < starX.length; a++){
-            if(starX[a]+starSize[a]*9/7 > X(700) && starX[a]<X(1300)&&starY[a]+starSize[a]>Y(350)&&starY[a]<Y(650)){
+            if(starX[a]+40*9/7 > X(700) && starX[a]<X(1300)&&starY[a]+40>Y(350)&&starY[a]<Y(650)){
                 continue;
             }
-            canvas.drawBitmap(Bitmap.createScaledBitmap(star,9*starSize[a]/7,starSize[a],true),starX[a],starY[a],paint);
+            canvas.drawBitmap(Bitmap.createScaledBitmap(star,9*starSize[a]/7,starSize[a],true),starX[a]-starSize[a]*9/14f,starY[a]-starSize[a]/2f,paint);
         }
-        canvas.drawRect(X(700),Y(350),X(1300),Y(650),paint);
         paint.setColor(Color.CYAN);
         paint.setTypeface(Typeface.create("Arial",Typeface.BOLD));
         paint.setTextAlign(Paint.Align.CENTER);

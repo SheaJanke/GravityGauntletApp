@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 class EndScreen {
     private int width = Resources.getSystem().getDisplayMetrics().widthPixels+100;
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+    private long beginTime = System.currentTimeMillis();
     private int[][] colors = {{255,255,0,0},{255,255,165,0},{255,255,255,0},{255,0,128,0},{255,0,0,255}};
     private float[] x = new float[4];
     private float[] y = new float[4];
@@ -107,11 +108,19 @@ class EndScreen {
 
 
     }
+    void reset(){
+        beginTime = System.currentTimeMillis();
+    }
 
-    void touched(MotionEvent e, GameView gameView, GameScreen gameScreen){
-        if(e.getX() > x[0]-X(300) && e.getX() < x[0]+X(300) && e.getY()> y[0]-Y(100) && e.getY()< y[0]+(100)){
-            gameScreen.reset();
-            gameView.setGameState(1);
+    void touched(MotionEvent e, GameView gameView, GameScreen gameScreen, UpgradeScreen upgradeScreen){
+        if(System.currentTimeMillis()-beginTime >500) {
+            if (e.getX() > x[0] - X(300) && e.getX() < x[0] + X(300) && e.getY() > y[0] - Y(100) && e.getY() < y[0] + (100)) {
+                gameScreen.reset();
+                gameView.setGameState(1);
+            }else if (e.getX() > x[1] - X(300) && e.getX() < x[1] + X(300) && e.getY() > y[1] - Y(100) && e.getY() < y[1] + (100)) {
+                upgradeScreen.reset();
+                gameView.setGameState(3);
+            }
         }
     }
 

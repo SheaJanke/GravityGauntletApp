@@ -18,10 +18,10 @@ class Upgrades {
 
     Upgrades(Data data){
         this.data = data;
-        healthCost[0] = "1K";
-        scoreMultiplierCost[0] = "3K";
-        startLvlCost[0] = "1.5K";
-        playerWeightCost[0] = "2K";
+        healthCost[0] = "1.00K";
+        scoreMultiplierCost[0] = "3.00K";
+        startLvlCost[0] = "1.50K";
+        playerWeightCost[0] = "2.00K";
         health[0] = "100";
         scoreMultiplier[0] = "1.0";
         lvlMultiplier[0] = 1.0;
@@ -212,7 +212,7 @@ class Upgrades {
         }
         if(num >= 1000){
             return formatNum(num/1000) + scoreEndings.get(scoreEndings.indexOf(score.substring(score.length()-1)) + 1);
-        }else if(num <= 1 && num >=0){
+        }else if(num < 1 && num >=0){
             if(end > 0){
                 return formatNum(num*1000) + scoreEndings.get(scoreEndings.indexOf(score.substring(score.length()-1)) - 1);
             }else if(end == 0){

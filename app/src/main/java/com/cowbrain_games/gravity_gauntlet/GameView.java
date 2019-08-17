@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Context context;
@@ -76,7 +75,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             }else if(gameState == 2){
                 endScreen.render(canvas);
             }else if(gameState == 3){
-                upgradeScreen.render(canvas,upgrades,data);
+                upgradeScreen.render(canvas,upgrades,data,star,coin);
             }
         }
     }
@@ -85,7 +84,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if(gameState == 0){
             startScreen.tick();
         }else if(gameState == 1){
-            gameScreen.tick(this);
+            gameScreen.tick(this,endScreen);
         }else if(gameState == 2){
             endScreen.tick();
         }else if(gameState == 3){
@@ -100,9 +99,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }else if(gameState == 1){
             gameScreen.touched(e);
         }else if(gameState == 2){
-            endScreen.touched(e,this, gameScreen);
+            endScreen.touched(e,this, gameScreen, upgradeScreen);
         }else if(gameState == 3){
-            upgradeScreen.touched(e);
+            upgradeScreen.touched(e,data,upgrades);
         }
 
         return true;

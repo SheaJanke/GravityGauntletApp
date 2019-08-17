@@ -19,23 +19,20 @@ class GameScreen {
     private LinkedList<Meteor> meteors = new LinkedList<>();
     private ArrayList<Meteor> remove = new ArrayList<>();
     private int meteorLvl;
-    private int lvlCounter = 0;
+    private int lvlCounter = 5;
     private long lastMeteor = System.currentTimeMillis();
     private String goldEarned = "0";
 
     GameScreen(Data data, Upgrades upgrades){
-        player = new Player(100,(int)X(100),"10");
+        player = new Player((int)X(100),upgrades,data);
         this.upgrades = upgrades;
         this.data = data;
-        meteorLvl = 0;
-        for(int a = 0; a < 50; a ++){
-            meteors.add(new Meteor(30,upgrades,meteorLvl));
-        }
+        reset();
 
     }
 
-    void tick(GameView gameView){
-        goldEarned = upgrades.addScores(goldEarned, Double.toString(upgrades.getLvlMultiplier(meteorLvl)));
+    void tick(GameView gameView, EndScreen endScreen){
+        goldEarned = upgrades.addScores(goldEarned, upgrades.multiplyScore(upgrades.getScoreMultiplier(),upgrades.getLvlMultiplier(meteorLvl)));
         player.tick();
         if(System.currentTimeMillis()-lastMeteor>3000){
             addMeteor();
@@ -45,11 +42,13 @@ class GameScreen {
         if(lvlCounter >= 10){
             lvlCounter = 0;
             meteorLvl++;
+            player.setWeight(player.getWeight()*1.2);
         }
         for(Meteor meteor:meteors){
             meteor.tick(player,meteors,this);
         }
         if(!upgrades.scoreLarger(player.getHealth(),"0")){
+            endScreen.reset();
             gameView.setGameState(2);
             data.setGold(upgrades.simplifyScore(upgrades.addScores(data.getGold(),goldEarned)));
         }
@@ -111,10 +110,10 @@ class GameScreen {
     }
 
     void reset(){
-        player.setHealth(player.getMaxHealth());
+        player.reset();
         meteors.clear();
-        meteorLvl = 0;
-        lvlCounter = 0;
+        meteorLvl = data.getStartLvl();
+        lvlCounter = 5;
         goldEarned = "0";
         for(int a = 0; a < 5; a ++){
             meteors.add(new Meteor(30,upgrades,meteorLvl));
