@@ -6,6 +6,7 @@ import java.util.Locale;
 
 class Upgrades {
     private String[] health = new String[100];
+    private String[] meteorHealth = new String[100];
     private String[] healthCost = new String[100];
     private String[] startLvlCost = new String[100];
     private String[] scoreMultiplier = new String[100];
@@ -24,6 +25,7 @@ class Upgrades {
         playerWeightCost[0] = "2.00K";
         health[0] = "100";
         scoreMultiplier[0] = "1.0";
+        meteorHealth[0] = "1";
         lvlMultiplier[0] = 1.0;
         playerWeight[0] = 100;
 
@@ -51,6 +53,9 @@ class Upgrades {
         for(int a = 1; a < playerWeightCost.length; a++){
             playerWeightCost[a] = simplifyScore(multiplyScore(playerWeightCost[a-1], 1.75));
         }
+        for(int a = 1; a < meteorHealth.length; a++){
+            meteorHealth[a] = simplifyScore(multiplyScore(meteorHealth[a-1],1.5));
+        }
 
     }
 
@@ -72,6 +77,10 @@ class Upgrades {
 
     public String getScoreMultiplier(){
         return scoreMultiplier[data.getScoreMultiplierLvl()];
+    }
+
+    String[] getMeteorHealth(){
+        return  meteorHealth;
     }
 
     public String getNextScoreMultiplier(){
@@ -242,6 +251,9 @@ class Upgrades {
             num2 = Double.parseDouble(s2.substring(0, s2.length()-1));
         }else{
             num2 = Double.parseDouble(s2);
+        }
+        if(num1<0){
+            return false;
         }
         if(end1 > end2){
             return true;

@@ -32,7 +32,7 @@ class GameScreen {
     }
 
     void tick(GameView gameView, EndScreen endScreen){
-        goldEarned = upgrades.addScores(goldEarned, upgrades.multiplyScore(upgrades.getScoreMultiplier(),upgrades.getLvlMultiplier(meteorLvl)));
+        goldEarned = upgrades.addScores(goldEarned, upgrades.multiplyScore(upgrades.getScoreMultiplier(),upgrades.getLvlMultiplier(meteorLvl)/2));
         player.tick();
         if(System.currentTimeMillis()-lastMeteor>3000){
             addMeteor();
@@ -42,7 +42,7 @@ class GameScreen {
         if(lvlCounter >= 10){
             lvlCounter = 0;
             meteorLvl++;
-            player.setWeight(player.getWeight()*1.2);
+            player.setWeight(player.getWeight()*1.1);
         }
         for(Meteor meteor:meteors){
             meteor.tick(player,meteors,this);
@@ -93,7 +93,7 @@ class GameScreen {
         player.touched(e);
     }
 
-    void addMeteor(){
+    private void addMeteor(){
         meteors.add(new Meteor(30,upgrades,meteorLvl));
     }
 
@@ -122,7 +122,7 @@ class GameScreen {
         player.setY(Y(500));
     }
 
-    public String getGoldEarned() {
+    String getGoldEarned() {
         return upgrades.simplifyScore(goldEarned);
     }
 }

@@ -18,11 +18,14 @@ public class Meteor {
     private double velX = 0;
     private double velY = 0;
     private int size;
+    private String health;
 
     Meteor(int size, Upgrades upgrades, int lvl){
         this.size = size;
         this.upgrades = upgrades;
         this.lvl = lvl;
+        //health = upgrades.getMeteorHealth()[lvl];
+        health = "1";
     }
     void tick(Player player, LinkedList<Meteor> others, GameScreen gameScreen){
         //determines the velocity of the meteor based on its position relative to the player
@@ -77,11 +80,12 @@ public class Meteor {
 
     void render(Canvas canvas){
         Paint paint = new Paint();
-        paint.setARGB(255, meteorColor[lvl%10][0], meteorColor[lvl%10][1], meteorColor[lvl%10][2]);
-        canvas.drawCircle(x,y,size,paint);
         paint.setARGB(255, meteorColor[lvl/10][0], meteorColor[lvl/10][1], meteorColor[lvl/10][2]);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(X(3));
+        paint.setStrokeWidth(X(15 ));
+        canvas.drawArc(x-size,y-size,x+size,y+size,-90, (float)(360*upgrades.divideScores(health,upgrades.getMeteorHealth()[lvl])),true,paint);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setARGB(255, meteorColor[lvl%10][0], meteorColor[lvl%10][1], meteorColor[lvl%10][2]);
         canvas.drawCircle(x,y,size,paint);
     }
     private double distanceFromPlayer(Player player){
@@ -117,5 +121,12 @@ public class Meteor {
 
     private float Y(float Y){
         return Y* height/1000f;
+    }
+
+    void setHealth(String health){
+        this.health = health;
+    }
+    String getHealth(){
+        return health;
     }
 }

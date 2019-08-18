@@ -9,7 +9,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
-    private Context context;
     private MainThread thread;
     private StartScreen startScreen;
     private GameScreen gameScreen;
@@ -24,7 +23,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public GameView(Context context){
         super(context);
-        this.context = context;
         data = new Data(context);
         upgrades = new Upgrades(data);
         startScreen = new StartScreen(star);
@@ -95,13 +93,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         if(gameState == 0){
-            startScreen.touched(e,this);
+            startScreen.touched(e,this,gameScreen,upgradeScreen);
         }else if(gameState == 1){
             gameScreen.touched(e);
         }else if(gameState == 2){
             endScreen.touched(e,this, gameScreen, upgradeScreen);
         }else if(gameState == 3){
-            upgradeScreen.touched(e,data,upgrades);
+            upgradeScreen.touched(e,data,upgrades,gameScreen,this,startScreen);
         }
 
         return true;

@@ -120,9 +120,25 @@ class UpgradeScreen {
         drawUpgradeButton(paint,canvas,X(1720),Y(370));
         drawUpgradeButton(paint,canvas,X(720),Y(620));
         drawUpgradeButton(paint,canvas,X(1720),Y(620));
+
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(X(90));
+        canvas.drawRect(X(700),Y(825),X(1300),Y(975),paint);
+        canvas.drawRect(X(5),Y(5),X(300),Y(140),paint);
+        canvas.drawRect(X(1700),Y(5),X(1990),Y(140),paint);
+        paint.setARGB(255,212,175,55);
+        canvas.drawText("PLAY AGAIN",X(1000),Y(930),paint);
+        canvas.drawText("BACK",X(150),Y(100),paint);
+        canvas.drawText("GUNS",X(1850),Y(100),paint);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(X(10));
+        canvas.drawRect(X(700),Y(825),X(1300),Y(975),paint);
+        canvas.drawRect(X(5),Y(5),X(300),Y(140),paint);
+        canvas.drawRect(X(1700),Y(5),X(1990),Y(140),paint);
     }
 
-    void touched(MotionEvent e, Data data, Upgrades upgrades) {
+    void touched(MotionEvent e, Data data, Upgrades upgrades, GameScreen gameScreen, GameView gameView, StartScreen startScreen) {
         if(e.getX() > X(620) && e.getX()<X(820) && e.getY()>Y(320) && e.getY()<Y(420)&& upgrades.scoreLarger(data.getGold(),upgrades.getNextHealthCost())){
             if(System.currentTimeMillis()-buyTimer > 500) {
                 data.setGold(upgrades.subtractScore(data.getGold(), upgrades.getNextHealthCost()));
@@ -147,6 +163,12 @@ class UpgradeScreen {
                 data.setPlayerWeightLvl(data.getPlayerWeightLvl() + 1);
                 buyTimer = System.currentTimeMillis();
             }
+        }else if(e.getX() > X(700) && e.getX()<X(1300) && e.getY()>Y(825) && e.getY()<Y(975)&& System.currentTimeMillis()-buyTimer > 300){
+                gameScreen.reset();
+                gameView.setGameState(1);
+        }else if(e.getX() > X(0) && e.getX()<X(300) && e.getY()>Y(0) && e.getY()<Y(140)&& System.currentTimeMillis()-buyTimer > 300){
+            startScreen.reset();
+            gameView.setGameState(0);
         }
     }
 
@@ -158,7 +180,7 @@ class UpgradeScreen {
         return Y * height/ 1000f;
     }
 
-    void drawUpgradeButton(Paint paint, Canvas canvas, float x, float y){
+    private void drawUpgradeButton(Paint paint, Canvas canvas, float x, float y){
         paint.setColor(Color.WHITE);
         paint.setStyle(Paint.Style.FILL);
         canvas.drawRect(x -X(100),y-X(50),x+X(100),y+X(50),paint);
