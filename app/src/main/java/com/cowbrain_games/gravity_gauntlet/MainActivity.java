@@ -18,6 +18,15 @@ public class MainActivity extends Activity {
         setContentView(gameView);
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        gameView = new GameView(this);
+        hideSystemUI();
+        setContentView(gameView);
+    }
+
+
     private void hideSystemUI() {
         // Set the IMMERSIVE flag.
         // Set the content to appear under the system bars so that the content

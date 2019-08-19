@@ -9,7 +9,7 @@ import android.view.MotionEvent;
 
 
 public class Player {
-    private int width = Resources.getSystem().getDisplayMetrics().widthPixels+100;
+    private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
     private Upgrades upgrades;
     private Data data;
@@ -21,9 +21,11 @@ public class Player {
     private float x = X(1000);
     private float y = Y(500);
     private double weight;
+    private double moveAngle;
     private int size;
     private String maxHealth;
     private String health;
+    private long time = System.currentTimeMillis();
 
     Player(int size, Upgrades upgrades, Data data){
         this.data = data;
@@ -74,6 +76,9 @@ public class Player {
     double getWeight(){
         return  weight;
     }
+    double getMoveAngle(){
+        return moveAngle;
+    }
     void setWeight(double weight){
         this.weight = weight;
     }
@@ -82,7 +87,54 @@ public class Player {
     }
 
     void touched(MotionEvent e){
-        if(tickCounter-lastTick <=1){
+        if(tickCounter-lastTick <=1 &&(Math.pow(e.getX()-lastTouchedX,2)+Math.pow(e.getY()-lastTouchedY,2)<X(10000))){
+            /*if(System.currentTimeMillis()-time>50&&(Math.pow(e.getX()-lastTouchedX,2)+Math.pow(e.getY()-lastTouchedY,2)>0.1)) {
+                if (e.getX() - lastTouchedX > 0 && e.getY() - lastTouchedY > 0) {
+                    moveAngle = Math.atan((e.getY() - lastTouchedY) / (e.getX() - lastTouchedX)) * 180 / Math.PI + 90;
+                } else if (e.getX() - lastTouchedX < 0 && e.getY() - lastTouchedY > 0) {
+                    moveAngle = Math.atan((e.getY() - lastTouchedY) / (e.getX() - lastTouchedX)) * 180 / Math.PI - 90;
+                } else if (e.getX() - lastTouchedX < 0 && e.getY() - lastTouchedY < 0) {
+                    moveAngle = Math.atan((e.getY() - lastTouchedY) / (e.getX() - lastTouchedX)) * 180 / Math.PI - 90;
+                } else if (e.getX() - lastTouchedX > 0 && e.getY() - lastTouchedY < 0) {
+                    moveAngle = Math.atan((e.getY() - lastTouchedY) / (e.getX() - lastTouchedX)) * 180 / Math.PI + 90;
+                }
+                if(newMoveAngle>moveAngle){
+                    if(newMoveAngle-moveAngle<(180-newMoveAngle)+(moveAngle+180)){
+                        if(newMoveAngle-moveAngle<10){
+                            moveAngle=newMoveAngle;
+                        }else{
+                            moveAngle+=10;
+                        }
+                    }else{
+                        if((180-newMoveAngle)+(moveAngle+180)< 10){
+                            moveAngle = newMoveAngle;
+                        }else{
+                            moveAngle-=10;
+                            if(moveAngle<-180){
+                                moveAngle+=360;
+                            }
+                        }
+                    }
+                }else{
+                    if(moveAngle-newMoveAngle<(180-moveAngle)+(newMoveAngle+180)){
+                        if(moveAngle-newMoveAngle<10){
+                            moveAngle=newMoveAngle;
+                        }else{
+                            moveAngle-=10;
+                        }
+                    }else{
+                        if((180-moveAngle)+(newMoveAngle+180)< 10){
+                            moveAngle = newMoveAngle;
+                        }else{
+                            moveAngle+=10;
+                            if(moveAngle>180){
+                                moveAngle-=360;
+                            }
+                        }
+                    }
+                }
+                time = System.currentTimeMillis();
+            }*/
             x+=e.getX()-lastTouchedX;
             y+=e.getY()-lastTouchedY;
             if(x-size <0){

@@ -11,13 +11,14 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 class GameScreen {
-    private int width = Resources.getSystem().getDisplayMetrics().widthPixels+100;
+    private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
     private Player player;
     private Upgrades upgrades;
     private Data data;
     private LinkedList<Meteor> meteors = new LinkedList<>();
     private ArrayList<Meteor> remove = new ArrayList<>();
+    private LinkedList<Bullets> bullets = new LinkedList<>();
     private int meteorLvl;
     private int lvlCounter = 5;
     private long lastMeteor = System.currentTimeMillis();
@@ -31,11 +32,16 @@ class GameScreen {
 
     }
 
-    void tick(GameView gameView, EndScreen endScreen){
+    void tick(GameView gameView, EndScreen endScreen, Guns guns){
         goldEarned = upgrades.addScores(goldEarned, upgrades.multiplyScore(upgrades.getScoreMultiplier(),upgrades.getLvlMultiplier(meteorLvl)/2));
         player.tick();
+        guns.tick();
+        for(Bullets bullet:bullets){
+            bullet.tick();
+        }
         if(System.currentTimeMillis()-lastMeteor>3000){
             addMeteor();
+            bullets.add(new Bullets(player,guns));
             lastMeteor = System.currentTimeMillis();
             lvlCounter++;
         }
@@ -55,12 +61,16 @@ class GameScreen {
 
     }
 
-    void render(Canvas canvas, Bitmap coin){
+    void render(Canvas canvas, Bitmap coin, Guns guns){
         Paint paint = new Paint();
         paint.setColor(Color.RED);
         paint.setTextSize(X(60));
         canvas.drawColor(Color.BLACK);
         player.render(canvas);
+        for(Bullets bullet:bullets){
+            bullet.render(canvas, player);
+        }
+        guns.render(canvas,player,1);
         for(Meteor meteor:meteors){
             meteor.render(canvas);
         }

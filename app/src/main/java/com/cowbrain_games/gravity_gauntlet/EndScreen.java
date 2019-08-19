@@ -9,7 +9,7 @@ import android.graphics.Typeface;
 import android.view.MotionEvent;
 
 class EndScreen {
-    private int width = Resources.getSystem().getDisplayMetrics().widthPixels+100;
+    private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
     private long beginTime = System.currentTimeMillis();
     private int[][] colors = {{255,0,0,255},{255,0,128,255},{255,0,0,255},{255,0,128,255}};
