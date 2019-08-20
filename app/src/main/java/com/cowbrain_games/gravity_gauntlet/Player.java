@@ -90,57 +90,10 @@ public class Player {
         this.health = health;
     }
 
-    void touched(MotionEvent e){
-        if(tickCounter-lastTick <=1 &&(Math.pow(e.getX()-lastTouchedX,2)+Math.pow(e.getY()-lastTouchedY,2)<X(10000))){
-            /*if(System.currentTimeMillis()-time>50&&(Math.pow(e.getX()-lastTouchedX,2)+Math.pow(e.getY()-lastTouchedY,2)>0.1)) {
-                if (e.getX() - lastTouchedX > 0 && e.getY() - lastTouchedY > 0) {
-                    moveAngle = Math.atan((e.getY() - lastTouchedY) / (e.getX() - lastTouchedX)) * 180 / Math.PI + 90;
-                } else if (e.getX() - lastTouchedX < 0 && e.getY() - lastTouchedY > 0) {
-                    moveAngle = Math.atan((e.getY() - lastTouchedY) / (e.getX() - lastTouchedX)) * 180 / Math.PI - 90;
-                } else if (e.getX() - lastTouchedX < 0 && e.getY() - lastTouchedY < 0) {
-                    moveAngle = Math.atan((e.getY() - lastTouchedY) / (e.getX() - lastTouchedX)) * 180 / Math.PI - 90;
-                } else if (e.getX() - lastTouchedX > 0 && e.getY() - lastTouchedY < 0) {
-                    moveAngle = Math.atan((e.getY() - lastTouchedY) / (e.getX() - lastTouchedX)) * 180 / Math.PI + 90;
-                }
-                if(newMoveAngle>moveAngle){
-                    if(newMoveAngle-moveAngle<(180-newMoveAngle)+(moveAngle+180)){
-                        if(newMoveAngle-moveAngle<10){
-                            moveAngle=newMoveAngle;
-                        }else{
-                            moveAngle+=10;
-                        }
-                    }else{
-                        if((180-newMoveAngle)+(moveAngle+180)< 10){
-                            moveAngle = newMoveAngle;
-                        }else{
-                            moveAngle-=10;
-                            if(moveAngle<-180){
-                                moveAngle+=360;
-                            }
-                        }
-                    }
-                }else{
-                    if(moveAngle-newMoveAngle<(180-moveAngle)+(newMoveAngle+180)){
-                        if(moveAngle-newMoveAngle<10){
-                            moveAngle=newMoveAngle;
-                        }else{
-                            moveAngle-=10;
-                        }
-                    }else{
-                        if((180-moveAngle)+(newMoveAngle+180)< 10){
-                            moveAngle = newMoveAngle;
-                        }else{
-                            moveAngle+=10;
-                            if(moveAngle>180){
-                                moveAngle-=360;
-                            }
-                        }
-                    }
-                }
-                time = System.currentTimeMillis();
-            }*/
-            x+=e.getX()-lastTouchedX;
-            y+=e.getY()-lastTouchedY;
+    void touched(MotionEvent e, int index){
+        if(tickCounter-lastTick <=1 &&(Math.pow(e.getX(index)-lastTouchedX,2)+Math.pow(e.getY(index)-lastTouchedY,2)<X(10000))){
+            x+=e.getX(index)-lastTouchedX;
+            y+=e.getY(index)-lastTouchedY;
             if(x-size <0){
                 x = size;
             }else if(x+size>X(2000)){
@@ -153,8 +106,8 @@ public class Player {
             }
         }
         lastTick = tickCounter;
-        lastTouchedX = e.getX();
-        lastTouchedY = e.getY();
+        lastTouchedX = e.getX(index);
+        lastTouchedY = e.getY(index);
     }
     void reset(){
         this.weight = upgrades.getPlayerWeight()*Math.pow(1.1,data.getStartLvl());

@@ -97,16 +97,28 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-        if(gameState == 0){
-            startScreen.touched(e,this,gameScreen,upgradeScreen,e.getPointerCount());
-        }else if(gameState == 1){
-            gameScreen.touched(e);
-        }else if(gameState == 2){
-            endScreen.touched(e,this, gameScreen, upgradeScreen);
-        }else if(gameState == 3){
-            upgradeScreen.touched(e,data,upgrades,gameScreen,this,startScreen);
+        int pointerIndex = e.getActionIndex();
+        int maskedAction = e.getActionMasked();
+        switch (maskedAction) {
+            case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_POINTER_DOWN: {
+                if(gameState == 0){
+                    startScreen.touched(e,this,gameScreen,upgradeScreen,e.getPointerCount());
+                }else if(gameState == 1){
+                    gameScreen.touched(e);
+                }else if(gameState == 2){
+                    endScreen.touched(e,this, gameScreen, upgradeScreen);
+                }else if(gameState == 3){
+                    upgradeScreen.touched(e,data,upgrades,gameScreen,this,startScreen);
+                }
+            }
+            case MotionEvent.ACTION_MOVE:{
+                if(gameState == 1){
+                    gameScreen.touched(e);
+                }
+            }
         }
-
+        invalidate();
         return true;
     }
 

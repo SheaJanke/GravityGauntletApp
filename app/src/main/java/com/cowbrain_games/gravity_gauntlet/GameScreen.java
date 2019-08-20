@@ -119,11 +119,13 @@ class GameScreen {
     }
 
     void touched(MotionEvent e){
-        if(Math.pow(e.getX()-X(1825),2)+Math.pow(e.getY()-Y(825),2)<Math.pow((int)X(150),2)){
-            guns.shoot(addBullets,1);
+        for(int a = 0;a < e.getPointerCount(); a ++){
+            if(Math.pow(e.getX(a)-X(1825),2)+Math.pow(e.getY(a)-Y(825),2)<Math.pow((int)X(150),2)){
+                guns.shoot(addBullets,1);
+                continue;
+            }
+            player.touched(e,a);
         }
-        player.touched(e);
-
     }
 
     private void addMeteor(){
