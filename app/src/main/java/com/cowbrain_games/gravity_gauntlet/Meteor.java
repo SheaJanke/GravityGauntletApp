@@ -2,6 +2,7 @@ package com.cowbrain_games.gravity_gauntlet;
 
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 
 import java.util.LinkedList;
@@ -24,8 +25,7 @@ public class Meteor {
         this.size = size;
         this.upgrades = upgrades;
         this.lvl = lvl;
-        //health = upgrades.getMeteorHealth()[lvl];
-        health = "1";
+        health = upgrades.getMeteorHealth()[lvl];
     }
     void tick(Player player, LinkedList<Meteor> others, GameScreen gameScreen){
         //determines the velocity of the meteor based on its position relative to the player
@@ -83,6 +83,9 @@ public class Meteor {
         paint.setARGB(255, meteorColor[lvl/10][0], meteorColor[lvl/10][1], meteorColor[lvl/10][2]);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(X(15 ));
+        paint.setColor(Color.RED);
+        canvas.drawArc(x-size,y-size,x+size,y+size,0, 360,true,paint);
+        paint.setColor(Color.GREEN);
         canvas.drawArc(x-size,y-size,x+size,y+size,-90, (float)(360*upgrades.divideScores(health,upgrades.getMeteorHealth()[lvl])),true,paint);
         paint.setStyle(Paint.Style.FILL);
         paint.setARGB(255, meteorColor[lvl%10][0], meteorColor[lvl%10][1], meteorColor[lvl%10][2]);
@@ -104,14 +107,14 @@ public class Meteor {
         return lvl;
     }
 
-    private float getX(){
+    float getX(){
         return x;
     }
-    private float getY(){
+    float getY(){
         return y;
     }
 
-    private int getSize() {
+    int getSize() {
         return size;
     }
 
@@ -129,4 +132,5 @@ public class Meteor {
     String getHealth(){
         return health;
     }
+
 }

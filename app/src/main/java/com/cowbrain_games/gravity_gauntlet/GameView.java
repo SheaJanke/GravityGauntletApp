@@ -16,21 +16,24 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Upgrades upgrades;
     private UpgradeScreen upgradeScreen;
     private Data data;
+    private Player player;
     private Guns guns;
     private int gameState = 0;
     private Bitmap star = BitmapFactory.decodeResource(getResources(),R.drawable.star);
     private Bitmap coin = BitmapFactory.decodeResource(getResources(),R.drawable.coin);
+    private Bitmap shoot = BitmapFactory.decodeResource(getResources(),R.drawable.shoot);
 
 
     public GameView(Context context){
         super(context);
         data = new Data(context);
         upgrades = new Upgrades(data);
+        player = new Player(upgrades,data);
+        guns = new Guns(player);
         startScreen = new StartScreen(star);
-        gameScreen = new GameScreen(data,upgrades);
+        gameScreen = new GameScreen(data,upgrades,player,guns);
         endScreen = new EndScreen(star,coin,data,gameScreen);
         upgradeScreen = new UpgradeScreen();
-        guns = new Guns();
 
 
         getHolder().addCallback(this);
@@ -71,7 +74,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             if(gameState == 0){
                 startScreen.render(canvas);
             }else if(gameState ==1){
-                gameScreen.render(canvas,coin,guns);
+                gameScreen.render(canvas,coin,shoot);
             }else if(gameState == 2){
                 endScreen.render(canvas);
             }else if(gameState == 3){
@@ -84,7 +87,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if(gameState == 0){
             startScreen.tick();
         }else if(gameState == 1){
-            gameScreen.tick(this,endScreen,guns);
+            gameScreen.tick(this,endScreen);
         }else if(gameState == 2){
             endScreen.tick();
         }else if(gameState == 3){
@@ -95,7 +98,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         if(gameState == 0){
-            startScreen.touched(e,this,gameScreen,upgradeScreen);
+            startScreen.touched(e,this,gameScreen,upgradeScreen,e.getPointerCount());
         }else if(gameState == 1){
             gameScreen.touched(e);
         }else if(gameState == 2){

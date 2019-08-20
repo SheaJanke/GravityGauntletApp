@@ -27,11 +27,11 @@ public class Player {
     private String health;
     private long time = System.currentTimeMillis();
 
-    Player(int size, Upgrades upgrades, Data data){
+    Player(Upgrades upgrades, Data data){
         this.data = data;
         this.upgrades = upgrades;
         this.weight = upgrades.getPlayerWeight();
-        this.size = size;
+        this.size = (int)X(100);
         this.health = upgrades.getHealth();
         maxHealth = upgrades.getHealth();
     }
@@ -42,6 +42,10 @@ public class Player {
     void render(Canvas canvas){
         Paint paint = new Paint();
         paint.setColor(Color.BLUE);
+        canvas.drawCircle(x,y,size,paint);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(X(10));
+        paint.setARGB(255,212,175,55);
         canvas.drawCircle(x,y,size,paint);
     }
 
