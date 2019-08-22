@@ -14,6 +14,12 @@ class Upgrades {
     private double[] lvlMultiplier = new double[100];
     private double[] playerWeight = new double[100];
     private String[] playerWeightCost = new String[100];
+    private String[][] gunDamage = new String[5][10];
+    private String[][] gunDamageCost = new String[5][10];
+    private String[][] gunAmmo = new String[5][10];
+    private String[][] gunAmmoCost = new String[5][10];
+    private String[][] gunBurst = new String[3][5];
+    private String[][] gunBurstCost = new String[3][5];
     private ArrayList<String> scoreEndings = new ArrayList<>(Arrays.asList("K","M","B","t","q","Q","s","S","o","n","d"));
     private Data data;
 
@@ -26,6 +32,13 @@ class Upgrades {
         health[0] = "100";
         scoreMultiplier[0] = "1.0";
         meteorHealth[0] = "1";
+        gunDamage[0][0] = "1";
+        gunDamageCost[0][0] = "3.00K";
+        gunAmmo[0][0] = "10";
+        gunAmmoCost[0][0] = "2.00K";
+        gunBurst[0][0] = "1";
+        gunBurstCost[0][0] = "5.00K";
+
         lvlMultiplier[0] = 1.0;
         playerWeight[0] = 100;
 
@@ -56,26 +69,60 @@ class Upgrades {
         for(int a = 1; a < meteorHealth.length; a++){
             meteorHealth[a] = simplifyScore(multiplyScore(meteorHealth[a-1],1.5));
         }
+        for(int a = 1; a < gunDamage[0].length; a++){
+            gunDamage[0][a] = simplifyScore(multiplyScore(gunDamage[0][a-1],2.0));
+            gunDamageCost[0][a] = simplifyScore(multiplyScore(gunDamage[0][a-1],2.5));
+        }
+        for(int a = 1; a < gunAmmo[0].length; a++){
+            gunAmmo[0][a] = addScores(gunAmmo[0][a-1],"10");
+            gunAmmoCost[0][a] = simplifyScore(multiplyScore(gunAmmoCost[0][a-1],2.5));
+        }
+        for(int a = 1; a < gunBurst[0].length; a++){
+            gunBurst[0][a] = addScores(gunDamage[0][a-1],"1");
+            gunBurstCost[0][a] = simplifyScore(multiplyScore(gunBurstCost[0][a-1],3.5));
+        }
 
     }
+    String[] getGunDamage(int gunLvl){
+        return gunDamage[gunLvl];
+    }
 
-    public String getNextHealth(){
+    String[] getGunDamgeCost(int gunLvl){
+        return gunDamageCost[gunLvl];
+    }
+    String[] getGunAmmo(int gunLvl){
+        return gunAmmo[gunLvl];
+    }
+
+    String[] getGunAmmoCost(int gunLvl){
+        return gunAmmoCost[gunLvl];
+    }
+
+    String[] getGunBurst(int gunLvl){
+        return gunBurst[gunLvl];
+    }
+
+    String[] getGunBurstCost(int gunLvl){
+        return gunBurstCost[gunLvl];
+    }
+
+    String getNextHealth(){
         return health[data.getMaxHealthLvl()+1];
     }
 
-    public String getHealth(){
+    String getHealth(){
         return health[data.getMaxHealthLvl()];
     }
 
-    public String getNextStartLvlCost(){
+    String getNextStartLvlCost(){
         return startLvlCost[data.getStartLvl()];
     }
 
-    public String getNextHealthCost(){
+    String getNextHealthCost(){
         return healthCost[data.getMaxHealthLvl()];
     }
 
-    public String getScoreMultiplier(){
+    String getScoreMultiplier(){
         return scoreMultiplier[data.getScoreMultiplierLvl()];
     }
 
@@ -83,11 +130,11 @@ class Upgrades {
         return  meteorHealth;
     }
 
-    public String getNextScoreMultiplier(){
+    String getNextScoreMultiplier(){
         return scoreMultiplier[data.getScoreMultiplierLvl()+1];
     }
 
-    public String getNextScoreMultiplierCost(){
+    String getNextScoreMultiplierCost(){
         return scoreMultiplierCost[data.getScoreMultiplierLvl()];
     }
 
@@ -95,13 +142,13 @@ class Upgrades {
         return lvlMultiplier[lvl];
     }
 
-    public double getPlayerWeight(){
+    double getPlayerWeight(){
         return playerWeight[data.getPlayerWeightLvl()];
     }
-    public double getNextPlayerWeight(){
+    double getNextPlayerWeight(){
         return playerWeight[data.getPlayerWeightLvl() + 1];
     }
-    public String getNextPlayerWeightCost(){
+    String getNextPlayerWeightCost(){
         return playerWeightCost[data.getPlayerWeightLvl()];
     }
 
@@ -159,14 +206,14 @@ class Upgrades {
         if(end1 == end2){
             num1 -= num2;
             if(end1 != -1){
-                total = Double.toString(num1) + s1.substring(s1.length()-1);
+                total = num1 + s1.substring(s1.length()-1);
             }else{
                 total = Double.toString(num1);
             }
             return total;
         }else{
             num1 -= num2 * Math.pow(1000, end2-end1);
-            total = Double.toString(num1) + s1.substring(s1.length()-1);
+            total = num1 + s1.substring(s1.length()-1);
             return total;
         }
     }

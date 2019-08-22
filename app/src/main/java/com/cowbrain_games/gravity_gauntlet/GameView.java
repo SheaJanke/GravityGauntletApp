@@ -15,10 +15,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private EndScreen endScreen;
     private Upgrades upgrades;
     private UpgradeScreen upgradeScreen;
+    private GunScreen gunScreen;
     private Data data;
     private Player player;
     private Guns guns;
-    private int gameState = 0;
+    private int gameState = 4;
     private Bitmap star = BitmapFactory.decodeResource(getResources(),R.drawable.star);
     private Bitmap coin = BitmapFactory.decodeResource(getResources(),R.drawable.coin);
     private Bitmap shoot = BitmapFactory.decodeResource(getResources(),R.drawable.shoot);
@@ -34,6 +35,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         gameScreen = new GameScreen(data,upgrades,player,guns);
         endScreen = new EndScreen(star,coin,data,gameScreen);
         upgradeScreen = new UpgradeScreen();
+        gunScreen = new GunScreen(player,guns,data,upgrades);
+
 
 
         getHolder().addCallback(this);
@@ -79,6 +82,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 endScreen.render(canvas);
             }else if(gameState == 3){
                 upgradeScreen.render(canvas,upgrades,data,star,coin);
+            }else if(gameState == 4){
+                gunScreen.render(canvas,coin);
             }
         }
     }
@@ -92,6 +97,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             endScreen.tick();
         }else if(gameState == 3){
             upgradeScreen.tick();
+        }else if(gameState == 4){
+            gunScreen.tick();
         }
     }
 
@@ -103,13 +110,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_POINTER_DOWN: {
                 if(gameState == 0){
-                    startScreen.touched(e,this,gameScreen,upgradeScreen,e.getPointerCount());
+                    startScreen.touched(e,this,gameScreen,upgradeScreen);
                 }else if(gameState == 1){
                     gameScreen.touched(e);
                 }else if(gameState == 2){
                     endScreen.touched(e,this, gameScreen, upgradeScreen);
                 }else if(gameState == 3){
-                    upgradeScreen.touched(e,data,upgrades,gameScreen,this,startScreen);
+                    upgradeScreen.touched(e,data,upgrades,gameScreen,this,startScreen,gunScreen);
+                }else if(gameState == 4){
+                    gunScreen.touched(e,this,upgradeScreen);
                 }
             }
             case MotionEvent.ACTION_MOVE:{

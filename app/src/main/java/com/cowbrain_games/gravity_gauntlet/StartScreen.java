@@ -11,7 +11,6 @@ import android.view.MotionEvent;
 class StartScreen {
     private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
-    private int pointerCount = 0;
     private int[][] colors = {{255,0,0,255},{255,0,128,255},{255,0,0,255},{255,0,128,255}};
     private float[] x = new float[4];
     private float[] y = new float[4];
@@ -110,14 +109,13 @@ class StartScreen {
         canvas.drawText("UPGRADES",x[1],y[1]+Y(30),paint);
         paint.setTextSize(X(80));
         canvas.drawText("HOW TO PLAY",x[2],y[2]+Y(25),paint);
-        canvas.drawText("COMPETITIVE" + pointerCount,x[3],y[3]+Y(25),paint);
+        canvas.drawText("COMPETITIVE",x[3],y[3]+Y(25),paint);
 
 
 
     }
 
-    void touched(MotionEvent e, GameView gameView, GameScreen gameScreen, UpgradeScreen upgradeScreen, int pointerCount){
-        this.pointerCount = pointerCount;
+    void touched(MotionEvent e, GameView gameView, GameScreen gameScreen, UpgradeScreen upgradeScreen){
         if(e.getX() > x[0]-X(300) && e.getX() < x[0]+X(300) && e.getY()> y[0]-Y(100) && e.getY()< y[0]+(100)&&System.currentTimeMillis()-buttonTimer>300){
             gameScreen.reset();
             gameView.setGameState(1);

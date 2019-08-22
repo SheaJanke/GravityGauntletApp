@@ -41,7 +41,7 @@ class GameScreen {
         player.tick();
         guns.tick();
         for(Bullets bullet:bullets){
-            bullet.tick(this,meteors,upgrades);
+            bullet.tick(meteors,upgrades,removeBullets,remove);
         }
         for(Bullets bullet:addBullets){
             bullets.add(bullet);
@@ -50,6 +50,7 @@ class GameScreen {
             bullets.remove(bullet);
         }
         addBullets.clear();
+        removeBullets.clear();
         if(System.currentTimeMillis()-lastMeteor>3000){
             addMeteor();
             lastMeteor = System.currentTimeMillis();
@@ -63,6 +64,10 @@ class GameScreen {
         for(Meteor meteor:meteors){
             meteor.tick(player,meteors,this);
         }
+        for(Meteor rem : remove){
+            meteors.remove(rem);
+        }
+        remove.clear();
         if(!upgrades.scoreLarger(player.getHealth(),"0")){
             endScreen.reset();
             gameView.setGameState(2);
@@ -84,10 +89,6 @@ class GameScreen {
         for(Meteor meteor:meteors){
             meteor.render(canvas);
         }
-        for(Meteor rem : remove){
-            meteors.remove(rem);
-        }
-        remove.clear();
         paint.setColor(Color.RED);
         canvas.drawRect(X(1600),Y(50),X(1950),Y(150),paint);
         paint.setColor(Color.GREEN);

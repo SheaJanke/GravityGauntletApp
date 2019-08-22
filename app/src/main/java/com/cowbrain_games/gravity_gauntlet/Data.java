@@ -74,6 +74,18 @@ class Data {
         return mPreferences.getInt("playerWeightLvl",0);
     }
 
+    void setGun1Lvls(String gun1Lvls){
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        mEditor = mPreferences.edit();
+        mEditor.putString("gun1Lvls",gun1Lvls);
+        mEditor.apply();
+    }
+
+    String getGun1Lvls(){
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return mPreferences.getString("gun1Lvls","000");
+    }
+
     void reset(){
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         mEditor = mPreferences.edit();

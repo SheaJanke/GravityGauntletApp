@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 class Bullets {
@@ -28,21 +29,21 @@ class Bullets {
         velY = (float)Math.sin(rotation*Math.PI/180)*X(10);
     }
 
-    void tick(GameScreen gameScreen, LinkedList<Meteor> meteors, Upgrades upgrades){
+    void tick(LinkedList<Meteor> meteors, Upgrades upgrades, ArrayList<Bullets> removeBullet, ArrayList<Meteor> removeMeteor){
         y+=velY;
         x+=velX;
         for(Meteor meteor: meteors){
             if(Math.sqrt(Math.pow(x-meteor.getX(),2)+ Math.pow(y-meteor.getY(),2))<meteor.getSize()+X(15)){
                 meteor.setHealth(upgrades.subtractScore(meteor.getHealth(),"1"));
                 if(upgrades.scoreLarger("0.1",meteor.getHealth())){
-                    gameScreen.removeMeteor(meteor);
+                    removeMeteor.add(meteor);
                 }
-                gameScreen.removeBullet(this);
+                removeBullet.add(this);
             }
         }
 
-        if(y<Y(500)-X(2500)){
-            gameScreen.removeBullet(this);
+        if(x>X(2100) || x<X(-100) || y>Y(1100)||y<Y(-100)){
+            removeBullet.add(this);
         }
     }
 

@@ -50,11 +50,11 @@ class UpgradeScreen {
         paint.setTextSize(X(100));
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(Color.WHITE);
-        canvas.drawText(data.getGold(),X(950),Y(270),paint);
+        canvas.drawText(data.getGold(),X(960),Y(260),paint);
         paint.setStyle(Paint.Style.STROKE);
         paint.setARGB(255,212,175,55);
-        canvas.drawText(data.getGold(),X(950),Y(270),paint);
-        canvas.drawBitmap(Bitmap.createScaledBitmap(coin,(int)X(100),(int)X(100),true),X(950)+ data.getGold().length()*X(28),Y(180),paint);
+        canvas.drawText(data.getGold(),X(960),Y(260),paint);
+        canvas.drawBitmap(Bitmap.createScaledBitmap(coin,(int)X(100),(int)X(100),true),X(960)+ data.getGold().length()*X(28),Y(170),paint);
         for(int a = 0; a < 2; a ++) {
             for (int b = 0; b < 2; b++) {
                 paint.setStyle(Paint.Style.STROKE);
@@ -138,7 +138,7 @@ class UpgradeScreen {
         canvas.drawRect(X(1700),Y(5),X(1990),Y(140),paint);
     }
 
-    void touched(MotionEvent e, Data data, Upgrades upgrades, GameScreen gameScreen, GameView gameView, StartScreen startScreen) {
+    void touched(MotionEvent e, Data data, Upgrades upgrades, GameScreen gameScreen, GameView gameView, StartScreen startScreen, GunScreen gunScreen) {
         if(e.getX() > X(620) && e.getX()<X(820) && e.getY()>Y(320) && e.getY()<Y(420)&& upgrades.scoreLarger(data.getGold(),upgrades.getNextHealthCost())){
             if(System.currentTimeMillis()-buyTimer > 500) {
                 data.setGold(upgrades.subtractScore(data.getGold(), upgrades.getNextHealthCost()));
@@ -169,6 +169,9 @@ class UpgradeScreen {
         }else if(e.getX() > X(0) && e.getX()<X(300) && e.getY()>Y(0) && e.getY()<Y(140)&& System.currentTimeMillis()-buyTimer > 300){
             startScreen.reset();
             gameView.setGameState(0);
+        }else if(e.getX() > X(1700) && e.getX()<X(1990) && e.getY()>Y(0) && e.getY()<Y(140)&& System.currentTimeMillis()-buyTimer > 300){
+            gunScreen.reset();
+            gameView.setGameState(4);
         }
     }
 
