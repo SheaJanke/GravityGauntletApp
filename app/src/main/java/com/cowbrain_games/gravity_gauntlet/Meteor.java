@@ -83,9 +83,9 @@ public class Meteor {
         paint.setARGB(255, meteorColor[lvl/10][0], meteorColor[lvl/10][1], meteorColor[lvl/10][2]);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(X(15 ));
-        paint.setColor(Color.RED);
+        paint.setARGB(255,212,175,55);
         canvas.drawArc(x-size,y-size,x+size,y+size,0, 360,true,paint);
-        paint.setColor(Color.GREEN);
+        paint.setARGB(255, meteorColor[lvl/10][0], meteorColor[lvl/10][1], meteorColor[lvl/10][2]);
         canvas.drawArc(x-size,y-size,x+size,y+size,-90, (float)(360*upgrades.divideScores(health,upgrades.getMeteorHealth()[lvl])),true,paint);
         paint.setStyle(Paint.Style.FILL);
         paint.setARGB(255, meteorColor[lvl%10][0], meteorColor[lvl%10][1], meteorColor[lvl%10][2]);

@@ -94,7 +94,7 @@ class Data {
         mEditor.putInt("startLvl", 0);
         mEditor.putInt("scoreMultiplierLvl",0);
         mEditor.putInt("playerWeightLvl",0);
-        mEditor.putString("gun1Lvls","000");
+        mEditor.putString("gun1Lvls", "000");
         mEditor.apply();
     }
 }

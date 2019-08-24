@@ -29,6 +29,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public GameView(Context context){
         super(context);
         data = new Data(context);
+        data.reset();
+        data.setGold("1.00t");
         upgrades = new Upgrades(data);
         player = new Player(upgrades,data);
         guns = new Guns(player,upgrades,data);
