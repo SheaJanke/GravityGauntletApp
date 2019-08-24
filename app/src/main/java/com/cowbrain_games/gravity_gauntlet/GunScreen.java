@@ -19,6 +19,8 @@ class GunScreen {
     private long buyTimer = System.currentTimeMillis();
     private String[] gun1Upgrades = {"Ammo", "Damage", "Burst"};
     private String[] gun1Values = new String[3];
+    private String[] nextGun1Values = new String[3];
+    private String[] nextGun1Cost = new String[3];
     private int tickCounter = 0;
     private LinkedList<Bullets> bullets = new LinkedList<>();
     private ArrayList<Bullets> addBullets = new ArrayList<>();
@@ -31,10 +33,7 @@ class GunScreen {
         this.guns = guns;
         this.data = data;
         this.upgrades = upgrades;
-        gun1Values[0] = upgrades.getGunAmmo(0)[Integer.parseInt(data.getGun1Lvls().substring(0,1))];
-        gun1Values[1] = upgrades.getGunDamage(0)[Integer.parseInt(data.getGun1Lvls().substring(1,2))];
-        gun1Values[2] = upgrades.getGunBurst(0)[Integer.parseInt(data.getGun1Lvls().substring(2,3))];
-
+        resetBuy();
     }
 
 
@@ -42,9 +41,9 @@ class GunScreen {
         if(tickCounter%20 == 0){
             guns.shoot(addBullets,1);
         }
-        guns.tick();
+        guns.tick(addBullets,1);
         for(Bullets bullet:bullets){
-            bullet.tick(meteors,upgrades,removeBullets,removeMeteors);
+            bullet.tick(meteors,upgrades,data,removeBullets,removeMeteors);
         }
         for(Bullets bullet:addBullets){
             bullets.add(bullet);
@@ -97,7 +96,7 @@ class GunScreen {
             }else{
                 paint.setColor(Color.BLUE);
             }
-            canvas.drawRect(X(50) + X(650)*a, Y(700),X(650)+ X(650)*a,Y(950),paint);
+            canvas.drawRect(X(50) + X(650)*a, Y(650),X(650)+ X(650)*a,Y(950),paint);
             paint.setStyle(Paint.Style.STROKE);
             paint.setStrokeWidth(X(10));
             if(a%2 == 0) {
@@ -105,12 +104,23 @@ class GunScreen {
             }else{
                 paint.setColor(Color.CYAN);
             }
-            canvas.drawRect(X(50) + X(650)*a, Y(700),X(650)+ X(650)*a,Y(950),paint);
+            canvas.drawRect(X(50) + X(650)*a, Y(650),X(650)+ X(650)*a,Y(950),paint);
             paint.setStyle(Paint.Style.FILL);
+            paint.setTextSize(X(60));
+            canvas.drawText(gun1Values[a] + "   ->   " + nextGun1Values[a],X(350)+X(650)*a, Y(790),paint);
             paint.setARGB(255,212,175,55);
             paint.setTextSize(X(80));
-            canvas.drawText(gun1Upgrades[a], X(350)+X(650)*a, Y(775),paint);
-            canvas.drawText(gun1Values[a],X(300)+X(650)*a, Y(825),paint);
+            canvas.drawText(gun1Upgrades[a], X(350)+X(650)*a, Y(725),paint);
+            drawUpgradeButton(paint,canvas,X(525)+X(650)*a, Y(875));
+            paint.setStyle(Paint.Style.FILL);
+            paint.setColor(Color.WHITE);
+            paint.setTextSize(X(70));
+            canvas.drawText(nextGun1Cost[a], X(210)+X(650)*a,Y(900),paint);
+            paint.setARGB(255,212,175,55);
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(X(4));
+            canvas.drawText(nextGun1Cost[a], X(210)+X(650)*a,Y(900),paint);
+            canvas.drawBitmap(Bitmap.createScaledBitmap(coin,(int)X(70),(int)X(70),true),X(210)+X(650)*a + nextGun1Cost[a].length()*X(20),Y(845),paint);
         }
     }
 
@@ -119,17 +129,50 @@ class GunScreen {
             upgradeScreen.reset();
             gameView.setGameState(3);
         }
+        if(e.getX() > X(425) && e.getX()<X(625) && e.getY()>Y(825) && e.getY()<Y(925) && System.currentTimeMillis()-buyTimer>500 && upgrades.scoreLarger(data.getGold(),nextGun1Cost[0])){
+            data.setGold(upgrades.subtractScore(data.getGold(),nextGun1Cost[0]));
+            data.setGun1Lvls(Integer.parseInt(data.getGun1Lvls().substring(0,1)) + 1 + data.getGun1Lvls().substring(1,3));
+            buyTimer = System.currentTimeMillis();
+            resetBuy();
+        }else if(e.getX() > X(1075) && e.getX()<X(1275) && e.getY()>Y(825) && e.getY()<Y(925) && System.currentTimeMillis()-buyTimer>500 && upgrades.scoreLarger(data.getGold(),nextGun1Cost[1])){
+            data.setGold(upgrades.subtractScore(data.getGold(),nextGun1Cost[1]));
+            data.setGun1Lvls(data.getGun1Lvls().substring(0,1)+ (Integer.parseInt(data.getGun1Lvls().substring(1,2)) + 1) + data.getGun1Lvls().substring(2,3));
+            buyTimer = System.currentTimeMillis();
+            resetBuy();
+        }else if(e.getX() > X(1725) && e.getX()<X(1925) && e.getY()>Y(825) && e.getY()<Y(925) && System.currentTimeMillis()-buyTimer>500 && upgrades.scoreLarger(data.getGold(),nextGun1Cost[2])){
+            data.setGold(upgrades.subtractScore(data.getGold(),nextGun1Cost[2]));
+            data.setGun1Lvls(data.getGun1Lvls().substring(0,2) + (Integer.parseInt(data.getGun1Lvls().substring(2,3)) + 1));
+            buyTimer = System.currentTimeMillis();
+            resetBuy();
+            guns.reset();
+        }
     }
 
     void reset(){
         buyTimer = System.currentTimeMillis();
         player.setX(X(1000));
-        player.setY(Y(450));
+        player.setY(Y(425));
+        guns.reset();
+        guns.setAmmo(100000);
     }
+
+    void resetBuy(){
+        gun1Values[0] = upgrades.getGunAmmo(0)[Integer.parseInt(data.getGun1Lvls().substring(0,1))];
+        gun1Values[1] = upgrades.getGunDamage(0)[Integer.parseInt(data.getGun1Lvls().substring(1,2))];
+        gun1Values[2] = upgrades.getGunBurst(0)[Integer.parseInt(data.getGun1Lvls().substring(2,3))];
+        nextGun1Values[0] = upgrades.getGunAmmo(0)[Integer.parseInt(data.getGun1Lvls().substring(0,1))+1];
+        nextGun1Values[1] = upgrades.getGunDamage(0)[Integer.parseInt(data.getGun1Lvls().substring(1,2))+1];
+        nextGun1Values[2] = upgrades.getGunBurst(0)[Integer.parseInt(data.getGun1Lvls().substring(2,3))+1];
+        nextGun1Cost[0] = upgrades.simplifyScore(upgrades.getGunAmmoCost(0)[Integer.parseInt(data.getGun1Lvls().substring(0,1))]);
+        nextGun1Cost[1] = upgrades.simplifyScore(upgrades.getGunDamageCost(0)[Integer.parseInt(data.getGun1Lvls().substring(1,2))]);
+        nextGun1Cost[2] = upgrades.simplifyScore(upgrades.getGunBurstCost(0)[Integer.parseInt(data.getGun1Lvls().substring(2,3))]);
+    }
+
 
     private void drawUpgradeButton(Paint paint, Canvas canvas, float x, float y){
         paint.setColor(Color.WHITE);
         paint.setStyle(Paint.Style.FILL);
+        paint.setTextSize(X(60));
         canvas.drawRect(x -X(100),y-X(50),x+X(100),y+X(50),paint);
         paint.setARGB(255,212,175,55);
         canvas.drawText("BUY",x,y+Y(20),paint);

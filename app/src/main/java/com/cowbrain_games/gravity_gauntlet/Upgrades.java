@@ -32,11 +32,11 @@ class Upgrades {
         health[0] = "100";
         scoreMultiplier[0] = "1.0";
         meteorHealth[0] = "1";
-        gunDamage[0][0] = "1";
+        gunDamage[0][0] = "1.00";
         gunDamageCost[0][0] = "3.00K";
-        gunAmmo[0][0] = "10";
+        gunAmmo[0][0] = "20.0";
         gunAmmoCost[0][0] = "2.00K";
-        gunBurst[0][0] = "1";
+        gunBurst[0][0] = "1.00";
         gunBurstCost[0][0] = "5.00K";
 
         lvlMultiplier[0] = 1.0;
@@ -71,10 +71,10 @@ class Upgrades {
         }
         for(int a = 1; a < gunDamage[0].length; a++){
             gunDamage[0][a] = simplifyScore(multiplyScore(gunDamage[0][a-1],2.0));
-            gunDamageCost[0][a] = simplifyScore(multiplyScore(gunDamage[0][a-1],2.5));
+            gunDamageCost[0][a] = simplifyScore(multiplyScore(gunDamageCost[0][a-1],2.5));
         }
         for(int a = 1; a < gunAmmo[0].length; a++){
-            gunAmmo[0][a] = addScores(gunAmmo[0][a-1],"10");
+            gunAmmo[0][a] = addScores(gunAmmo[0][a-1],"15");
             gunAmmoCost[0][a] = simplifyScore(multiplyScore(gunAmmoCost[0][a-1],2.5));
         }
         for(int a = 1; a < gunBurst[0].length; a++){
@@ -87,7 +87,7 @@ class Upgrades {
         return gunDamage[gunLvl];
     }
 
-    String[] getGunDamgeCost(int gunLvl){
+    String[] getGunDamageCost(int gunLvl){
         return gunDamageCost[gunLvl];
     }
     String[] getGunAmmo(int gunLvl){

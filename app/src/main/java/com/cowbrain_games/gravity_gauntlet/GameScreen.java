@@ -39,9 +39,9 @@ class GameScreen {
     void tick(GameView gameView, EndScreen endScreen){
         goldEarned = upgrades.addScores(goldEarned, upgrades.multiplyScore(upgrades.getScoreMultiplier(),upgrades.getLvlMultiplier(meteorLvl)/2));
         player.tick();
-        guns.tick();
+        guns.tick(addBullets,1);
         for(Bullets bullet:bullets){
-            bullet.tick(meteors,upgrades,removeBullets,remove);
+            bullet.tick(meteors,upgrades,data,removeBullets,remove);
         }
         for(Bullets bullet:addBullets){
             bullets.add(bullet);
@@ -76,7 +76,7 @@ class GameScreen {
 
     }
 
-    void render(Canvas canvas, Bitmap coin, Bitmap shoot){
+    void render(Canvas canvas, Bitmap coin, Bitmap shoot, Bitmap ammo){
         Paint paint = new Paint();
         paint.setColor(Color.RED);
         paint.setTextSize(X(60));
@@ -116,6 +116,11 @@ class GameScreen {
         paint.setARGB(255,212,175,55);
         canvas.drawCircle(X(1825),Y(825),(int)X(150),paint);
         canvas.drawBitmap(Bitmap.createScaledBitmap(shoot,(int)X(250),(int)X(250),true),X(1700),Y(825)-X(125),paint);
+        paint.setColor(Color.WHITE);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setTextSize(X(80));
+        canvas.drawText(guns.getAmmo(),X(1850),Y(660),paint);
+        canvas.drawBitmap(Bitmap.createScaledBitmap(ammo,(int)X(150),(int)X(100),true),X(1730)-X(18)*guns.getAmmo().length(),Y(590),paint);
 
     }
 
@@ -151,6 +156,7 @@ class GameScreen {
 
     void reset(){
         player.reset();
+        guns.reset();
         meteors.clear();
         meteorLvl = data.getStartLvl();
         lvlCounter = 5;

@@ -29,12 +29,12 @@ class Bullets {
         velY = (float)Math.sin(rotation*Math.PI/180)*X(10);
     }
 
-    void tick(LinkedList<Meteor> meteors, Upgrades upgrades, ArrayList<Bullets> removeBullet, ArrayList<Meteor> removeMeteor){
+    void tick(LinkedList<Meteor> meteors, Upgrades upgrades, Data data, ArrayList<Bullets> removeBullet, ArrayList<Meteor> removeMeteor){
         y+=velY;
         x+=velX;
         for(Meteor meteor: meteors){
             if(Math.sqrt(Math.pow(x-meteor.getX(),2)+ Math.pow(y-meteor.getY(),2))<meteor.getSize()+X(15)){
-                meteor.setHealth(upgrades.subtractScore(meteor.getHealth(),"1"));
+                meteor.setHealth(upgrades.subtractScore(meteor.getHealth(),upgrades.getGunDamage(0)[Integer.parseInt(data.getGun1Lvls().substring(1,2))]));
                 if(upgrades.scoreLarger("0.1",meteor.getHealth())){
                     removeMeteor.add(meteor);
                 }

@@ -19,10 +19,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Data data;
     private Player player;
     private Guns guns;
-    private int gameState = 4;
+    private int gameState = 0;
     private Bitmap star = BitmapFactory.decodeResource(getResources(),R.drawable.star);
     private Bitmap coin = BitmapFactory.decodeResource(getResources(),R.drawable.coin);
     private Bitmap shoot = BitmapFactory.decodeResource(getResources(),R.drawable.shoot);
+    private Bitmap ammo = BitmapFactory.decodeResource(getResources(),R.drawable.ammo);
 
 
     public GameView(Context context){
@@ -30,7 +31,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         data = new Data(context);
         upgrades = new Upgrades(data);
         player = new Player(upgrades,data);
-        guns = new Guns(player);
+        guns = new Guns(player,upgrades,data);
         startScreen = new StartScreen(star);
         gameScreen = new GameScreen(data,upgrades,player,guns);
         endScreen = new EndScreen(star,coin,data,gameScreen);
@@ -77,7 +78,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             if(gameState == 0){
                 startScreen.render(canvas);
             }else if(gameState ==1){
-                gameScreen.render(canvas,coin,shoot);
+                gameScreen.render(canvas,coin,shoot,ammo);
             }else if(gameState == 2){
                 endScreen.render(canvas);
             }else if(gameState == 3){
