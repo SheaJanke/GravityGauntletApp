@@ -130,6 +130,13 @@ class Guns {
         }
     }
 
+    void gameReset(){
+        gunLvl = data.getAllGunPurchases().indexOf("2");
+        ammo = Double.parseDouble(upgrades.getGunAmmo(gunLvl)[Integer.parseInt(data.getGunLvls(gunLvl).substring(0,1))]);
+        burst = Double.parseDouble(upgrades.getGunBurst(gunLvl)[Integer.parseInt(data.getGunLvls(gunLvl).substring(2,3))]);
+        shootTimer = System.currentTimeMillis();
+    }
+
     void reset(){
         ammo = Double.parseDouble(upgrades.getGunAmmo(gunLvl)[Integer.parseInt(data.getGunLvls(gunLvl).substring(0,1))]);
         burst = Double.parseDouble(upgrades.getGunBurst(gunLvl)[Integer.parseInt(data.getGunLvls(gunLvl).substring(2,3))]);

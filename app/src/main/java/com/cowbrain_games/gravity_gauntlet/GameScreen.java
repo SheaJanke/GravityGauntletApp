@@ -156,7 +156,7 @@ class GameScreen {
 
     void reset(){
         player.reset();
-        guns.reset();
+        guns.gameReset();
         meteors.clear();
         meteorLvl = data.getStartLvl();
         lvlCounter = 5;
