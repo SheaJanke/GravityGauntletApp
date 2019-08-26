@@ -38,18 +38,30 @@ class Upgrades {
         gunAmmoCost[0][0] = "2.00K";
         gunBurst[0][0] = "1.00";
         gunBurstCost[0][0] = "5.00K";
+        gunDamage[1][0] = "750";
+        gunDamageCost[1][0] = "3.00M";
+        gunAmmo[1][0] = "50.0";
+        gunAmmoCost[1][0] = "2.00M";
+        gunBurst[1][0] = "1.00";
+        gunBurstCost[1][0] = "5.00M";
+        gunDamage[2][0] = "1.00M";
+        gunDamageCost[2][0] = "3.00B";
+        gunAmmo[2][0] = "100";
+        gunAmmoCost[2][0] = "2.00B";
+        gunBurst[2][0] = "1.00";
+        gunBurstCost[2][0] = "5.00B";
 
         lvlMultiplier[0] = 1.0;
         playerWeight[0] = 100;
 
         for(int a  = 1; a < health.length; a ++){
-            health[a] =  simplifyScore(multiplyScore(health[a-1], 2.0));
+            health[a] =  simplifyScore(multiplyScore(health[a-1], 1.5));
         }
         for(int a  = 1; a < healthCost.length; a ++){
-            healthCost[a] = simplifyScore(multiplyScore(healthCost[a-1], 2.1));
+            healthCost[a] = simplifyScore(multiplyScore(healthCost[a-1], 1.75));
         }
         for(int a = 1; a < scoreMultiplier.length; a ++){
-            scoreMultiplier[a] =  simplifyScore(multiplyScore(scoreMultiplier[a-1], 1.5));
+            scoreMultiplier[a] =  simplifyScore(multiplyScore(scoreMultiplier[a-1], 1.25));
         }
         for(int a = 1; a < scoreMultiplierCost.length; a ++){
             scoreMultiplierCost[a] = simplifyScore(multiplyScore(scoreMultiplierCost[a-1],1.75));
@@ -67,19 +79,31 @@ class Upgrades {
             playerWeightCost[a] = simplifyScore(multiplyScore(playerWeightCost[a-1], 1.75));
         }
         for(int a = 1; a < meteorHealth.length; a++){
-            meteorHealth[a] = simplifyScore(multiplyScore(meteorHealth[a-1],1.5));
+            meteorHealth[a] = simplifyScore(multiplyScore(meteorHealth[a-1],1.45));
         }
         for(int a = 1; a < gunDamage[0].length; a++){
-            gunDamage[0][a] = simplifyScore(multiplyScore(gunDamage[0][a-1],2.0));
+            gunDamage[0][a] = simplifyScore(multiplyScore(gunDamage[0][a-1],1.7));
             gunDamageCost[0][a] = simplifyScore(multiplyScore(gunDamageCost[0][a-1],2.5));
+            gunDamage[1][a] = simplifyScore(multiplyScore(gunDamage[1][a-1],1.7));
+            gunDamageCost[1][a] = simplifyScore(multiplyScore(gunDamageCost[1][a-1],2.5));
+            gunDamage[2][a] = simplifyScore(multiplyScore(gunDamage[2][a-1],1.7));
+            gunDamageCost[2][a] = simplifyScore(multiplyScore(gunDamageCost[2][a-1],2.5));
         }
         for(int a = 1; a < gunAmmo[0].length; a++){
             gunAmmo[0][a] = addScores(gunAmmo[0][a-1],"15");
             gunAmmoCost[0][a] = simplifyScore(multiplyScore(gunAmmoCost[0][a-1],2.5));
+            gunAmmo[1][a] = addScores(gunAmmo[1][a-1],"15");
+            gunAmmoCost[1][a] = simplifyScore(multiplyScore(gunAmmoCost[1][a-1],2.5));
+            gunAmmo[2][a] = addScores(gunAmmo[2][a-1],"15");
+            gunAmmoCost[2][a] = simplifyScore(multiplyScore(gunAmmoCost[2][a-1],2.5));
         }
         for(int a = 1; a < gunBurst[0].length; a++){
             gunBurst[0][a] = addScores(gunBurst[0][a-1],"1");
             gunBurstCost[0][a] = simplifyScore(multiplyScore(gunBurstCost[0][a-1],7.5));
+            gunBurst[1][a] = addScores(gunBurst[1][a-1],"1");
+            gunBurstCost[1][a] = simplifyScore(multiplyScore(gunBurstCost[1][a-1],7.5));
+            gunBurst[2][a] = addScores(gunBurst[1][a-1],"1");
+            gunBurstCost[2][a] = simplifyScore(multiplyScore(gunBurstCost[2][a-1],7.5));
         }
 
     }
@@ -266,9 +290,9 @@ class Upgrades {
         }else{
             num = Double.parseDouble(score);
         }
-        if(num >= 1000){
+        if(num >= 1000||num<=-1000){
             return formatNum(num/1000) + scoreEndings.get(scoreEndings.indexOf(score.substring(score.length()-1)) + 1);
-        }else if(num < 1 && num >=0){
+        }else if((num < 1 && num >=0)||(num>-1&&num<=0)){
             if(end > 0){
                 return formatNum(num*1000) + scoreEndings.get(scoreEndings.indexOf(score.substring(score.length()-1)) - 1);
             }else if(end == 0){
@@ -283,6 +307,9 @@ class Upgrades {
     }
 
     boolean scoreLarger(String s1, String s2){
+        if(s2.substring(0,1).equals("-")){
+            return true;
+        }
         s1 = simplifyScore(s1);
         s2 = simplifyScore(s2);
         double num1;

@@ -41,9 +41,9 @@ class GunScreen {
 
     void tick(){
         if(tickCounter%20 == 0){
-            guns.shoot(addBullets,1);
+            guns.shoot(addBullets);
         }
-        guns.tick(addBullets,1);
+        guns.tick(addBullets);
         for(Bullets bullet:bullets){
             bullet.tick(meteors,upgrades,data,removeBullets,removeMeteors);
         }
@@ -57,14 +57,14 @@ class GunScreen {
         removeBullets.clear();
         tickCounter++;
     }
-    void render(Canvas canvas, Bitmap coin){
+    void render(Canvas canvas, Bitmap coin, Bitmap next){
         canvas.drawColor(Color.BLACK);
         Paint paint = new Paint();
         player.render(canvas);
         for(Bullets bullet:bullets){
             bullet.render(canvas, player);
         }
-        guns.render(canvas,1);
+        guns.render(canvas);
         paint.setColor(Color.CYAN);
         paint.setTextSize(X(180));
         paint.setTextAlign(Paint.Align.CENTER);
@@ -109,7 +109,7 @@ class GunScreen {
             canvas.drawRect(X(50) + X(650)*a, Y(650),X(650)+ X(650)*a,Y(950),paint);
             paint.setStyle(Paint.Style.FILL);
             paint.setTextSize(X(60));
-            if(!data.getGun1Lvls().substring(a, a+1).equals(maxLvls.substring(a,a+1))) {
+            if(!data.getGunLvls(gunOnScreen).substring(a, a+1).equals(maxLvls.substring(a,a+1))) {
                 canvas.drawText(gunValues[gunOnScreen][a] + "   ->   " + nextGunValues[gunOnScreen][a], X(350) + X(650) * a, Y(790), paint);
             }else{
                 canvas.drawText(gunValues[gunOnScreen][a], X(350) + X(650) * a, Y(790), paint);
@@ -117,7 +117,7 @@ class GunScreen {
             paint.setARGB(255,212,175,55);
             paint.setTextSize(X(80));
             canvas.drawText(gunUpgrades[gunOnScreen][a], X(350)+X(650)*a, Y(725),paint);
-            if(!data.getGun1Lvls().substring(a, a+1).equals(maxLvls.substring(a,a+1))) {
+            if(!data.getGunLvls(gunOnScreen).substring(a, a+1).equals(maxLvls.substring(a,a+1))) {
                 drawUpgradeButton(paint, canvas, X(525) + X(650) * a, Y(875));
                 paint.setStyle(Paint.Style.FILL);
                 paint.setColor(Color.WHITE);
@@ -139,6 +139,15 @@ class GunScreen {
                 canvas.drawText("MAXED", X(350) + X(650) * a, Y(900), paint);
             }
         }
+        if(gunOnScreen<2) {
+            canvas.save();
+            canvas.rotate(180, X(1825), Y(450));
+            canvas.drawBitmap(Bitmap.createScaledBitmap(next, (int) X(250), (int) X(250), true), X(1700), Y(450) - X(125), paint);
+            canvas.restore();
+        }
+        if(gunOnScreen>0) {
+            canvas.drawBitmap(Bitmap.createScaledBitmap(next, (int) X(250), (int) X(250), true), X(50), Y(450) - X(125), paint);
+        }
     }
 
     void touched(MotionEvent e, GameView gameView, UpgradeScreen upgradeScreen){
@@ -146,28 +155,40 @@ class GunScreen {
             upgradeScreen.reset();
             gameView.setGameState(3);
         }
-        if(e.getX() > X(425) && e.getX()<X(625) && e.getY()>Y(825) && e.getY()<Y(925) && System.currentTimeMillis()-buyTimer>500 && upgrades.scoreLarger(data.getGold(),nextGunCost[gunOnScreen][0])){
-            if (!data.getGun1Lvls().substring(0, 1).equals("9")) {
+        if (!data.getGunLvls(gunOnScreen).substring(0, 1).equals("9")) {
+            if(e.getX() > X(425) && e.getX()<X(625) && e.getY()>Y(825) && e.getY()<Y(925) && System.currentTimeMillis()-buyTimer>500 && upgrades.scoreLarger(data.getGold(),nextGunCost[gunOnScreen][0])){
                 data.setGold(upgrades.subtractScore(data.getGold(), nextGunCost[gunOnScreen][0]));
-                data.setGun1Lvls(Integer.parseInt(data.getGun1Lvls().substring(0, 1)) + 1 + data.getGun1Lvls().substring(1, 3));
-                buyTimer = System.currentTimeMillis();
+                data.setGunLvls(gunOnScreen, Integer.parseInt(data.getGunLvls(gunOnScreen).substring(0, 1)) + 1 + data.getGunLvls(gunOnScreen).substring(1, 3));
+                reset();
                 resetBuy();
             }
-        }else if(e.getX() > X(1075) && e.getX()<X(1275) && e.getY()>Y(825) && e.getY()<Y(925) && System.currentTimeMillis()-buyTimer>500 && upgrades.scoreLarger(data.getGold(),nextGunCost[gunOnScreen][1])){
-            if (!data.getGun1Lvls().substring(1, 2).equals("9")) {
+        }
+        if (!data.getGunLvls(gunOnScreen).substring(1, 2).equals("9")) {
+            if(e.getX() > X(1075) && e.getX()<X(1275) && e.getY()>Y(825) && e.getY()<Y(925) && System.currentTimeMillis()-buyTimer>500 && upgrades.scoreLarger(data.getGold(),nextGunCost[gunOnScreen][1])){
                 data.setGold(upgrades.subtractScore(data.getGold(), nextGunCost[gunOnScreen][1]));
-                data.setGun1Lvls(data.getGun1Lvls().substring(0, 1) + (Integer.parseInt(data.getGun1Lvls().substring(1, 2)) + 1) + data.getGun1Lvls().substring(2, 3));
-                buyTimer = System.currentTimeMillis();
+                data.setGunLvls(gunOnScreen,data.getGunLvls(gunOnScreen).substring(0, 1) + (Integer.parseInt(data.getGunLvls(gunOnScreen).substring(1, 2)) + 1) + data.getGunLvls(gunOnScreen).substring(2, 3));
+                reset();
                 resetBuy();
             }
-        }else if(e.getX() > X(1725) && e.getX()<X(1925) && e.getY()>Y(825) && e.getY()<Y(925) && System.currentTimeMillis()-buyTimer>500 && upgrades.scoreLarger(data.getGold(),nextGunCost[gunOnScreen][2])){
-            if (!data.getGun1Lvls().substring(2, 3).equals("4")) {
+        }
+        if (!data.getGunLvls(gunOnScreen).substring(2, 3).equals("4")) {
+            if(e.getX() > X(1725) && e.getX()<X(1925) && e.getY()>Y(825) && e.getY()<Y(925) && System.currentTimeMillis()-buyTimer>500 && upgrades.scoreLarger(data.getGold(),nextGunCost[gunOnScreen][2])){
                 data.setGold(upgrades.subtractScore(data.getGold(), nextGunCost[gunOnScreen][2]));
-                data.setGun1Lvls(data.getGun1Lvls().substring(0, 2) + (Integer.parseInt(data.getGun1Lvls().substring(2, 3)) + 1));
+                data.setGunLvls(gunOnScreen,data.getGunLvls(gunOnScreen).substring(0, 2) + (Integer.parseInt(data.getGunLvls(gunOnScreen).substring(2, 3)) + 1));
                 buyTimer = System.currentTimeMillis();
+                reset();
                 resetBuy();
-                guns.reset();
             }
+        }
+        if(Math.pow(e.getX()-X(175),2)+Math.pow(e.getY()-Y(450),2)<Math.pow(X(125),2) && System.currentTimeMillis()-buyTimer>300 && gunOnScreen>0){
+            gunOnScreen--;
+            guns.setGunLvl(gunOnScreen);
+            reset();
+        }
+        if(Math.pow(e.getX()-X(1825),2)+Math.pow(e.getY()-Y(450),2)<Math.pow(X(125),2) && System.currentTimeMillis()-buyTimer>300 && gunOnScreen<2){
+            gunOnScreen++;
+            guns.setGunLvl(gunOnScreen);
+            reset();
         }
     }
 
@@ -180,20 +201,22 @@ class GunScreen {
     }
 
     void resetBuy() {
-        gunValues[0][0] = upgrades.getGunAmmo(0)[Integer.parseInt(data.getGun1Lvls().substring(0, 1))];
-        gunValues[0][1] = upgrades.getGunDamage(0)[Integer.parseInt(data.getGun1Lvls().substring(1, 2))];
-        gunValues[0][2] = upgrades.getGunBurst(0)[Integer.parseInt(data.getGun1Lvls().substring(2, 3))];
-        if (!data.getGun1Lvls().substring(0, 1).equals("9")){
-            nextGunValues[0][0] = upgrades.getGunAmmo(0)[Integer.parseInt(data.getGun1Lvls().substring(0, 1)) + 1];
-            nextGunCost[0][0] = upgrades.simplifyScore(upgrades.getGunAmmoCost(0)[Integer.parseInt(data.getGun1Lvls().substring(0, 1))]);
-        }
-        if (!data.getGun1Lvls().substring(1, 2).equals("9")) {
-            nextGunValues[0][1] = upgrades.getGunDamage(0)[Integer.parseInt(data.getGun1Lvls().substring(1, 2)) + 1];
-            nextGunCost[0][1] = upgrades.simplifyScore(upgrades.getGunDamageCost(0)[Integer.parseInt(data.getGun1Lvls().substring(1,2))]);
-        }
-        if (!data.getGun1Lvls().substring(2, 3).equals("4")) {
-            nextGunValues[0][2] = upgrades.getGunBurst(0)[Integer.parseInt(data.getGun1Lvls().substring(2, 3)) + 1];
-            nextGunCost[0][2] = upgrades.simplifyScore(upgrades.getGunBurstCost(0)[Integer.parseInt(data.getGun1Lvls().substring(2, 3))]);
+        for(int a = 0; a < 3; a ++) {
+            gunValues[a][0] = upgrades.getGunAmmo(a)[Integer.parseInt(data.getGunLvls(a).substring(0, 1))];
+            gunValues[a][1] = upgrades.getGunDamage(a)[Integer.parseInt(data.getGunLvls(a).substring(1, 2))];
+            gunValues[a][2] = upgrades.getGunBurst(a)[Integer.parseInt(data.getGunLvls(a).substring(2, 3))];
+            if (!data.getGunLvls(a).substring(0, 1).equals("9")) {
+                nextGunValues[a][0] = upgrades.getGunAmmo(a)[Integer.parseInt(data.getGunLvls(a).substring(0, 1)) + 1];
+                nextGunCost[a][0] = upgrades.simplifyScore(upgrades.getGunAmmoCost(a)[Integer.parseInt(data.getGunLvls(a).substring(0, 1))]);
+            }
+            if (!data.getGunLvls(a).substring(1, 2).equals("9")) {
+                nextGunValues[a][1] = upgrades.getGunDamage(a)[Integer.parseInt(data.getGunLvls(a).substring(1, 2)) + 1];
+                nextGunCost[a][1] = upgrades.simplifyScore(upgrades.getGunDamageCost(a)[Integer.parseInt(data.getGunLvls(a).substring(1, 2))]);
+            }
+            if (!data.getGunLvls(a).substring(2, 3).equals("4")) {
+                nextGunValues[a][2] = upgrades.getGunBurst(a)[Integer.parseInt(data.getGunLvls(a).substring(2, 3)) + 1];
+                nextGunCost[a][2] = upgrades.simplifyScore(upgrades.getGunBurstCost(a)[Integer.parseInt(data.getGunLvls(a).substring(2, 3))]);
+            }
         }
     }
 

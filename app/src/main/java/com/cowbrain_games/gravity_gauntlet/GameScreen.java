@@ -39,7 +39,7 @@ class GameScreen {
     void tick(GameView gameView, EndScreen endScreen){
         goldEarned = upgrades.addScores(goldEarned, upgrades.multiplyScore(upgrades.getScoreMultiplier(),upgrades.getLvlMultiplier(meteorLvl)/2));
         player.tick();
-        guns.tick(addBullets,1);
+        guns.tick(addBullets);
         for(Bullets bullet:bullets){
             bullet.tick(meteors,upgrades,data,removeBullets,remove);
         }
@@ -85,7 +85,7 @@ class GameScreen {
         for(Bullets bullet:bullets){
             bullet.render(canvas, player);
         }
-        guns.render(canvas,1);
+        guns.render(canvas);
         for(Meteor meteor:meteors){
             meteor.render(canvas);
         }
@@ -127,7 +127,7 @@ class GameScreen {
     void touched(MotionEvent e){
         for(int a = 0;a < e.getPointerCount(); a ++){
             if(Math.pow(e.getX(a)-X(1825),2)+Math.pow(e.getY(a)-Y(825),2)<Math.pow((int)X(150),2)){
-                guns.shoot(addBullets,1);
+                guns.shoot(addBullets);
                 continue;
             }
             player.touched(e,a);

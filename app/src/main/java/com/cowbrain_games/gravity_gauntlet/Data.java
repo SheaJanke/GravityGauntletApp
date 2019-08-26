@@ -74,27 +74,47 @@ class Data {
         return mPreferences.getInt("playerWeightLvl",0);
     }
 
-    void setGun1Lvls(String gun1Lvls){
+    void setAllGunLvls(String gunLvls){
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         mEditor = mPreferences.edit();
-        mEditor.putString("gun1Lvls",gun1Lvls);
+        mEditor.putString("gunLvls",gunLvls);
         mEditor.apply();
     }
 
-    String getGun1Lvls(){
+    void setGunLvls(int gunLvl, String gunLvls){
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return mPreferences.getString("gun1Lvls","000");
+        mEditor = mPreferences.edit();
+        String allGunLvls = "";
+        for(int a = 0; a < 5; a ++){
+            if(a!=gunLvl){
+                allGunLvls+=getGunLvls(a);
+            }else{
+                allGunLvls+=gunLvls;
+            }
+        }
+        mEditor.putString("gunLvls",allGunLvls);
+        mEditor.apply();
+    }
+
+    String getAllGunLvls(){
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return mPreferences.getString("gunLvls","000000000000000");
+    }
+
+    String getGunLvls(int gunLvl){
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return mPreferences.getString("gunLvls","000000000000000").substring(gunLvl*3, gunLvl*3 + 3);
     }
 
     void reset(){
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         mEditor = mPreferences.edit();
-        mEditor.putString("Gold", "0");
-        mEditor.putInt("maxHealthLvl",0);
-        mEditor.putInt("startLvl", 0);
-        mEditor.putInt("scoreMultiplierLvl",0);
-        mEditor.putInt("playerWeightLvl",0);
-        mEditor.putString("gun1Lvls", "000");
+        mEditor.putString("Gold", "100o");
+        mEditor.putInt("maxHealthLvl",20);
+        mEditor.putInt("startLvl", 27);
+        mEditor.putInt("scoreMultiplierLvl",18);
+        mEditor.putInt("playerWeightLvl",20);
+        mEditor.putString("gunLvls", "994332000000000");
         mEditor.apply();
     }
 }

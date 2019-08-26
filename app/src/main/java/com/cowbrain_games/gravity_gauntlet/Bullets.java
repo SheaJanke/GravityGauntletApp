@@ -16,17 +16,15 @@ class Bullets {
     private float x;
     private float y;
     private float rotation;
-    private float rotationX;
-    private float rotationY;
+    private int gunLvl;
 
-    Bullets(Player player, Guns guns){
+    Bullets(Player player, Guns guns, int degrees, int gunLvl){
+        this.gunLvl = gunLvl;
         rotation = guns.getRotation();
-        x = player.getX() +(float)Math.cos(rotation*Math.PI/180)*Y(80);
-        y = player.getY() +(float)Math.sin(rotation*Math.PI/180)*Y(80);
-        rotationX = player.getX();
-        rotationY = player.getY();
-        velX = (float)Math.cos(rotation*Math.PI/180)*X(10);
-        velY = (float)Math.sin(rotation*Math.PI/180)*X(10);
+        x = player.getX() +(float)Math.cos((rotation+degrees)*Math.PI/180)*Y(100);
+        y = player.getY() +(float)Math.sin((rotation+degrees)*Math.PI/180)*Y(100);
+        velX = (float)Math.cos((rotation+degrees)*Math.PI/180)*X(10);
+        velY = (float)Math.sin((rotation+degrees)*Math.PI/180)*X(10);
     }
 
     void tick(LinkedList<Meteor> meteors, Upgrades upgrades, Data data, ArrayList<Bullets> removeBullet, ArrayList<Meteor> removeMeteor){
@@ -34,7 +32,7 @@ class Bullets {
         x+=velX;
         for(Meteor meteor: meteors){
             if(Math.sqrt(Math.pow(x-meteor.getX(),2)+ Math.pow(y-meteor.getY(),2))<meteor.getSize()+X(15)){
-                meteor.setHealth(upgrades.subtractScore(meteor.getHealth(),upgrades.getGunDamage(0)[Integer.parseInt(data.getGun1Lvls().substring(1,2))]));
+                meteor.setHealth(upgrades.subtractScore(meteor.getHealth(),upgrades.getGunDamage(gunLvl)[Integer.parseInt(data.getGunLvls(gunLvl).substring(1,2))]));
                 if(upgrades.scoreLarger("0.1",meteor.getHealth())){
                     removeMeteor.add(meteor);
                 }
