@@ -165,6 +165,22 @@ class GunScreen {
                 canvas.drawBitmap(Bitmap.createScaledBitmap(lock,(int)X(100),(int)X(100),true),X(475) + X(650) * a,Y(825),paint);
             }
 
+        }else if(data.getGunPurchases(gunOnScreen).equals("1")){
+            paint.setColor(Color.RED);
+            canvas.drawRect(X(1605),Y(5),X(1995),Y(140),paint);
+            paint.setARGB(255, 212, 175, 55);
+            canvas.drawText("Equip",X(1800),Y(100),paint);
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(X(10));
+            canvas.drawRect(X(1605),Y(5),X(1995),Y(140),paint);
+        }else if(data.getGunPurchases(gunOnScreen).equals("2")){
+            paint.setColor(Color.GREEN);
+            canvas.drawRect(X(1605),Y(5),X(1995),Y(140),paint);
+            paint.setARGB(255, 212, 175, 55);
+            canvas.drawText("Equipped",X(1800),Y(100),paint);
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(X(10));
+            canvas.drawRect(X(1605),Y(5),X(1995),Y(140),paint);
         }
     }
 
@@ -194,6 +210,14 @@ class GunScreen {
                 if (e.getX() > X(1725) && e.getX() < X(1925) && e.getY() > Y(825) && e.getY() < Y(925) && System.currentTimeMillis() - buyTimer > 500 && upgrades.scoreLarger(data.getGold(), nextGunCost[gunOnScreen][2])) {
                     data.setGold(upgrades.subtractScore(data.getGold(), nextGunCost[gunOnScreen][2]));
                     data.setGunLvls(gunOnScreen, data.getGunLvls(gunOnScreen).substring(0, 2) + (Integer.parseInt(data.getGunLvls(gunOnScreen).substring(2, 3)) + 1));
+                    reset();
+                    resetBuy();
+                }
+            }
+            if(e.getX() > X(1600) && e.getX() < X(2000) && e.getY() > Y(0) && e.getY() < Y(145) && System.currentTimeMillis() - buyTimer > 300) {
+                if (data.getGunPurchases(gunOnScreen).equals("1")){
+                    data.setGunPurchases(data.getAllGunPurchases().indexOf("2"),"1");
+                    data.setGunPurchases(gunOnScreen, "2");
                     reset();
                     resetBuy();
                 }

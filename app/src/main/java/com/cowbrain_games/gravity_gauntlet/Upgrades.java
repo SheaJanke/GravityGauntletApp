@@ -92,9 +92,9 @@ class Upgrades {
         for(int a = 1; a < gunAmmo[0].length; a++){
             gunAmmo[0][a] = addScores(gunAmmo[0][a-1],"15");
             gunAmmoCost[0][a] = simplifyScore(multiplyScore(gunAmmoCost[0][a-1],2.5));
-            gunAmmo[1][a] = addScores(gunAmmo[1][a-1],"15");
+            gunAmmo[1][a] = addScores(gunAmmo[1][a-1],"30");
             gunAmmoCost[1][a] = simplifyScore(multiplyScore(gunAmmoCost[1][a-1],2.5));
-            gunAmmo[2][a] = addScores(gunAmmo[2][a-1],"15");
+            gunAmmo[2][a] = addScores(gunAmmo[2][a-1],"60");
             gunAmmoCost[2][a] = simplifyScore(multiplyScore(gunAmmoCost[2][a-1],2.5));
         }
         for(int a = 1; a < gunBurst[0].length; a++){
