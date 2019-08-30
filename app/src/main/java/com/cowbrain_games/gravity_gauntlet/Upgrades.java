@@ -18,8 +18,8 @@ class Upgrades {
     private String[][] gunDamageCost = new String[5][10];
     private String[][] gunAmmo = new String[5][10];
     private String[][] gunAmmoCost = new String[5][10];
-    private String[][] gunBurst = new String[3][5];
-    private String[][] gunBurstCost = new String[3][5];
+    private String[][] gunUnique = new String[4][5];
+    private String[][] gunUniqueCost = new String[4][5];
     private ArrayList<String> scoreEndings = new ArrayList<>(Arrays.asList("K","M","B","t","q","Q","s","S","o","n","d"));
     private Data data;
 
@@ -36,20 +36,26 @@ class Upgrades {
         gunDamageCost[0][0] = "3.00K";
         gunAmmo[0][0] = "20.0";
         gunAmmoCost[0][0] = "2.00K";
-        gunBurst[0][0] = "1.00";
-        gunBurstCost[0][0] = "5.00K";
+        gunUnique[0][0] = "1.00";
+        gunUniqueCost[0][0] = "5.00K";
         gunDamage[1][0] = "750";
         gunDamageCost[1][0] = "3.00M";
         gunAmmo[1][0] = "50.0";
         gunAmmoCost[1][0] = "2.00M";
-        gunBurst[1][0] = "1.00";
-        gunBurstCost[1][0] = "5.00M";
+        gunUnique[1][0] = "1.00";
+        gunUniqueCost[1][0] = "5.00M";
         gunDamage[2][0] = "1.00M";
         gunDamageCost[2][0] = "3.00B";
         gunAmmo[2][0] = "100";
         gunAmmoCost[2][0] = "2.00B";
-        gunBurst[2][0] = "1.00";
-        gunBurstCost[2][0] = "5.00B";
+        gunUnique[2][0] = "1.00";
+        gunUniqueCost[2][0] = "5.00B";
+        gunDamage[3][0] = "1.00B";
+        gunDamageCost[3][0] = "3.00t";
+        gunAmmo[3][0] = "15";
+        gunAmmoCost[3][0] = "2.00t";
+        gunUnique[3][0] = "100";
+        gunUniqueCost[3][0] = "5.00t";
 
         lvlMultiplier[0] = 1.0;
         playerWeight[0] = 100;
@@ -88,6 +94,8 @@ class Upgrades {
             gunDamageCost[1][a] = simplifyScore(multiplyScore(gunDamageCost[1][a-1],2.5));
             gunDamage[2][a] = simplifyScore(multiplyScore(gunDamage[2][a-1],1.7));
             gunDamageCost[2][a] = simplifyScore(multiplyScore(gunDamageCost[2][a-1],2.5));
+            gunDamage[3][a] = simplifyScore(multiplyScore(gunDamage[3][a-1],1.7));
+            gunDamageCost[3][a] = simplifyScore(multiplyScore(gunDamageCost[3][a-1],2.5));
         }
         for(int a = 1; a < gunAmmo[0].length; a++){
             gunAmmo[0][a] = addScores(gunAmmo[0][a-1],"15");
@@ -96,14 +104,18 @@ class Upgrades {
             gunAmmoCost[1][a] = simplifyScore(multiplyScore(gunAmmoCost[1][a-1],2.5));
             gunAmmo[2][a] = addScores(gunAmmo[2][a-1],"60");
             gunAmmoCost[2][a] = simplifyScore(multiplyScore(gunAmmoCost[2][a-1],2.5));
+            gunAmmo[3][a] = addScores(gunAmmo[3][a-1],"60");
+            gunAmmoCost[3][a] = simplifyScore(multiplyScore(gunAmmoCost[3][a-1],2.5));
         }
-        for(int a = 1; a < gunBurst[0].length; a++){
-            gunBurst[0][a] = addScores(gunBurst[0][a-1],"1");
-            gunBurstCost[0][a] = simplifyScore(multiplyScore(gunBurstCost[0][a-1],7.5));
-            gunBurst[1][a] = addScores(gunBurst[1][a-1],"1");
-            gunBurstCost[1][a] = simplifyScore(multiplyScore(gunBurstCost[1][a-1],7.5));
-            gunBurst[2][a] = addScores(gunBurst[1][a-1],"1");
-            gunBurstCost[2][a] = simplifyScore(multiplyScore(gunBurstCost[2][a-1],7.5));
+        for(int a = 1; a < gunUnique[0].length; a++){
+            gunUnique[0][a] = addScores(gunUnique[0][a-1],"1");
+            gunUniqueCost[0][a] = simplifyScore(multiplyScore(gunUniqueCost[0][a-1],7.5));
+            gunUnique[1][a] = addScores(gunUnique[1][a-1],"1");
+            gunUniqueCost[1][a] = simplifyScore(multiplyScore(gunUniqueCost[1][a-1],7.5));
+            gunUnique[2][a] = addScores(gunUnique[2][a-1],"1");
+            gunUniqueCost[2][a] = simplifyScore(multiplyScore(gunUniqueCost[2][a-1],7.5));
+            gunUnique[3][a] = addScores(gunUnique[3][a-1],"1");
+            gunUniqueCost[3][a] = simplifyScore(multiplyScore(gunUniqueCost[3][a-1],7.5));
         }
 
     }
@@ -122,12 +134,12 @@ class Upgrades {
         return gunAmmoCost[gunLvl];
     }
 
-    String[] getGunBurst(int gunLvl){
-        return gunBurst[gunLvl];
+    String[] getGunUnique(int gunLvl){
+        return gunUnique[gunLvl];
     }
 
-    String[] getGunBurstCost(int gunLvl){
-        return gunBurstCost[gunLvl];
+    String[] getGunUniqueCost(int gunLvl){
+        return gunUniqueCost[gunLvl];
     }
 
     String getNextHealth(){

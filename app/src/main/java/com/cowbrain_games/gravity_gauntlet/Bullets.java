@@ -47,12 +47,20 @@ class Bullets {
 
     void render(Canvas canvas,Player player){
         Paint paint = new Paint();
-        paint.setColor(Color.WHITE);
-        canvas.drawCircle(x,y,X(15),paint);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(X(10));
-        paint.setARGB(255,212,175,55);
-        canvas.drawCircle(x,y,X(15),paint);
+        int saveCount = canvas.save();
+        if(gunLvl==3){
+            canvas.rotate(rotation,x,y);
+            paint.setColor(Color.WHITE);
+            canvas.drawRect(x-X(8),y-Y(15),x+X(8),y+Y(15),paint);
+        }else {
+            paint.setColor(Color.WHITE);
+            canvas.drawCircle(x, y, X(15), paint);
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(X(10));
+            paint.setARGB(255, 212, 175, 55);
+            canvas.drawCircle(x, y, X(15), paint);
+        }
+        canvas.restoreToCount(saveCount);
 
     }
 

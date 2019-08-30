@@ -17,7 +17,7 @@ class GunScreen {
     Data data;
     Upgrades upgrades;
     private long buyTimer = System.currentTimeMillis();
-    private String[] gunCost = {"5.00M","10.0B"};
+    private String[] gunCost = {"5.00M","10.0B","5.00t"};
     private String[][] gunUpgrades = {{"Ammo", "Damage", "Burst"},{"Ammo", "Damage", "Burst"},{"Ammo", "Damage", "Burst"},{"Ammo", "Damage", "Exposion Radius"},{"Ammo", "Damage", "Duration"}};
     private String[][] gunValues = new String[5][3];
     private String[][] nextGunValues = new String[5][3];
@@ -30,6 +30,7 @@ class GunScreen {
     private LinkedList<Meteor> meteors = new LinkedList<>();
     private ArrayList<Meteor> removeMeteors = new ArrayList<>();
     private int gunOnScreen = 0;
+    private int numberOfGuns = 4;
 
     GunScreen(Player player, Guns guns, Data data, Upgrades upgrades){
         this.player = player;
@@ -140,7 +141,7 @@ class GunScreen {
                 canvas.drawText("MAXED", X(350) + X(650) * a, Y(900), paint);
             }
         }
-        if(gunOnScreen<2) {
+        if(gunOnScreen<numberOfGuns-1) {
             canvas.save();
             canvas.rotate(180, X(1825), Y(450));
             canvas.drawBitmap(Bitmap.createScaledBitmap(next, (int) X(250), (int) X(250), true), X(1700), Y(450) - X(125), paint);
@@ -233,7 +234,7 @@ class GunScreen {
             guns.setGunLvl(gunOnScreen);
             reset();
         }
-        if(Math.pow(e.getX()-X(1825),2)+Math.pow(e.getY()-Y(450),2)<Math.pow(X(125),2) && System.currentTimeMillis()-buyTimer>300 && gunOnScreen<2){
+        if(Math.pow(e.getX()-X(1825),2)+Math.pow(e.getY()-Y(450),2)<Math.pow(X(125),2) && System.currentTimeMillis()-buyTimer>300 && gunOnScreen<numberOfGuns-1){
             gunOnScreen++;
             guns.setGunLvl(gunOnScreen);
             reset();
@@ -249,10 +250,10 @@ class GunScreen {
     }
 
     void resetBuy() {
-        for(int a = 0; a < 3; a ++) {
+        for(int a = 0; a < numberOfGuns; a ++) {
             gunValues[a][0] = upgrades.getGunAmmo(a)[Integer.parseInt(data.getGunLvls(a).substring(0, 1))];
             gunValues[a][1] = upgrades.getGunDamage(a)[Integer.parseInt(data.getGunLvls(a).substring(1, 2))];
-            gunValues[a][2] = upgrades.getGunBurst(a)[Integer.parseInt(data.getGunLvls(a).substring(2, 3))];
+            gunValues[a][2] = upgrades.getGunUnique(a)[Integer.parseInt(data.getGunLvls(a).substring(2, 3))];
             if (!data.getGunLvls(a).substring(0, 1).equals("9")) {
                 nextGunValues[a][0] = upgrades.getGunAmmo(a)[Integer.parseInt(data.getGunLvls(a).substring(0, 1)) + 1];
                 nextGunCost[a][0] = upgrades.simplifyScore(upgrades.getGunAmmoCost(a)[Integer.parseInt(data.getGunLvls(a).substring(0, 1))]);
@@ -262,8 +263,8 @@ class GunScreen {
                 nextGunCost[a][1] = upgrades.simplifyScore(upgrades.getGunDamageCost(a)[Integer.parseInt(data.getGunLvls(a).substring(1, 2))]);
             }
             if (!data.getGunLvls(a).substring(2, 3).equals("4")) {
-                nextGunValues[a][2] = upgrades.getGunBurst(a)[Integer.parseInt(data.getGunLvls(a).substring(2, 3)) + 1];
-                nextGunCost[a][2] = upgrades.simplifyScore(upgrades.getGunBurstCost(a)[Integer.parseInt(data.getGunLvls(a).substring(2, 3))]);
+                nextGunValues[a][2] = upgrades.getGunUnique(a)[Integer.parseInt(data.getGunLvls(a).substring(2, 3)) + 1];
+                nextGunCost[a][2] = upgrades.simplifyScore(upgrades.getGunUniqueCost(a)[Integer.parseInt(data.getGunLvls(a).substring(2, 3))]);
             }
         }
     }
