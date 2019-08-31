@@ -96,31 +96,31 @@ class Guns {
         }else if(gunLvl==3){
             paint.setARGB(255,212,175,55);
             canvas.rotate(rotation+90,player.getX(),player.getY());
-            canvas.drawRect(player.getX()-X(50),player.getY()-Y(30),player.getX()+X(50),player.getY()+Y(30),paint);
-            canvas.drawRect(player.getX()-X(15),player.getY()+Y(30),player.getX()+X(15),player.getY()+Y(50),paint);
+            canvas.drawRect(player.getX()-X(65),player.getY()-Y(40),player.getX()+X(65),player.getY()+Y(40),paint);
+            canvas.drawRect(player.getX()-X(20),player.getY()+Y(40),player.getX()+X(20),player.getY()+Y(60),paint);
             paint.setColor(Color.CYAN);
-            canvas.drawRect(player.getX()-X(40),player.getY()+Y(50),player.getX()+X(40),player.getY()+Y(60),paint);
+            canvas.drawRect(player.getX()-X(50),player.getY()+Y(55),player.getX()+X(50),player.getY()+Y(70),paint);
             paint.setARGB(255,212,175,55);
             paint.setStyle(Paint.Style.STROKE);
             paint.setStrokeWidth(X(10));
-            canvas.drawRect(player.getX()-X(30),player.getY()-Y(40),player.getX()+X(30),player.getY()+Y(40),paint);
+            canvas.drawRect(player.getX()-X(40),player.getY()-Y(50),player.getX()+X(40),player.getY()+Y(50),paint);
             paint.setStrokeWidth(X(5));
             paint.setColor(Color.WHITE);
-            canvas.drawRect(player.getX()-X(50),player.getY()-Y(30),player.getX()+X(50),player.getY()+Y(30),paint);
+            canvas.drawRect(player.getX()-X(65),player.getY()-Y(40),player.getX()+X(65),player.getY()+Y(40),paint);
             canvas.drawRect(player.getX()-X(35),player.getY()-Y(30),player.getX()+X(35),player.getY()+Y(30),paint);
             canvas.drawRect(player.getX()-X(15),player.getY()+Y(30),player.getX()+X(15),player.getY()+Y(50),paint);
             paint.setARGB(255,212,175,55);
-            canvas.drawRect(player.getX()-X(40),player.getY()+Y(50),player.getX()+X(40),player.getY()+Y(60),paint);
+            canvas.drawRect(player.getX()-X(50),player.getY()+Y(55),player.getX()+X(50),player.getY()+Y(70),paint);
             paint.setStyle(Paint.Style.FILL);
             paint.setColor(Color.CYAN);
-            canvas.drawRect(player.getX()-X(30),player.getY()-Y(40),player.getX()+X(30),player.getY()+Y(40),paint);
+            canvas.drawRect(player.getX()-X(45),player.getY()-Y(40),player.getX()+X(45),player.getY()+Y(40),paint);
             paint.setColor(Color.WHITE);
-            canvas.drawRect(player.getX()-X(20),player.getY()-Y(90),player.getX()+X(20),player.getY()+Y(30),paint);
+            canvas.drawRect(player.getX()-X(30),player.getY()-Y(100),player.getX()+X(30),player.getY()+Y(30),paint);
             paint.setStyle(Paint.Style.STROKE);
             paint.setARGB(255,212,175,55);
-            canvas.drawRect(player.getX()-X(20),player.getY()-Y(90),player.getX()+X(20),player.getY()+Y(30),paint);
-            paint.setStrokeWidth(X(10));
-            canvas.drawLine(player.getX(),player.getY()+Y(20),player.getX(),player.getY()-Y(80),paint);
+            canvas.drawRect(player.getX()-X(30),player.getY()-Y(100),player.getX()+X(30),player.getY()+Y(30),paint);
+            paint.setStrokeWidth(X(15));
+            canvas.drawLine(player.getX(),player.getY()+Y(20),player.getX(),player.getY()-Y(90),paint);
             canvas.restoreToCount(saveCount);
         }
 
@@ -171,7 +171,9 @@ class Guns {
     void gameReset(){
         gunLvl = data.getAllGunPurchases().indexOf("2");
         ammo = Double.parseDouble(upgrades.getGunAmmo(gunLvl)[Integer.parseInt(data.getGunLvls(gunLvl).substring(0,1))]);
-        burst = Double.parseDouble(upgrades.getGunUnique(gunLvl)[Integer.parseInt(data.getGunLvls(gunLvl).substring(2,3))]);
+        if(gunLvl<3) {
+            burst = Double.parseDouble(upgrades.getGunUnique(gunLvl)[Integer.parseInt(data.getGunLvls(gunLvl).substring(2, 3))]);
+        }
         shootTimer = System.currentTimeMillis();
     }
 

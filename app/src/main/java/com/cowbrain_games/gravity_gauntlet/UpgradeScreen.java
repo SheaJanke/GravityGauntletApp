@@ -171,6 +171,7 @@ class UpgradeScreen {
             gameView.setGameState(0);
         }else if(e.getX() > X(1700) && e.getX()<X(1990) && e.getY()>Y(0) && e.getY()<Y(140)&& System.currentTimeMillis()-buyTimer > 300){
             gunScreen.reset();
+            gunScreen.setGunOnScreen(data.getAllGunPurchases().indexOf("2"));
             gameView.setGameState(4);
         }
     }

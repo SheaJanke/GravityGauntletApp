@@ -37,6 +37,7 @@ class GunScreen {
         this.guns = guns;
         this.data = data;
         this.upgrades = upgrades;
+        gunOnScreen = data.getAllGunPurchases().indexOf("2");
         resetBuy();
     }
 
@@ -59,12 +60,12 @@ class GunScreen {
         removeBullets.clear();
         tickCounter++;
     }
-    void render(Canvas canvas, Bitmap coin, Bitmap next, Bitmap lock){
+    void render(Canvas canvas, Bitmap coin, Bitmap next, Bitmap lock, Bitmap grenade){
         canvas.drawColor(Color.BLACK);
         Paint paint = new Paint();
         player.render(canvas);
         for(Bullets bullet:bullets){
-            bullet.render(canvas, player);
+            bullet.render(canvas, grenade);
         }
         guns.render(canvas);
         paint.setColor(Color.CYAN);
@@ -247,6 +248,10 @@ class GunScreen {
         player.setY(Y(425));
         guns.reset();
         guns.setAmmo(100000);
+    }
+
+    void setGunOnScreen(int gunOnScreen){
+        this.gunOnScreen = gunOnScreen;
     }
 
     void resetBuy() {

@@ -76,15 +76,15 @@ class GameScreen {
 
     }
 
-    void render(Canvas canvas, Bitmap coin, Bitmap shoot, Bitmap ammo){
+    void render(Canvas canvas, Bitmap coin, Bitmap shoot, Bitmap ammo, Bitmap grenade){
         Paint paint = new Paint();
         paint.setColor(Color.RED);
         paint.setTextSize(X(60));
         canvas.drawColor(Color.BLACK);
-        player.render(canvas);
         for(Bullets bullet:bullets){
-            bullet.render(canvas, player);
+            bullet.render(canvas, grenade);
         }
+        player.render(canvas);
         guns.render(canvas);
         for(Meteor meteor:meteors){
             meteor.render(canvas);
@@ -158,6 +158,7 @@ class GameScreen {
         player.reset();
         guns.gameReset();
         meteors.clear();
+        bullets.clear();
         meteorLvl = data.getStartLvl();
         lvlCounter = 5;
         goldEarned = "0";
