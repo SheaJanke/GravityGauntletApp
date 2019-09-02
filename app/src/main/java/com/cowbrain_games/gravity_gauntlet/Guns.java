@@ -1,6 +1,8 @@
 package com.cowbrain_games.gravity_gauntlet;
 
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -19,11 +21,15 @@ class Guns {
     private Data data;
     private int rotation = 0;
     private int gunLvl;
+    private Bitmap laser_cannon;
+    private Bitmap black_hole_generator;
 
-    Guns(Player player, Upgrades upgrades, Data data){
+    Guns(Player player, Upgrades upgrades, Data data, Bitmap laser_cannon, Bitmap black_hole_generator){
         this.player = player;
         this.upgrades = upgrades;
         this.data = data;
+        this.laser_cannon = laser_cannon;
+        this.black_hole_generator = black_hole_generator;
         gunLvl = 0;
 
     }
@@ -33,7 +39,7 @@ class Guns {
             rotation+=3;
         }else if(gunLvl == 1){
             rotation+=2;
-        }else if(gunLvl == 2){
+        }else if(gunLvl == 2 || gunLvl == 1){
             rotation++;
         }else{
             rotation+=2;
@@ -122,6 +128,10 @@ class Guns {
             paint.setStrokeWidth(X(15));
             canvas.drawLine(player.getX(),player.getY()+Y(20),player.getX(),player.getY()-Y(90),paint);
             canvas.restoreToCount(saveCount);
+        }else if(gunLvl == 4){
+            canvas.rotate(rotation+90,player.getX(),player.getY());
+            canvas.drawBitmap(Bitmap.createScaledBitmap(laser_cannon,(int)X(240),(int)X(200),true),player.getX()-X(120),player.getY()-X(140),paint);
+            canvas.restoreToCount(saveCount);
         }
 
     }
@@ -139,6 +149,9 @@ class Guns {
             individualShot(addBullets);
             shootTimer = System.currentTimeMillis();
         }else if(gunLvl == 3 && System.currentTimeMillis()-shootTimer>500 && ammo>0) {
+            individualShot(addBullets);
+            shootTimer = System.currentTimeMillis();
+        }else if(gunLvl == 4 && System.currentTimeMillis()-shootTimer>1000 && ammo>0) {
             individualShot(addBullets);
             shootTimer = System.currentTimeMillis();
         }
@@ -162,6 +175,10 @@ class Guns {
             addBullets.add(new Bullets(player, this,180,gunLvl));
             addBullets.add(new Bullets(player, this,270,gunLvl));
         }else if(gunLvl == 3 && ammo > 0){
+            burstCounter++;
+            ammo-=1;
+            addBullets.add(new Bullets(player, this,0,gunLvl));
+        }else if(gunLvl == 4 && ammo > 0){
             burstCounter++;
             ammo-=1;
             addBullets.add(new Bullets(player, this,0,gunLvl));

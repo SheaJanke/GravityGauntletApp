@@ -27,16 +27,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Bitmap next = BitmapFactory.decodeResource(getResources(),R.drawable.next);
     private Bitmap lock = BitmapFactory.decodeResource(getResources(),R.drawable.lock);
     private Bitmap grenade = BitmapFactory.decodeResource(getResources(),R.drawable.grenade);
-
+    private Bitmap laser_cannon = BitmapFactory.decodeResource(getResources(),R.drawable.laser_cannon);
+    private Bitmap black_hole_generator = BitmapFactory.decodeResource(getResources(),R.drawable.black_hole_generator);
 
     public GameView(Context context){
         super(context);
         data = new Data(context);
-        data.reset();
-        data.setGold("100o");
         upgrades = new Upgrades(data);
         player = new Player(upgrades,data);
-        guns = new Guns(player,upgrades,data);
+        guns = new Guns(player,upgrades,data,laser_cannon,black_hole_generator);
         startScreen = new StartScreen(star);
         gameScreen = new GameScreen(data,upgrades,player,guns);
         endScreen = new EndScreen(star,coin,data,gameScreen);

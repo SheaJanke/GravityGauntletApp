@@ -85,7 +85,7 @@ class Data {
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         mEditor = mPreferences.edit();
         String allGunLvls = "";
-        for(int a = 0; a < 5; a ++){
+        for(int a = 0; a < 6; a ++){
             if(a!=gunLvl){
                 allGunLvls+=getGunLvls(a);
             }else{
@@ -99,14 +99,14 @@ class Data {
 
     String getGunLvls(int gunLvl){
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return mPreferences.getString("gunLvls","000000000000000").substring(gunLvl*3, gunLvl*3 + 3);
+        return mPreferences.getString("gunLvls","000000000000000000").substring(gunLvl*3, gunLvl*3 + 3);
     }
 
     void setGunPurchases(int gunLvl, String state){
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         mEditor = mPreferences.edit();
         String allGunPurchases = "";
-        for(int a = 0; a < 5; a ++){
+        for(int a = 0; a < 6; a ++){
             if(a!=gunLvl){
                 allGunPurchases+=getGunPurchases(a);
             }else{
@@ -120,12 +120,12 @@ class Data {
 
     String getGunPurchases(int gunLvl){
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return mPreferences.getString("gunPurchases","20000").substring(gunLvl, gunLvl+1);
+        return mPreferences.getString("gunPurchases","200000").substring(gunLvl, gunLvl+1);
     }
 
     String getAllGunPurchases(){
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return mPreferences.getString("gunPurchases","20000");
+        return mPreferences.getString("gunPurchases","200000");
     }
 
     void reset(){
@@ -136,8 +136,8 @@ class Data {
         mEditor.putInt("startLvl", 40);
         mEditor.putInt("scoreMultiplierLvl",0);
         mEditor.putInt("playerWeightLvl",90);
-        mEditor.putString("gunLvls", "000000000000000");
-        mEditor.putString("gunPurchases", "20000");
+        mEditor.putString("gunLvls", "000000000000000000");
+        mEditor.putString("gunPurchases", "200000");
         mEditor.apply();
     }
 }

@@ -17,11 +17,11 @@ class GunScreen {
     Data data;
     Upgrades upgrades;
     private long buyTimer = System.currentTimeMillis();
-    private String[] gunCost = {"5.00M","10.0B","5.00t"};
-    private String[][] gunUpgrades = {{"Ammo", "Damage", "Burst"},{"Ammo", "Damage", "Burst"},{"Ammo", "Damage", "Burst"},{"Ammo", "Damage", "Exposion Radius"},{"Ammo", "Damage", "Duration"}};
-    private String[][] gunValues = new String[5][3];
-    private String[][] nextGunValues = new String[5][3];
-    private String[][] nextGunCost = new String[5][3];
+    private String[] gunCost = {"5.00M","10.0B","5.00t", "5.00q", "10.0Q"};
+    private String[][] gunUpgrades = {{"Ammo", "Damage", "Burst"},{"Ammo", "Damage", "Burst"},{"Ammo", "Damage", "Burst"},{"Ammo", "Damage", "Exposion Radius"},{"Ammo", "Damage", "Duration"},{"Ammo", "Damage", "Pull"}};
+    private String[][] gunValues = new String[6][3];
+    private String[][] nextGunValues = new String[6][3];
+    private String[][] nextGunCost = new String[6][3];
     private String maxLvls = "994";
     private int tickCounter = 0;
     private LinkedList<Bullets> bullets = new LinkedList<>();
@@ -29,8 +29,8 @@ class GunScreen {
     private ArrayList<Bullets> removeBullets = new ArrayList<>();
     private LinkedList<Meteor> meteors = new LinkedList<>();
     private ArrayList<Meteor> removeMeteors = new ArrayList<>();
-    private int gunOnScreen = 0;
-    private int numberOfGuns = 4;
+    private int gunOnScreen;
+    private int numberOfGuns = 6;
 
     GunScreen(Player player, Guns guns, Data data, Upgrades upgrades){
         this.player = player;

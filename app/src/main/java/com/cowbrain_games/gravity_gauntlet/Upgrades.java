@@ -14,12 +14,12 @@ class Upgrades {
     private double[] lvlMultiplier = new double[100];
     private double[] playerWeight = new double[100];
     private String[] playerWeightCost = new String[100];
-    private String[][] gunDamage = new String[5][10];
-    private String[][] gunDamageCost = new String[5][10];
-    private String[][] gunAmmo = new String[5][10];
-    private String[][] gunAmmoCost = new String[5][10];
-    private String[][] gunUnique = new String[4][5];
-    private String[][] gunUniqueCost = new String[4][5];
+    private String[][] gunDamage = new String[6][10];
+    private String[][] gunDamageCost = new String[6][10];
+    private String[][] gunAmmo = new String[6][10];
+    private String[][] gunAmmoCost = new String[6][10];
+    private String[][] gunUnique = new String[6][5];
+    private String[][] gunUniqueCost = new String[6][5];
     private ArrayList<String> scoreEndings = new ArrayList<>(Arrays.asList("K","M","B","t","q","Q","s","S","o","n","d"));
     private Data data;
 
@@ -56,6 +56,18 @@ class Upgrades {
         gunAmmoCost[3][0] = "2.00t";
         gunUnique[3][0] = "100";
         gunUniqueCost[3][0] = "5.00t";
+        gunDamage[4][0] = "1.00B";
+        gunDamageCost[4][0] = "3.00t";
+        gunAmmo[4][0] = "15";
+        gunAmmoCost[4][0] = "2.00t";
+        gunUnique[4][0] = "100";
+        gunUniqueCost[4][0] = "5.00t";
+        gunDamage[5][0] = "1.00B";
+        gunDamageCost[5][0] = "3.00t";
+        gunAmmo[5][0] = "15";
+        gunAmmoCost[5][0] = "2.00t";
+        gunUnique[5][0] = "100";
+        gunUniqueCost[5][0] = "5.00t";
 
         lvlMultiplier[0] = 1.0;
         playerWeight[0] = 100;
@@ -96,6 +108,10 @@ class Upgrades {
             gunDamageCost[2][a] = simplifyScore(multiplyScore(gunDamageCost[2][a-1],2.5));
             gunDamage[3][a] = simplifyScore(multiplyScore(gunDamage[3][a-1],1.7));
             gunDamageCost[3][a] = simplifyScore(multiplyScore(gunDamageCost[3][a-1],2.5));
+            gunDamage[4][a] = simplifyScore(multiplyScore(gunDamage[4][a-1],1.7));
+            gunDamageCost[4][a] = simplifyScore(multiplyScore(gunDamageCost[4][a-1],2.5));
+            gunDamage[5][a] = simplifyScore(multiplyScore(gunDamage[5][a-1],1.7));
+            gunDamageCost[5][a] = simplifyScore(multiplyScore(gunDamageCost[5][a-1],2.5));
         }
         for(int a = 1; a < gunAmmo[0].length; a++){
             gunAmmo[0][a] = addScores(gunAmmo[0][a-1],"15");
@@ -106,6 +122,10 @@ class Upgrades {
             gunAmmoCost[2][a] = simplifyScore(multiplyScore(gunAmmoCost[2][a-1],2.5));
             gunAmmo[3][a] = addScores(gunAmmo[3][a-1],"60");
             gunAmmoCost[3][a] = simplifyScore(multiplyScore(gunAmmoCost[3][a-1],2.5));
+            gunAmmo[4][a] = addScores(gunAmmo[4][a-1],"60");
+            gunAmmoCost[4][a] = simplifyScore(multiplyScore(gunAmmoCost[4][a-1],2.5));
+            gunAmmo[5][a] = addScores(gunAmmo[5][a-1],"60");
+            gunAmmoCost[5][a] = simplifyScore(multiplyScore(gunAmmoCost[5][a-1],2.5));
         }
         for(int a = 1; a < gunUnique[0].length; a++){
             gunUnique[0][a] = addScores(gunUnique[0][a-1],"1");
@@ -116,6 +136,10 @@ class Upgrades {
             gunUniqueCost[2][a] = simplifyScore(multiplyScore(gunUniqueCost[2][a-1],7.5));
             gunUnique[3][a] = addScores(gunUnique[3][a-1],"1");
             gunUniqueCost[3][a] = simplifyScore(multiplyScore(gunUniqueCost[3][a-1],7.5));
+            gunUnique[4][a] = addScores(gunUnique[4][a-1],"1");
+            gunUniqueCost[4][a] = simplifyScore(multiplyScore(gunUniqueCost[4][a-1],7.5));
+            gunUnique[5][a] = addScores(gunUnique[5][a-1],"1");
+            gunUniqueCost[5][a] = simplifyScore(multiplyScore(gunUniqueCost[5][a-1],7.5));
         }
 
     }
