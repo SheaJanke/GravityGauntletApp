@@ -60,12 +60,12 @@ class GunScreen {
         removeBullets.clear();
         tickCounter++;
     }
-    void render(Canvas canvas, Bitmap coin, Bitmap next, Bitmap lock, Bitmap grenade){
+    void render(Canvas canvas, Bitmap coin, Bitmap next, Bitmap lock, Bitmap grenade, Bitmap black_hole){
         canvas.drawColor(Color.BLACK);
         Paint paint = new Paint();
         player.render(canvas);
         for(Bullets bullet:bullets){
-            bullet.render(canvas, grenade);
+            bullet.render(canvas, grenade, black_hole);
         }
         guns.render(canvas);
         paint.setColor(Color.CYAN);

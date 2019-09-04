@@ -23,30 +23,36 @@ class Guns {
     private int gunLvl;
     private Bitmap laser_cannon;
     private Bitmap black_hole_generator;
+    private Bitmap black_hole;
+    private int blackHoleRotation = 0;
 
-    Guns(Player player, Upgrades upgrades, Data data, Bitmap laser_cannon, Bitmap black_hole_generator){
+    Guns(Player player, Upgrades upgrades, Data data, Bitmap laser_cannon, Bitmap black_hole_generator, Bitmap black_hole){
         this.player = player;
         this.upgrades = upgrades;
         this.data = data;
         this.laser_cannon = laser_cannon;
         this.black_hole_generator = black_hole_generator;
+        this.black_hole = black_hole;
         gunLvl = 0;
 
     }
 
     void tick(ArrayList<Bullets> addBullets){
-        if(gunLvl == 0){
-            rotation+=3;
-        }else if(gunLvl == 1){
-            rotation+=2;
-        }else if(gunLvl == 2 || gunLvl == 1){
-            rotation++;
-        }else{
-            rotation+=2;
+        if(System.currentTimeMillis()-shootTimer>150) {
+            if (gunLvl == 0) {
+                rotation += 3;
+            } else if (gunLvl == 1) {
+                rotation += 2;
+            } else if (gunLvl == 2 || gunLvl == 4) {
+                rotation++;
+            } else {
+                rotation += 2;
+            }
         }
         if(rotation>360){
             rotation-=360;
         }
+        blackHoleRotation+=2;
         if(burstCounter<burst){
             individualShot(addBullets);
         }
@@ -132,6 +138,22 @@ class Guns {
             canvas.rotate(rotation+90,player.getX(),player.getY());
             canvas.drawBitmap(Bitmap.createScaledBitmap(laser_cannon,(int)X(240),(int)X(200),true),player.getX()-X(120),player.getY()-X(140),paint);
             canvas.restoreToCount(saveCount);
+        }else  if(gunLvl == 5){
+            canvas.rotate(rotation+90,player.getX(),player.getY());
+            canvas.drawBitmap(Bitmap.createScaledBitmap(black_hole_generator,(int)X(260),(int)X(260),true),player.getX()-X(120),player.getY()-X(200),paint);
+            int holeWidth;
+            int holeHeight;
+            if(System.currentTimeMillis()-shootTimer>1000){
+                holeWidth = (int)X(80);
+                holeHeight = (int)X(90);
+            }else{
+                holeWidth = (int)(X(79) * (System.currentTimeMillis()-shootTimer)/1000)+1;
+                holeHeight = (int)(X(89) * (System.currentTimeMillis()-shootTimer)/1000)+1;
+            }
+            canvas.rotate(blackHoleRotation, player.getX()+X(7.5f), player.getY()-X(80));
+            canvas.drawBitmap(Bitmap.createScaledBitmap(black_hole, holeWidth,holeHeight,true),player.getX()+X(7.5f)-holeWidth/2f,player.getY()-X(80)-holeHeight/2f,paint);
+
+            canvas.restoreToCount(saveCount);
         }
 
     }
@@ -151,14 +173,14 @@ class Guns {
         }else if(gunLvl == 3 && System.currentTimeMillis()-shootTimer>500 && ammo>0) {
             individualShot(addBullets);
             shootTimer = System.currentTimeMillis();
-        }else if(gunLvl == 4 && System.currentTimeMillis()-shootTimer>1000 && ammo>0) {
+        }else if((gunLvl == 4 || gunLvl == 5) && System.currentTimeMillis()-shootTimer>1000 && ammo>0) {
             individualShot(addBullets);
             shootTimer = System.currentTimeMillis();
         }
     }
 
     private void individualShot(ArrayList<Bullets> addBullets){
-        if(gunLvl == 0 && ammo > 0){
+        if((gunLvl == 0 || gunLvl == 4 || gunLvl == 5) && ammo > 0){
             burstCounter++;
             ammo--;
             addBullets.add(new Bullets(player, this,0,gunLvl));
@@ -175,10 +197,6 @@ class Guns {
             addBullets.add(new Bullets(player, this,180,gunLvl));
             addBullets.add(new Bullets(player, this,270,gunLvl));
         }else if(gunLvl == 3 && ammo > 0){
-            burstCounter++;
-            ammo-=1;
-            addBullets.add(new Bullets(player, this,0,gunLvl));
-        }else if(gunLvl == 4 && ammo > 0){
             burstCounter++;
             ammo-=1;
             addBullets.add(new Bullets(player, this,0,gunLvl));
@@ -218,12 +236,20 @@ class Guns {
         this.gunLvl = gunLvl;
     }
 
+    int getGunLvl(){
+        return gunLvl;
+    }
+
     private float X(float X){
         return X * width/2000f;
     }
 
     private float Y(float Y){
         return Y* height/1000f;
+    }
+
+    int getBlackHoleRotation(){
+        return blackHoleRotation;
     }
 
 

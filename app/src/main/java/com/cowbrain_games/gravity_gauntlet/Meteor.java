@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Meteor {
@@ -27,7 +28,7 @@ public class Meteor {
         this.lvl = lvl;
         health = upgrades.getMeteorHealth()[lvl];
     }
-    void tick(Player player, LinkedList<Meteor> others, GameScreen gameScreen){
+    void tick(Player player, LinkedList<Meteor> others, GameScreen gameScreen, LinkedList<Bullets> black_holes){
         //determines the velocity of the meteor based on its position relative to the player
         if(player.getX() == x && player.getY() == y){
             return;
@@ -36,6 +37,12 @@ public class Meteor {
         double accel = player.getWeight()/(radius * size);
         double accelX = accel * ((player.getX()-x)/radius);
         double accelY = accel * ((player.getY()-y)/radius);
+        for(Bullets black_hole:black_holes){
+            radius = Math.sqrt(Math.pow(black_hole.getX()-x, 2) + Math.pow(black_hole.getY()-y, 2));
+            accel = 100/(radius * size);
+            accelX += accel * ((black_hole.getX()-x)/radius);
+            accelY += accel * ((black_hole.getY()-y)/radius);
+        }
         velX += accelX;
         velY += accelY;
         if((x<X(0)+size && velX < 0)||(x > X(2000)-size && velX > 0)){
@@ -132,5 +139,4 @@ public class Meteor {
     String getHealth(){
         return health;
     }
-
 }

@@ -29,13 +29,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Bitmap grenade = BitmapFactory.decodeResource(getResources(),R.drawable.grenade);
     private Bitmap laser_cannon = BitmapFactory.decodeResource(getResources(),R.drawable.laser_cannon);
     private Bitmap black_hole_generator = BitmapFactory.decodeResource(getResources(),R.drawable.black_hole_generator);
+    private Bitmap black_hole = BitmapFactory.decodeResource(getResources(),R.drawable.black_hole);
 
     public GameView(Context context){
         super(context);
         data = new Data(context);
+        data.setPlayerWeightLvl(60);
         upgrades = new Upgrades(data);
         player = new Player(upgrades,data);
-        guns = new Guns(player,upgrades,data,laser_cannon,black_hole_generator);
+        guns = new Guns(player,upgrades,data,laser_cannon,black_hole_generator,black_hole);
         startScreen = new StartScreen(star);
         gameScreen = new GameScreen(data,upgrades,player,guns);
         endScreen = new EndScreen(star,coin,data,gameScreen);
@@ -82,13 +84,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             if(gameState == 0){
                 startScreen.render(canvas);
             }else if(gameState ==1){
-                gameScreen.render(canvas,coin,shoot,ammo,grenade);
+                gameScreen.render(canvas,coin,shoot,ammo,grenade,black_hole);
             }else if(gameState == 2){
                 endScreen.render(canvas);
             }else if(gameState == 3){
                 upgradeScreen.render(canvas,upgrades,data,star,coin);
             }else if(gameState == 4){
-                gunScreen.render(canvas,coin,next,lock,grenade);
+                gunScreen.render(canvas,coin,next,lock,grenade,black_hole);
             }
         }
     }

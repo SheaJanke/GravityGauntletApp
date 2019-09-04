@@ -131,9 +131,9 @@ class Data {
     void reset(){
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         mEditor = mPreferences.edit();
-        mEditor.putString("Gold", "0");
+        mEditor.putString("Gold", "100o");
         mEditor.putInt("maxHealthLvl",35);
-        mEditor.putInt("startLvl", 40);
+        mEditor.putInt("startLvl", 60);
         mEditor.putInt("scoreMultiplierLvl",0);
         mEditor.putInt("playerWeightLvl",90);
         mEditor.putString("gunLvls", "000000000000000000");

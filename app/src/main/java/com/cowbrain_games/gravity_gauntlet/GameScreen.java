@@ -62,7 +62,11 @@ class GameScreen {
             player.setWeight(player.getWeight()*1.1);
         }
         for(Meteor meteor:meteors){
-            meteor.tick(player,meteors,this);
+            if(guns.getGunLvl()==5) {
+                meteor.tick(player, meteors, this, bullets);
+            }else{
+                meteor.tick(player,meteors,this,new LinkedList<Bullets>());
+            }
         }
         for(Meteor rem : remove){
             meteors.remove(rem);
@@ -76,13 +80,13 @@ class GameScreen {
 
     }
 
-    void render(Canvas canvas, Bitmap coin, Bitmap shoot, Bitmap ammo, Bitmap grenade){
+    void render(Canvas canvas, Bitmap coin, Bitmap shoot, Bitmap ammo, Bitmap grenade, Bitmap black_hole){
         Paint paint = new Paint();
         paint.setColor(Color.RED);
         paint.setTextSize(X(60));
         canvas.drawColor(Color.BLACK);
         for(Bullets bullet:bullets){
-            bullet.render(canvas, grenade);
+            bullet.render(canvas, grenade, black_hole);
         }
         player.render(canvas);
         guns.render(canvas);
