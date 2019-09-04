@@ -24,7 +24,7 @@ class Bullets {
     private float rotation;
     private int gunLvl;
     boolean exploded = false;
-    private float maxExplosionRadius = 100;
+    private float maxExplosionRadius;
     float explosionRadius = 5;
     int explosionAlpha = 255;
     private long laserTimer = System.currentTimeMillis();
@@ -36,6 +36,7 @@ class Bullets {
         this.player = player;
         this.gunLvl = gunLvl;
         this.guns = guns;
+        maxExplosionRadius = guns.getExplosionRadius();
         rotation = guns.getRotation();
         if(gunLvl == 4){
             x = player.getX();
@@ -136,7 +137,7 @@ class Bullets {
                     explosionRadius += X(10);
                     laserTimer = System.currentTimeMillis();
                 }
-                if(System.currentTimeMillis()-laserTimer>5000){
+                if(System.currentTimeMillis()-laserTimer>3000){
                     removeBullet.add(this);
                 }
             }

@@ -34,7 +34,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public GameView(Context context){
         super(context);
         data = new Data(context);
-        data.setPlayerWeightLvl(60);
         upgrades = new Upgrades(data);
         player = new Player(upgrades,data);
         guns = new Guns(player,upgrades,data,laser_cannon,black_hole_generator,black_hole);

@@ -38,17 +38,16 @@ class Guns {
     }
 
     void tick(ArrayList<Bullets> addBullets){
-        if(System.currentTimeMillis()-shootTimer>150) {
-            if (gunLvl == 0) {
-                rotation += 3;
-            } else if (gunLvl == 1) {
-                rotation += 2;
-            } else if (gunLvl == 2 || gunLvl == 4) {
-                rotation++;
-            } else {
-                rotation += 2;
-            }
+        if (gunLvl == 0) {
+            rotation += 3;
+        } else if (gunLvl == 1) {
+            rotation += 2;
+        } else if (gunLvl == 2 || gunLvl == 4) {
+            rotation++;
+        } else if(System.currentTimeMillis()-shootTimer>150){
+            rotation += 2;
         }
+
         if(rotation>360){
             rotation-=360;
         }
@@ -223,6 +222,11 @@ class Guns {
     int getRotation(){
         return  rotation;
     }
+
+    int getExplosionRadius(){
+        return Integer.parseInt(upgrades.getGunUnique(3)[Integer.parseInt(data.getGunLvls(3).substring(2,3))]);
+    }
+
 
     void setAmmo(int ammo){
         this.ammo = ammo;

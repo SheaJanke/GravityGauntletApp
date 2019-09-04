@@ -29,7 +29,7 @@ class Upgrades {
         scoreMultiplierCost[0] = "3.00K";
         startLvlCost[0] = "1.50K";
         playerWeightCost[0] = "2.00K";
-        health[0] = "100";
+        health[0] = "50";
         scoreMultiplier[0] = "1.0";
         meteorHealth[0] = "1";
         gunDamage[0][0] = "1.00";
@@ -38,7 +38,7 @@ class Upgrades {
         gunAmmoCost[0][0] = "2.00K";
         gunUnique[0][0] = "1.00";
         gunUniqueCost[0][0] = "5.00K";
-        gunDamage[1][0] = "750";
+        gunDamage[1][0] = "2.5K";
         gunDamageCost[1][0] = "3.00M";
         gunAmmo[1][0] = "50.0";
         gunAmmoCost[1][0] = "2.00M";
@@ -50,7 +50,7 @@ class Upgrades {
         gunAmmoCost[2][0] = "2.00B";
         gunUnique[2][0] = "1.00";
         gunUniqueCost[2][0] = "5.00B";
-        gunDamage[3][0] = "1.00B";
+        gunDamage[3][0] = "400M";
         gunDamageCost[3][0] = "3.00t";
         gunAmmo[3][0] = "15";
         gunAmmoCost[3][0] = "2.00t";
@@ -58,7 +58,7 @@ class Upgrades {
         gunUniqueCost[3][0] = "5.00t";
         gunDamage[4][0] = "1.00B";
         gunDamageCost[4][0] = "3.00t";
-        gunAmmo[4][0] = "15";
+        gunAmmo[4][0] = "10";
         gunAmmoCost[4][0] = "2.00t";
         gunUnique[4][0] = "100";
         gunUniqueCost[4][0] = "5.00t";
@@ -79,7 +79,7 @@ class Upgrades {
             healthCost[a] = simplifyScore(multiplyScore(healthCost[a-1], 1.75));
         }
         for(int a = 1; a < scoreMultiplier.length; a ++){
-            scoreMultiplier[a] =  simplifyScore(multiplyScore(scoreMultiplier[a-1], 1.25));
+            scoreMultiplier[a] =  simplifyScore(multiplyScore(scoreMultiplier[a-1], 1.380));
         }
         for(int a = 1; a < scoreMultiplierCost.length; a ++){
             scoreMultiplierCost[a] = simplifyScore(multiplyScore(scoreMultiplierCost[a-1],1.75));
@@ -100,46 +100,25 @@ class Upgrades {
             meteorHealth[a] = simplifyScore(multiplyScore(meteorHealth[a-1],1.45));
         }
         for(int a = 1; a < gunDamage[0].length; a++){
-            gunDamage[0][a] = simplifyScore(multiplyScore(gunDamage[0][a-1],1.7));
-            gunDamageCost[0][a] = simplifyScore(multiplyScore(gunDamageCost[0][a-1],2.5));
-            gunDamage[1][a] = simplifyScore(multiplyScore(gunDamage[1][a-1],1.7));
-            gunDamageCost[1][a] = simplifyScore(multiplyScore(gunDamageCost[1][a-1],2.5));
-            gunDamage[2][a] = simplifyScore(multiplyScore(gunDamage[2][a-1],1.7));
-            gunDamageCost[2][a] = simplifyScore(multiplyScore(gunDamageCost[2][a-1],2.5));
-            gunDamage[3][a] = simplifyScore(multiplyScore(gunDamage[3][a-1],1.7));
-            gunDamageCost[3][a] = simplifyScore(multiplyScore(gunDamageCost[3][a-1],2.5));
-            gunDamage[4][a] = simplifyScore(multiplyScore(gunDamage[4][a-1],1.7));
-            gunDamageCost[4][a] = simplifyScore(multiplyScore(gunDamageCost[4][a-1],2.5));
-            gunDamage[5][a] = simplifyScore(multiplyScore(gunDamage[5][a-1],1.7));
-            gunDamageCost[5][a] = simplifyScore(multiplyScore(gunDamageCost[5][a-1],2.5));
+            double[] dmgMult = {2.0,1.7,1.6,2.0,1.6,1.6};
+            for(int b = 0; b<gunDamage.length; b++){
+                gunDamage[b][a] = simplifyScore(multiplyScore(gunDamage[b][a-1],dmgMult[b]));
+                gunDamageCost[b][a] = simplifyScore(multiplyScore(gunDamageCost[b][a-1],2.5));
+            }
         }
         for(int a = 1; a < gunAmmo[0].length; a++){
-            gunAmmo[0][a] = addScores(gunAmmo[0][a-1],"15");
-            gunAmmoCost[0][a] = simplifyScore(multiplyScore(gunAmmoCost[0][a-1],2.5));
-            gunAmmo[1][a] = addScores(gunAmmo[1][a-1],"30");
-            gunAmmoCost[1][a] = simplifyScore(multiplyScore(gunAmmoCost[1][a-1],2.5));
-            gunAmmo[2][a] = addScores(gunAmmo[2][a-1],"60");
-            gunAmmoCost[2][a] = simplifyScore(multiplyScore(gunAmmoCost[2][a-1],2.5));
-            gunAmmo[3][a] = addScores(gunAmmo[3][a-1],"60");
-            gunAmmoCost[3][a] = simplifyScore(multiplyScore(gunAmmoCost[3][a-1],2.5));
-            gunAmmo[4][a] = addScores(gunAmmo[4][a-1],"60");
-            gunAmmoCost[4][a] = simplifyScore(multiplyScore(gunAmmoCost[4][a-1],2.5));
-            gunAmmo[5][a] = addScores(gunAmmo[5][a-1],"60");
-            gunAmmoCost[5][a] = simplifyScore(multiplyScore(gunAmmoCost[5][a-1],2.5));
+            String[] ammoAdd = {"15","30","60","3","3","2"};
+            for(int b = 0; b<gunAmmo.length; b++){
+                gunAmmo[b][a] = addScores(gunAmmo[b][a-1],ammoAdd[b]);
+                gunAmmoCost[b][a] = simplifyScore(multiplyScore(gunAmmoCost[b][a-1],2.5));
+            }
         }
         for(int a = 1; a < gunUnique[0].length; a++){
-            gunUnique[0][a] = addScores(gunUnique[0][a-1],"1");
-            gunUniqueCost[0][a] = simplifyScore(multiplyScore(gunUniqueCost[0][a-1],7.5));
-            gunUnique[1][a] = addScores(gunUnique[1][a-1],"1");
-            gunUniqueCost[1][a] = simplifyScore(multiplyScore(gunUniqueCost[1][a-1],7.5));
-            gunUnique[2][a] = addScores(gunUnique[2][a-1],"1");
-            gunUniqueCost[2][a] = simplifyScore(multiplyScore(gunUniqueCost[2][a-1],7.5));
-            gunUnique[3][a] = addScores(gunUnique[3][a-1],"1");
-            gunUniqueCost[3][a] = simplifyScore(multiplyScore(gunUniqueCost[3][a-1],7.5));
-            gunUnique[4][a] = addScores(gunUnique[4][a-1],"1");
-            gunUniqueCost[4][a] = simplifyScore(multiplyScore(gunUniqueCost[4][a-1],7.5));
-            gunUnique[5][a] = addScores(gunUnique[5][a-1],"1");
-            gunUniqueCost[5][a] = simplifyScore(multiplyScore(gunUniqueCost[5][a-1],7.5));
+            String[] uniqueAdd = {"1","1","1","15","100","20"};
+            for(int b = 0; b < gunUnique.length; b++){
+                gunUnique[b][a] = addScores(gunUnique[b][a-1],uniqueAdd[b]);
+                gunUniqueCost[b][a] = simplifyScore(multiplyScore(gunUniqueCost[b][a-1],7.5));
+            }
         }
 
     }
@@ -327,10 +306,13 @@ class Upgrades {
             num = Double.parseDouble(score);
         }
         if(num >= 1000||num<=-1000){
-            return formatNum(num/1000) + scoreEndings.get(scoreEndings.indexOf(score.substring(score.length()-1)) + 1);
+            if(num/1000 >= 1000 || num/1000 <= -1000){
+                return simplifyScore(formatNum(num/1000) + scoreEndings.get(end + 1));
+            }
+            return formatNum(num/1000) + scoreEndings.get(end + 1);
         }else if((num < 1 && num >=0)||(num>-1&&num<=0)){
             if(end > 0){
-                return formatNum(num*1000) + scoreEndings.get(scoreEndings.indexOf(score.substring(score.length()-1)) - 1);
+                return formatNum(num*1000) + scoreEndings.get(end - 1);
             }else if(end == 0){
                 return formatNum(num*1000);
             }

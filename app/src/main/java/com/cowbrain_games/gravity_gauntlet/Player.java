@@ -110,7 +110,7 @@ public class Player {
         lastTouchedY = e.getY(index);
     }
     void reset(){
-        this.weight = upgrades.getPlayerWeight()*Math.pow(1.1,data.getStartLvl());
+        this.weight = upgrades.getPlayerWeight()*Math.pow(1.08,data.getStartLvl());
         this.health = upgrades.getHealth();
         maxHealth = upgrades.getHealth();
     }

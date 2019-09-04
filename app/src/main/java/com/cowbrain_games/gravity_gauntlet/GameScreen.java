@@ -37,7 +37,7 @@ class GameScreen {
     }
 
     void tick(GameView gameView, EndScreen endScreen){
-        goldEarned = upgrades.addScores(goldEarned, upgrades.multiplyScore(upgrades.getScoreMultiplier(),upgrades.getLvlMultiplier(meteorLvl)/2));
+        goldEarned = upgrades.addScores(goldEarned, upgrades.multiplyScore(upgrades.getScoreMultiplier(),upgrades.getLvlMultiplier(meteorLvl)*0.50));
         player.tick();
         guns.tick(addBullets);
         for(Bullets bullet:bullets){
@@ -105,7 +105,7 @@ class GameScreen {
         paint.setTextSize(X(80));
         paint.setStyle(Paint.Style.FILL);
         paint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText(upgrades.simplifyScore(goldEarned),X(150),Y(100),paint);
+        canvas.drawText(upgrades.simplifyScore(getGoldEarned()),X(150),Y(100),paint);
         canvas.drawBitmap(Bitmap.createScaledBitmap(coin,(int)X(80),(int)X(80),true),X(160)+ getGoldEarned().length()*X(20),Y(35),paint);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(X(3));
