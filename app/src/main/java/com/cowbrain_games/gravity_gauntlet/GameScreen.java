@@ -37,6 +37,9 @@ class GameScreen {
     }
 
     void tick(GameView gameView, EndScreen endScreen){
+        if(meteorLvl > 99){
+            gameView.setGameState(5);
+        }
         goldEarned = upgrades.addScores(goldEarned, upgrades.multiplyScore(upgrades.getScoreMultiplier(),upgrades.getLvlMultiplier(meteorLvl)*0.50));
         player.tick();
         guns.tick(addBullets);
@@ -58,14 +61,17 @@ class GameScreen {
         }
         if(lvlCounter >= 10){
             lvlCounter = 0;
+            if(meteorLvl >= 99){
+                gameView.setGameState(5);
+            }
             meteorLvl++;
             player.setWeight(player.getWeight()*1.1);
         }
         for(Meteor meteor:meteors){
             if(guns.getGunLvl()==5) {
-                meteor.tick(player, meteors, this, bullets);
+                meteor.tick(player, meteors, this, bullets, Integer.parseInt(upgrades.getGunUnique(5)[Integer.parseInt(data.getGunLvls(5).substring(2,3))]));
             }else{
-                meteor.tick(player,meteors,this,new LinkedList<Bullets>());
+                meteor.tick(player,meteors,this,new LinkedList<Bullets>(), 0);
             }
         }
         for(Meteor rem : remove){
@@ -139,7 +145,7 @@ class GameScreen {
     }
 
     private void addMeteor(){
-        meteors.add(new Meteor(30,upgrades,meteorLvl));
+        meteors.add(new Meteor((int)(Math.pow(Math.random(),2)*X(80) + X(30)),upgrades,meteorLvl));
     }
 
     void removeMeteor(Meteor meteor){
@@ -167,7 +173,7 @@ class GameScreen {
         lvlCounter = 5;
         goldEarned = "0";
         for(int a = 0; a < 5; a ++){
-            meteors.add(new Meteor(30,upgrades,meteorLvl));
+           addMeteor();
         }
         player.setX(X(1000));
         player.setY(Y(500));

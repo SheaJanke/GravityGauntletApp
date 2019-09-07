@@ -56,18 +56,18 @@ class Upgrades {
         gunAmmoCost[3][0] = "2.00t";
         gunUnique[3][0] = "100";
         gunUniqueCost[3][0] = "5.00t";
-        gunDamage[4][0] = "1.00B";
-        gunDamageCost[4][0] = "3.00t";
-        gunAmmo[4][0] = "10";
-        gunAmmoCost[4][0] = "2.00t";
-        gunUnique[4][0] = "100";
-        gunUniqueCost[4][0] = "5.00t";
-        gunDamage[5][0] = "1.00B";
-        gunDamageCost[5][0] = "3.00t";
+        gunDamage[4][0] = "5.00B";
+        gunDamageCost[4][0] = "3.00q";
+        gunAmmo[4][0] = "15";
+        gunAmmoCost[4][0] = "2.00q";
+        gunUnique[4][0] = "300";
+        gunUniqueCost[4][0] = "5.00q";
+        gunDamage[5][0] = "5.00t";
+        gunDamageCost[5][0] = "3.00Q";
         gunAmmo[5][0] = "15";
-        gunAmmoCost[5][0] = "2.00t";
+        gunAmmoCost[5][0] = "2.00Q";
         gunUnique[5][0] = "100";
-        gunUniqueCost[5][0] = "5.00t";
+        gunUniqueCost[5][0] = "5.00Q";
 
         lvlMultiplier[0] = 1.0;
         playerWeight[0] = 100;
@@ -79,7 +79,7 @@ class Upgrades {
             healthCost[a] = simplifyScore(multiplyScore(healthCost[a-1], 1.75));
         }
         for(int a = 1; a < scoreMultiplier.length; a ++){
-            scoreMultiplier[a] =  simplifyScore(multiplyScore(scoreMultiplier[a-1], 1.380));
+            scoreMultiplier[a] =  simplifyScore(multiplyScore(scoreMultiplier[a-1], 1.375));
         }
         for(int a = 1; a < scoreMultiplierCost.length; a ++){
             scoreMultiplierCost[a] = simplifyScore(multiplyScore(scoreMultiplierCost[a-1],1.75));
@@ -100,14 +100,14 @@ class Upgrades {
             meteorHealth[a] = simplifyScore(multiplyScore(meteorHealth[a-1],1.45));
         }
         for(int a = 1; a < gunDamage[0].length; a++){
-            double[] dmgMult = {2.0,1.7,1.6,2.0,1.6,1.6};
+            double[] dmgMult = {2.0,1.7,1.6,2.0,1.9,1.6};
             for(int b = 0; b<gunDamage.length; b++){
                 gunDamage[b][a] = simplifyScore(multiplyScore(gunDamage[b][a-1],dmgMult[b]));
                 gunDamageCost[b][a] = simplifyScore(multiplyScore(gunDamageCost[b][a-1],2.5));
             }
         }
         for(int a = 1; a < gunAmmo[0].length; a++){
-            String[] ammoAdd = {"15","30","60","3","3","2"};
+            String[] ammoAdd = {"15","30","60","3","2","1"};
             for(int b = 0; b<gunAmmo.length; b++){
                 gunAmmo[b][a] = addScores(gunAmmo[b][a-1],ammoAdd[b]);
                 gunAmmoCost[b][a] = simplifyScore(multiplyScore(gunAmmoCost[b][a-1],2.5));

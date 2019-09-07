@@ -131,7 +131,7 @@ class Data {
     void reset(){
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         mEditor = mPreferences.edit();
-        mEditor.putString("Gold", "100o");
+        mEditor.putString("Gold", "0");
         mEditor.putInt("maxHealthLvl",0);
         mEditor.putInt("startLvl", 0);
         mEditor.putInt("scoreMultiplierLvl",0);

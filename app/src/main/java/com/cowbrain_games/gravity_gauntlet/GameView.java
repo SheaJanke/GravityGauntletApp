@@ -16,6 +16,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Upgrades upgrades;
     private UpgradeScreen upgradeScreen;
     private GunScreen gunScreen;
+    private WinScreen winScreen;
     private Data data;
     private Player player;
     private Guns guns;
@@ -42,6 +43,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         endScreen = new EndScreen(star,coin,data,gameScreen);
         upgradeScreen = new UpgradeScreen();
         gunScreen = new GunScreen(player,guns,data,upgrades);
+        winScreen = new WinScreen();
 
 
 
@@ -90,6 +92,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 upgradeScreen.render(canvas,upgrades,data,star,coin);
             }else if(gameState == 4){
                 gunScreen.render(canvas,coin,next,lock,grenade,black_hole);
+            }else if(gameState == 5){
+                winScreen.render(canvas);
             }
         }
     }
@@ -105,6 +109,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             upgradeScreen.tick();
         }else if(gameState == 4){
             gunScreen.tick();
+        }else if(gameState == 5){
+            winScreen.tick();
         }
     }
 
