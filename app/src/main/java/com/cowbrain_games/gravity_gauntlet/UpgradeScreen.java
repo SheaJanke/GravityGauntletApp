@@ -138,7 +138,7 @@ class UpgradeScreen {
         canvas.drawRect(X(1700),Y(5),X(1990),Y(140),paint);
     }
 
-    void touched(MotionEvent e, Data data, Upgrades upgrades, GameScreen gameScreen, GameView gameView, StartScreen startScreen, GunScreen gunScreen) {
+    void touched(MotionEvent e, Data data, Upgrades upgrades, GameScreen gameScreen, GameView gameView, StartScreen startScreen, GunScreen gunScreen, Guns guns) {
         if(e.getX() > X(620) && e.getX()<X(820) && e.getY()>Y(320) && e.getY()<Y(420)&& upgrades.scoreLarger(data.getGold(),upgrades.getNextHealthCost())){
             if(System.currentTimeMillis()-buyTimer > 500) {
                 data.setGold(upgrades.subtractScore(data.getGold(), upgrades.getNextHealthCost()));
@@ -172,6 +172,7 @@ class UpgradeScreen {
         }else if(e.getX() > X(1700) && e.getX()<X(1990) && e.getY()>Y(0) && e.getY()<Y(140)&& System.currentTimeMillis()-buyTimer > 300){
             gunScreen.reset();
             gunScreen.setGunOnScreen(data.getAllGunPurchases().indexOf("2"));
+            guns.setGunLvl(data.getAllGunPurchases().indexOf("2"));
             gameView.setGameState(4);
         }
     }

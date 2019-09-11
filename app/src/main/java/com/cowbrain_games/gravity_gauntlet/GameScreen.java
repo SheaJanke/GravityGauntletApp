@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 
 class GameScreen {
@@ -25,6 +26,7 @@ class GameScreen {
     private int meteorLvl;
     private int lvlCounter = 5;
     private long lastMeteor = System.currentTimeMillis();
+    private long bossTimer = System.currentTimeMillis();
     private String goldEarned = "0";
 
     GameScreen(Data data, Upgrades upgrades,Player player, Guns guns){
@@ -40,21 +42,19 @@ class GameScreen {
         if(meteorLvl > 99){
             gameView.setGameState(5);
         }
-        goldEarned = upgrades.addScores(goldEarned, upgrades.multiplyScore(upgrades.getScoreMultiplier(),upgrades.getLvlMultiplier(meteorLvl)*0.50));
+        goldEarned = upgrades.addScores(goldEarned, upgrades.multiplyScore(upgrades.getScoreMultiplier(),upgrades.getLvlMultiplier(meteorLvl)*0.60));
         player.tick();
         guns.tick(addBullets);
         for(Bullets bullet:bullets){
             bullet.tick(meteors,upgrades,data,removeBullets,remove);
         }
-        for(Bullets bullet:addBullets){
-            bullets.add(bullet);
-        }
+        bullets.addAll(addBullets);
         for(Bullets bullet:removeBullets){
             bullets.remove(bullet);
         }
         addBullets.clear();
         removeBullets.clear();
-        if(System.currentTimeMillis()-lastMeteor>3000){
+        if(System.currentTimeMillis()-lastMeteor>3000 && System.currentTimeMillis()-bossTimer > 10000){
             addMeteor();
             lastMeteor = System.currentTimeMillis();
             lvlCounter++;
@@ -66,6 +66,12 @@ class GameScreen {
             }
             meteorLvl++;
             player.setWeight(player.getWeight()*1.1);
+            if(meteorLvl%5 == 0){
+                bossTimer = System.currentTimeMillis();
+                addBoss();
+                meteorLvl++;
+                player.setWeight(player.getWeight()*1.1);
+            }
         }
         for(Meteor meteor:meteors){
             if(guns.getGunLvl()==5) {
@@ -146,6 +152,10 @@ class GameScreen {
 
     private void addMeteor(){
         meteors.add(new Meteor((int)(Math.pow(Math.random(),2)*X(80) + X(30)),upgrades,meteorLvl));
+    }
+
+    private void addBoss(){
+        meteors.add(new Boss((int)X(150),upgrades,meteorLvl));
     }
 
     void removeMeteor(Meteor meteor){

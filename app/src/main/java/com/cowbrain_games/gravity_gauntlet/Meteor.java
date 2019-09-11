@@ -27,18 +27,18 @@ public class Meteor {
         this.size = size;
         this.upgrades = upgrades;
         this.lvl = lvl;
-        health = upgrades.multiplyScore(upgrades.getMeteorHealth()[lvl],(double)size/X(50));
+        health = upgrades.multiplyScore(upgrades.getMeteorHealth()[lvl],(double)size/X(60));
         if(startPosition == 1){
             x = X((float)Math.random()*2000);
-            y = -Y(100);
+            y = -size;
         }else if(startPosition == 2){
-            x = X(2100);
+            x = X(2000) + size;
             y = Y((float)Math.random()*1000);
         }else if(startPosition == 3){
             x = X((float)Math.random()*2000);
-            y = Y(1100);
+            y = Y(1000)+size;
         }else{
-            x = -X(100);
+            x = -size;
             y = Y((float)Math.random()*1000);
         }
     }
@@ -71,29 +71,14 @@ public class Meteor {
         y+= velY;
 
         if(distanceFromPlayer(player) < (size + player.getSize())){
-            if(upgrades.scoreLarger(player.getHealth(), "0")){
-                player.setHealth(upgrades.subtractScore(player.getHealth(), Double.toString(Math.pow(1.35,lvl)*10)));
-            }
-            gameScreen.removeMeteor(this);
-            return;
+            hitPlayer(player,upgrades,gameScreen);
         }
 
         //collision detection between meteors
         for(Meteor other : others){
             if(other.getX() != x && other.getY() != y){
                 if(squareDistanceFromMeteor(other) < Math.pow(size + other.getSize(),2)){
-                    if(x > other.getX() && velX < 0){
-                        velX = -velX/1.25;
-                    }
-                    if(x < other.getX() && velX > 0){
-                        velX = -velX/1.25;
-                    }
-                    if(y > other.getY() && velY < 0){
-                        velY = -velY/1.25;
-                    }
-                    if(y < other.getY() && velY > 0){
-                        velY = -velY/1.25;
-                    }
+                    hitMeteor(other);
                 }
             }
         }
@@ -101,24 +86,20 @@ public class Meteor {
 
     void render(Canvas canvas){
         Paint paint = new Paint();
-        paint.setARGB(255, meteorColor[lvl/10][0], meteorColor[lvl/10][1], meteorColor[lvl/10][2]);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(X(15 ));
-        paint.setColor(Color.WHITE);
+        paint.setColor(Color.RED);
         canvas.drawArc(x-size,y-size,x+size,y+size,0, 360,true,paint);
-        paint.setARGB(255, meteorColor[lvl/10][0], meteorColor[lvl/10][1], meteorColor[lvl/10][2]);
-        canvas.drawArc(x-size,y-size,x+size,y+size,-90, (float)(360*upgrades.divideScores(health,upgrades.multiplyScore(upgrades.getMeteorHealth()[lvl],(double)size/X(50)))),true,paint);
+        setOutlineColor(paint);
+        canvas.drawArc(x-size,y-size,x+size,y+size,-90, (float)(360*upgrades.divideScores(health,upgrades.multiplyScore(upgrades.getMeteorHealth()[lvl],(double)size/X(60)))),true,paint);
         paint.setStyle(Paint.Style.FILL);
         paint.setARGB(255, meteorColor[lvl%10][0], meteorColor[lvl%10][1], meteorColor[lvl%10][2]);
         canvas.drawCircle(x,y,size,paint);
         paint.setTextSize(size);
         paint.setTextAlign(Paint.Align.CENTER);
-        paint.setColor(Color.WHITE);
+        setTextColor(paint);
         canvas.drawText(lvl + "",x,y+size/3f,paint);
-        paint.setARGB(255,212,178,55);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(X(3));
-        canvas.drawText(lvl + "",x,y+size/3f,paint);
+
     }
     private double distanceFromPlayer(Player player){
         double sumX = player.getX() - getX();
@@ -160,5 +141,35 @@ public class Meteor {
     }
     String getHealth(){
         return health;
+    }
+
+    void hitMeteor(Meteor other){
+        if(x > other.getX() && velX < 0){
+            velX = -velX/1.25;
+        }
+        if(x < other.getX() && velX > 0){
+            velX = -velX/1.25;
+        }
+        if(y > other.getY() && velY < 0){
+            velY = -velY/1.25;
+        }
+        if(y < other.getY() && velY > 0){
+            velY = -velY/1.25;
+        }
+    }
+
+    void hitPlayer(Player player, Upgrades upgrades, GameScreen gameScreen){
+        if(upgrades.scoreLarger(player.getHealth(), "0")){
+            player.setHealth(upgrades.subtractScore(player.getHealth(), Double.toString(Math.pow(1.35,lvl)*10)));
+        }
+        gameScreen.removeMeteor(this);
+    }
+
+    void setTextColor(Paint paint){
+        paint.setColor(Color.BLACK);
+    }
+
+    void setOutlineColor(Paint paint){
+        paint.setColor(Color.GREEN);
     }
 }

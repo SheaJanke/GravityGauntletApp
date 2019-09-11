@@ -128,7 +128,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 }else if(gameState == 2){
                     endScreen.touched(e,this, gameScreen, upgradeScreen);
                 }else if(gameState == 3){
-                    upgradeScreen.touched(e,data,upgrades,gameScreen,this,startScreen,gunScreen);
+                    upgradeScreen.touched(e,data,upgrades,gameScreen,this,startScreen,gunScreen,guns);
                 }else if(gameState == 4){
                     gunScreen.touched(e,this,upgradeScreen);
                 }
