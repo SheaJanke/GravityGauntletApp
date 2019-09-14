@@ -84,17 +84,17 @@ public class Meteor {
         }
     }
 
-    void render(Canvas canvas){
+    void render(Canvas canvas, float strokeWidth){
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(X(15 ));
+        paint.setStrokeWidth(strokeWidth);
         paint.setColor(Color.RED);
-        canvas.drawArc(x-size,y-size,x+size,y+size,0, 360,true,paint);
+        canvas.drawArc(x-size+strokeWidth/2f,y-size+strokeWidth/2f,x+size-strokeWidth/2f,y+size-strokeWidth/2f,0, 360,true,paint);
         setOutlineColor(paint);
-        canvas.drawArc(x-size,y-size,x+size,y+size,-90, (float)(360*upgrades.divideScores(health,upgrades.multiplyScore(upgrades.getMeteorHealth()[lvl],(double)size/X(60)))),true,paint);
+        canvas.drawArc(x-size+strokeWidth/2f,y-size+strokeWidth/2f,x+size-strokeWidth/2f,y+size-strokeWidth/2f,-90, (float)(360*upgrades.divideScores(health,upgrades.multiplyScore(upgrades.getMeteorHealth()[lvl],(double)size/X(60)))),true,paint);
         paint.setStyle(Paint.Style.FILL);
         paint.setARGB(255, meteorColor[lvl%10][0], meteorColor[lvl%10][1], meteorColor[lvl%10][2]);
-        canvas.drawCircle(x,y,size,paint);
+        canvas.drawCircle(x,y,size-strokeWidth/2f,paint);
         paint.setTextSize(size);
         paint.setTextAlign(Paint.Align.CENTER);
         setTextColor(paint);
@@ -124,11 +124,33 @@ public class Meteor {
         return y;
     }
 
+    private double getVelX(){
+        return velX;
+    }
+
+    private double getVelY(){
+        return velY;
+    }
+
+
+    void setX(float x){
+        this.x = x;
+    }
+
+    void setY(float y){
+        this.y = y;
+    }
+
+    void setRandomVel(){
+        velX = Math.random() * X(20)-X(10);
+        velY = Math.random() * X(20)-X(10);
+    }
+
     int getSize() {
         return size;
     }
 
-    private float X(float X){
+    float X(float X){
         return X * width/2000f;
     }
 
@@ -144,17 +166,23 @@ public class Meteor {
     }
 
     void hitMeteor(Meteor other){
-        if(x > other.getX() && velX < 0){
-            velX = -velX/1.25;
-        }
-        if(x < other.getX() && velX > 0){
-            velX = -velX/1.25;
-        }
-        if(y > other.getY() && velY < 0){
-            velY = -velY/1.25;
-        }
-        if(y < other.getY() && velY > 0){
-            velY = -velY/1.25;
+        if(other.getSize()<X(100)) {
+            if ((x > other.getX() && velX < 0)||(x < other.getX() && velX > 0)) {
+                velX = -velX / 1.25;
+            }
+            if ((y > other.getY() && velY < 0)||(y < other.getY() && velY > 0)) {
+                velY = -velY / 1.25;
+            }
+        }else{
+            double distance = Math.sqrt(Math.pow(x-other.getX(),2) + Math.pow(y-other.getY(),2));
+            if ((x > other.getX() && velX < 0)||(x < other.getX() && velX > 0)) {
+                velX = other.getVelX() - (velX * Math.abs(x-other.getX())/distance);
+            }
+            if ((y > other.getY() && velY < 0)||(y < other.getY() && velY > 0)) {
+                velY = other.getVelY() - (velY * Math.abs(y-other.getY())/distance);
+            }
+            x = other.getX()+(x-other.getX())*(size+ other.getSize())/(float)distance;
+            y = other.getY()+(y-other.getY())*(size+ other.getSize())/(float)distance;
         }
     }
 

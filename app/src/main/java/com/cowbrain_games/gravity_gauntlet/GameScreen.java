@@ -54,7 +54,7 @@ class GameScreen {
         }
         addBullets.clear();
         removeBullets.clear();
-        if(System.currentTimeMillis()-lastMeteor>3000 && System.currentTimeMillis()-bossTimer > 10000){
+        if(System.currentTimeMillis()-lastMeteor>3000 && System.currentTimeMillis()-bossTimer > 20000){
             addMeteor();
             lastMeteor = System.currentTimeMillis();
             lvlCounter++;
@@ -103,7 +103,7 @@ class GameScreen {
         player.render(canvas);
         guns.render(canvas);
         for(Meteor meteor:meteors){
-            meteor.render(canvas);
+            meteor.render(canvas,X(15));
         }
         paint.setColor(Color.RED);
         canvas.drawRect(X(1600),Y(50),X(1950),Y(150),paint);
@@ -150,8 +150,12 @@ class GameScreen {
         }
     }
 
-    private void addMeteor(){
+    void addMeteor(){
         meteors.add(new Meteor((int)(Math.pow(Math.random(),2)*X(80) + X(30)),upgrades,meteorLvl));
+    }
+
+    void addMeteor(Meteor meteor){
+        meteors.add(meteor);
     }
 
     private void addBoss(){
