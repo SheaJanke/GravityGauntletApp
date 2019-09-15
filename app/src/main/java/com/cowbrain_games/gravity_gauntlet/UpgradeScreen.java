@@ -58,7 +58,7 @@ class UpgradeScreen {
         for(int a = 0; a < 2; a ++) {
             for (int b = 0; b < 2; b++) {
                 paint.setStyle(Paint.Style.STROKE);
-                paint.setStrokeWidth(X(10));
+                paint.setStrokeWidth(X(30));
                 if((a+b)%2==0){
                     paint.setColor(Color.BLUE);
                 }else{

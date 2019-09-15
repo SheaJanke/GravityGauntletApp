@@ -8,7 +8,7 @@ import android.graphics.Paint;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class Meteor {
+class Meteor {
     private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
 
@@ -22,12 +22,16 @@ public class Meteor {
     private double velY = 0;
     private int size;
     private String health;
+    private String maxHealth;
 
     Meteor(int size, Upgrades upgrades, int lvl){
         this.size = size;
         this.upgrades = upgrades;
         this.lvl = lvl;
-        health = upgrades.multiplyScore(upgrades.getMeteorHealth()[lvl],(double)size/X(60));
+        maxHealth = upgrades.multiplyScore(upgrades.getMeteorHealth()[lvl],(double)size/X(60));
+        if(size>=X(100))
+            maxHealth = upgrades.multiplyScore(maxHealth,2.0);
+        health = maxHealth;
         if(startPosition == 1){
             x = X((float)Math.random()*2000);
             y = -size;
@@ -91,7 +95,7 @@ public class Meteor {
         paint.setColor(Color.RED);
         canvas.drawArc(x-size+strokeWidth/2f,y-size+strokeWidth/2f,x+size-strokeWidth/2f,y+size-strokeWidth/2f,0, 360,true,paint);
         setOutlineColor(paint);
-        canvas.drawArc(x-size+strokeWidth/2f,y-size+strokeWidth/2f,x+size-strokeWidth/2f,y+size-strokeWidth/2f,-90, (float)(360*upgrades.divideScores(health,upgrades.multiplyScore(upgrades.getMeteorHealth()[lvl],(double)size/X(60)))),true,paint);
+        canvas.drawArc(x-size+strokeWidth/2f,y-size+strokeWidth/2f,x+size-strokeWidth/2f,y+size-strokeWidth/2f,-90, (float)(360*upgrades.divideScores(health,maxHealth)),true,paint);
         paint.setStyle(Paint.Style.FILL);
         paint.setARGB(255, meteorColor[lvl%10][0], meteorColor[lvl%10][1], meteorColor[lvl%10][2]);
         canvas.drawCircle(x,y,size-strokeWidth/2f,paint);
@@ -113,7 +117,7 @@ public class Meteor {
         return Math.pow(sumX, 2) + Math.pow(sumY, 2);
     }
 
-    public int getLvl(){
+    int getLvl(){
         return lvl;
     }
 
@@ -163,6 +167,10 @@ public class Meteor {
     }
     String getHealth(){
         return health;
+    }
+
+    String getMaxHealth(){
+        return maxHealth;
     }
 
     void hitMeteor(Meteor other){

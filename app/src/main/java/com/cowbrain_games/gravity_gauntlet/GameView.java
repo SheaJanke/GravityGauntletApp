@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -31,6 +32,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Bitmap laser_cannon = BitmapFactory.decodeResource(getResources(),R.drawable.laser_cannon);
     private Bitmap black_hole_generator = BitmapFactory.decodeResource(getResources(),R.drawable.black_hole_generator);
     private Bitmap black_hole = BitmapFactory.decodeResource(getResources(),R.drawable.black_hole);
+
+    private String tag = "CREATED";
 
     public GameView(Context context){
         super(context);
@@ -60,6 +63,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder){
+        if (thread.getState() == Thread.State.TERMINATED){
+            thread = new MainThread(holder,this);
+        }
         thread.setRunning(true);
         thread.start();
     }
@@ -80,8 +86,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void draw(Canvas canvas){
-        super.draw(canvas);
         if(canvas != null){
+            super.draw(canvas);
             if(gameState == 0){
                 startScreen.render(canvas);
             }else if(gameState ==1){
@@ -147,4 +153,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         this.gameState = gameState;
     }
 
+    int getGameState(){
+        return gameState;
+    }
 }

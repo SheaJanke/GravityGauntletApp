@@ -25,10 +25,26 @@ class StartScreen {
     StartScreen(Bitmap star){
         this.star = star;
         for(int a = 0; a < starX.length;a++){
-            starX[a] = (float)Math.random()*X(2000);
-            starY[a] = (float)Math.random()*Y(1000);
+            starX[a] =
+            starY[a] =
             starSize[a] = (int)(Math.random()*20) + 20;
             starIncreaing[a] = (a<20);
+        }
+        int a = 0;
+        while(a < starX.length){
+           float x = (float)Math.random()*X(2000);
+           float y = (float)Math.random()*Y(1000);
+           boolean tooClose = false;
+           for(int b = 0; b < a; b++){
+               if(Math.sqrt(Math.pow(starX[b]-x,2) + Math.pow(starY[b] -y,2)) < X(80)){
+                   tooClose = true;
+               }
+           }
+           if(!tooClose){
+               starX[a] = x;
+               starY[a] = y;
+               a++;
+           }
         }
     }
 
@@ -38,11 +54,11 @@ class StartScreen {
             x[a] = X(1000) + X(700)*(float)Math.cos(angle + Math.PI*a/2);
             y[a] = Y(500) + Y(350)*(float)Math.sin(angle + Math.PI*a/2);
         }
-        if(tickCounter>3) {
+        if(tickCounter>2) {
              for (int a = 0; a < starIncreaing.length; a++) {
                  if (starIncreaing[a]) {
                      starSize[a] = starSize[a] + 1;
-                     if (starSize[a] > 50) {
+                     if (starSize[a] > 40) {
                          starIncreaing[a] = false;
                      }
                  } else {
@@ -62,7 +78,7 @@ class StartScreen {
         Paint paint = new Paint();
         canvas.drawColor(Color.BLACK);
         for(int a = 0; a < starX.length; a++){
-            if(starX[a]+50*9/7 > X(700) && starX[a]<X(1300)&&starY[a]+50>Y(350)&&starY[a]<Y(650)){
+            if(starX[a]+50*9/7f > X(700) && starX[a]<X(1300)&&starY[a]+50>Y(350)&&starY[a]<Y(650)){
                 continue;
             }
             canvas.drawBitmap(Bitmap.createScaledBitmap(star,9*starSize[a]/7,starSize[a],true),starX[a]-starSize[a]*9/14f,starY[a]-starSize[a]/2f,paint);
@@ -70,16 +86,16 @@ class StartScreen {
         paint.setARGB(255,212,175,55);
         paint.setTypeface(Typeface.create("Arial",Typeface.BOLD));
         paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(X(140));
+        paint.setTextSize(X(160));
         canvas.drawText("Gravity",X(1000),Y(480),paint);
         canvas.drawText("Gauntlet",X(1000),Y(600),paint);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(X(3));
+        paint.setStrokeWidth(X(5));
         paint.setColor(Color.WHITE);
         //paint.setARGB(255,0,128,255);
         canvas.drawText("Gravity",X(1000),Y(480),paint);
         canvas.drawText("Gauntlet",X(1000),Y(600),paint);
-        paint.setStrokeWidth(X(15));
+        paint.setStrokeWidth(X(30));
         for(int a = 0;a<4;a++){
             paint.setStyle(Paint.Style.STROKE);
             paint.setARGB(255,212,175,55);

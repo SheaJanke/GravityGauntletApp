@@ -18,7 +18,7 @@ public class Boss extends Meteor {
     @Override
     void tick(Player player, LinkedList<Meteor> others, GameScreen gameScreen, LinkedList<Bullets> black_holes, int pull) {
         super.tick(player, others, gameScreen, black_holes, pull);
-        while((float)(5 - spawnedMeteors)/5 > upgrades.divideScores(getHealth(), upgrades.multiplyScore(upgrades.getMeteorHealth()[getLvl()],(double)getSize()/X(60)))){
+        while((float)(5 - spawnedMeteors)/5 > upgrades.divideScores(getHealth(), getMaxHealth())){
             Meteor meteor = new Meteor((int)(X(30)),upgrades,getLvl());
             meteor.setX(getX());
             meteor.setY(getY());
