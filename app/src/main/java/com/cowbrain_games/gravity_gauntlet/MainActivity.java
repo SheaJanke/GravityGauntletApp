@@ -2,6 +2,7 @@ package com.cowbrain_games.gravity_gauntlet;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.Window;
@@ -24,15 +25,14 @@ public class MainActivity extends Activity {
    @Override
     protected void onPause() {
         super.onPause();
-        lastState = gameView.getGameState();
-        gameView.setGameState(-1);
-
+        if(gameView.getGameState() == 1){
+            gameView.setGameState(-1);
+        }
     }
 
     @Override
     protected void onResume(){
         super.onResume();
-        gameView.setGameState(lastState);
         hideSystemUI();
     }
 

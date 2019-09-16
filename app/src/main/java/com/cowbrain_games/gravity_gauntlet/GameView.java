@@ -13,6 +13,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
     private StartScreen startScreen;
     private GameScreen gameScreen;
+    private PauseScreen pauseScreen;
     private EndScreen endScreen;
     private Upgrades upgrades;
     private UpgradeScreen upgradeScreen;
@@ -43,6 +44,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         guns = new Guns(player,upgrades,data,laser_cannon,black_hole_generator,black_hole);
         startScreen = new StartScreen(star);
         gameScreen = new GameScreen(data,upgrades,player,guns);
+        pauseScreen = new PauseScreen();
         endScreen = new EndScreen(star,coin,data,gameScreen);
         upgradeScreen = new UpgradeScreen();
         gunScreen = new GunScreen(player,guns,data,upgrades);
@@ -68,6 +70,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
         thread.setRunning(true);
         thread.start();
+        try {
+            thread.wait(500);
+        }catch (Exception e){
+            Log.i("surfaceCreated", "no wait");
+        }
     }
 
     @Override
@@ -100,6 +107,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 gunScreen.render(canvas,coin,next,lock,grenade,black_hole);
             }else if(gameState == 5){
                 winScreen.render(canvas);
+            }else if(gameState == -1){
+                gameScreen.render(canvas,coin,shoot,ammo,grenade,black_hole);
+                pauseScreen.render(canvas);
             }
         }
     }
@@ -117,6 +127,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             gunScreen.tick();
         }else if(gameState == 5){
             winScreen.tick();
+        }else if(gameState == -1){
+            pauseScreen.tick();
         }
     }
 
@@ -137,6 +149,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     upgradeScreen.touched(e,data,upgrades,gameScreen,this,startScreen,gunScreen,guns);
                 }else if(gameState == 4){
                     gunScreen.touched(e,this,upgradeScreen);
+                }else if(gameState == -1){
+                    pauseScreen.touched(e);
                 }
             }
             case MotionEvent.ACTION_MOVE:{
@@ -155,5 +169,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     int getGameState(){
         return gameState;
+    }
+
+    MainThread getThread(){
+        return thread;
     }
 }
