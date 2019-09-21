@@ -26,6 +26,19 @@ class Data {
         return mPreferences.getString("Gold","0");
     }
 
+    void setSensitivity(float sensitivity){
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        mEditor = mPreferences.edit();
+        mEditor.putFloat("Sensitivity",sensitivity);
+        mEditor.apply();
+    }
+
+    Float getSensitivity(){
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return mPreferences.getFloat("Sensitivity",1f);
+    }
+
+
     void setStartLvl(int startLvl){
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         mEditor = mPreferences.edit();

@@ -44,7 +44,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         guns = new Guns(player,upgrades,data,laser_cannon,black_hole_generator,black_hole);
         startScreen = new StartScreen(star);
         gameScreen = new GameScreen(data,upgrades,player,guns);
-        pauseScreen = new PauseScreen();
+        pauseScreen = new PauseScreen(data);
         endScreen = new EndScreen(star,coin,data,gameScreen);
         upgradeScreen = new UpgradeScreen();
         gunScreen = new GunScreen(player,guns,data,upgrades);
@@ -142,7 +142,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 if(gameState == 0){
                     startScreen.touched(e,this,gameScreen,upgradeScreen);
                 }else if(gameState == 1){
-                    gameScreen.touched(e);
+                    gameScreen.touched(e,this);
                 }else if(gameState == 2){
                     endScreen.touched(e,this, gameScreen, upgradeScreen);
                 }else if(gameState == 3){
@@ -150,12 +150,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 }else if(gameState == 4){
                     gunScreen.touched(e,this,upgradeScreen);
                 }else if(gameState == -1){
-                    pauseScreen.touched(e);
+                    pauseScreen.touched(e,this,data);
                 }
             }
             case MotionEvent.ACTION_MOVE:{
                 if(gameState == 1){
-                    gameScreen.touched(e);
+                    gameScreen.touched(e,this);
+                }else if(gameState == -1){
+                    pauseScreen.touched(e,this,data);
                 }
             }
         }

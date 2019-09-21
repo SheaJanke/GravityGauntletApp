@@ -92,8 +92,8 @@ public class Player {
 
     void touched(MotionEvent e, int index){
         if(tickCounter-lastTick <=1 &&(Math.pow(e.getX(index)-lastTouchedX,2)+Math.pow(e.getY(index)-lastTouchedY,2)<X(10000))){
-            x+=(e.getX(index)-lastTouchedX);
-            y+=(e.getY(index)-lastTouchedY);
+            x+=(e.getX(index)-lastTouchedX)*data.getSensitivity();
+            y+=(e.getY(index)-lastTouchedY)*data.getSensitivity();
             if(x-size <0){
                 x = size;
             }else if(x+size>X(2000)){

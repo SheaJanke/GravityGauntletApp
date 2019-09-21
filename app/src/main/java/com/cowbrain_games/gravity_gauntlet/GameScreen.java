@@ -105,21 +105,39 @@ class GameScreen {
         for(Meteor meteor:meteors){
             meteor.render(canvas,X(15));
         }
-        paint.setColor(Color.RED);
-        canvas.drawRect(X(1600),Y(50),X(1950),Y(150),paint);
-        paint.setColor(Color.GREEN);
 
-        canvas.drawRect(X(1600), Y(50), X(1600)+(float)upgrades.divideScores(player.getHealth(), player.getMaxHealth()) * X(350), Y(150),paint);
+        //drawing health bar
+        int healthX = 1500;
+        paint.setColor(Color.RED);
+        canvas.drawRect(X(healthX),Y(50),X(healthX+350),Y(150),paint);
+        paint.setColor(Color.GREEN);
+        canvas.drawRect(X(healthX), Y(50), X(healthX)+(float)upgrades.divideScores(player.getHealth(), player.getMaxHealth()) * X(350), Y(150),paint);
         paint.setColor(Color.WHITE);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(X(5));
-        canvas.drawRect(X(1600),Y(50),X(1950),Y(150),paint);
+        canvas.drawRect(X(healthX),Y(50),X(healthX+350),Y(150),paint);
         paint.setTextSize(X(80));
+
+        //drawing pause button
+        paint.setColor(Color.WHITE);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawRect(X(1875),Y(50),X(1975),Y(150),paint);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setARGB(255,212,175,55);
+        paint.setStrokeWidth(X(10));
+        canvas.drawRect(X(1875),Y(50),X(1975),Y(150),paint);
+        paint.setStrokeWidth(X(20));
+        canvas.drawLine(X(1910),Y(75),X(1910),Y(125),paint);
+        canvas.drawLine(X(1940),Y(75),X(1940),Y(125),paint);
+
+
+        paint.setColor(Color.WHITE);
         paint.setStyle(Paint.Style.FILL);
         paint.setTextAlign(Paint.Align.CENTER);
         canvas.drawText(upgrades.simplifyScore(getGoldEarned()),X(150),Y(100),paint);
         canvas.drawBitmap(Bitmap.createScaledBitmap(coin,(int)X(80),(int)X(80),true),X(160)+ getGoldEarned().length()*X(20),Y(35),paint);
         paint.setStyle(Paint.Style.STROKE);
+        paint.setARGB(255,212,175,55);
         paint.setStrokeWidth(X(3));
         canvas.drawText(upgrades.simplifyScore(goldEarned),X(150),Y(100),paint);
 
@@ -140,12 +158,15 @@ class GameScreen {
 
     }
 
-    void touched(MotionEvent e){
+    void touched(MotionEvent e, GameView gameView){
         for(int a = 0;a < e.getPointerCount(); a ++){
             if(Math.pow(e.getX(a)-X(1825),2)+Math.pow(e.getY(a)-Y(825),2)<Math.pow((int)X(150),2)){
                 guns.shoot(addBullets);
                 continue;
+            }else if(e.getX(a)>X(1875) && e.getX(a)<X(1975) && e.getY(a)>Y(50) && e.getY(a)<Y(150)){
+                gameView.setGameState(-1);
             }
+
             player.touched(e,a);
         }
     }
