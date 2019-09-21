@@ -114,30 +114,36 @@ class StartScreen {
         paint.setTextSize(X(100));
         canvas.drawText("PLAY",x[0],y[0]+Y(30),paint);
         canvas.drawText("UPGRADES",x[1],y[1]+Y(30),paint);
-        paint.setTextSize(X(80));
-        canvas.drawText("HOW TO PLAY",x[2],y[2]+Y(25),paint);
-        canvas.drawText("COMPETITIVE",x[3],y[3]+Y(25),paint);
+        canvas.drawText("GUNS",x[2],y[2]+Y(25),paint);
+        canvas.drawText("TUTORIAL",x[3],y[3]+Y(25),paint);
         paint.setColor(Color.BLACK);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(X(3));
         paint.setTextSize(X(100));
         canvas.drawText("PLAY",x[0],y[0]+Y(30),paint);
         canvas.drawText("UPGRADES",x[1],y[1]+Y(30),paint);
-        paint.setTextSize(X(80));
-        canvas.drawText("HOW TO PLAY",x[2],y[2]+Y(25),paint);
-        canvas.drawText("COMPETITIVE",x[3],y[3]+Y(25),paint);
+        canvas.drawText("GUNS",x[2],y[2]+Y(25),paint);
+        canvas.drawText("TUTORIAL",x[3],y[3]+Y(25),paint);
 
 
 
     }
 
-    void touched(MotionEvent e, GameView gameView, GameScreen gameScreen, UpgradeScreen upgradeScreen){
+    void touched(MotionEvent e, GameView gameView, GameScreen gameScreen, UpgradeScreen upgradeScreen, GunScreen gunScreen, TutorialScreen tutorialScreen, Data data, Guns guns){
         if(e.getX() > x[0]-X(300) && e.getX() < x[0]+X(300) && e.getY()> y[0]-Y(100) && e.getY()< y[0]+(100)&&System.currentTimeMillis()-buttonTimer>300){
             gameScreen.reset();
             gameView.setGameState(1);
         }else if(e.getX() > x[1]-X(300) && e.getX() < x[1]+X(300) && e.getY()> y[1]-Y(100) && e.getY()< y[1]+(100)&&System.currentTimeMillis()-buttonTimer>300){
             upgradeScreen.reset();
             gameView.setGameState(3);
+        }else if(e.getX() > x[2]-X(300) && e.getX() < x[2]+X(300) && e.getY()> y[2]-Y(100) && e.getY()< y[2]+(100)&&System.currentTimeMillis()-buttonTimer>300){
+            gunScreen.setGunOnScreen(data.getAllGunPurchases().indexOf("2"));
+            guns.setGunLvl(data.getAllGunPurchases().indexOf("2"));
+            gunScreen.reset();
+            gameView.setGameState(4);
+        }else if(e.getX() > x[3]-X(300) && e.getX() < x[3]+X(300) && e.getY()> y[3]-Y(100) && e.getY()< y[3]+(100)&&System.currentTimeMillis()-buttonTimer>300){
+            tutorialScreen.reset();
+            gameView.setGameState(-2);
         }
     }
 

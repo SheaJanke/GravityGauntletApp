@@ -211,6 +211,14 @@ class Guns {
         shootTimer = System.currentTimeMillis();
     }
 
+    void tutorialReset(){
+        gunLvl = 0;
+        ammo = 100;
+        burst = 1;
+        shootTimer = System.currentTimeMillis();
+    }
+
+
     void reset(){
         ammo = Double.parseDouble(upgrades.getGunAmmo(gunLvl)[Integer.parseInt(data.getGunLvls(gunLvl).substring(0,1))]);
         if(gunLvl<3) {

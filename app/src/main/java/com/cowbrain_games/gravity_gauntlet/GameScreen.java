@@ -12,23 +12,23 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 class GameScreen {
-    private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
-    private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
-    private Player player;
-    private Guns guns;
-    private Upgrades upgrades;
-    private Data data;
-    private LinkedList<Meteor> meteors = new LinkedList<>();
-    private ArrayList<Meteor> remove = new ArrayList<>();
-    private LinkedList<Bullets> bullets = new LinkedList<>();
-    private ArrayList<Bullets> addBullets = new ArrayList<>();
-    private ArrayList<Bullets> removeBullets = new ArrayList<>();
-    private int meteorLvl;
+    int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+    int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+    Player player;
+    Guns guns;
+    Upgrades upgrades;
+    Data data;
+    LinkedList<Meteor> meteors = new LinkedList<>();
+    ArrayList<Meteor> remove = new ArrayList<>();
+    LinkedList<Bullets> bullets = new LinkedList<>();
+    ArrayList<Bullets> addBullets = new ArrayList<>();
+    ArrayList<Bullets> removeBullets = new ArrayList<>();
+    int meteorLvl;
     private int lvlCounter = 5;
     private long lastMeteor = System.currentTimeMillis();
     private long bossTimer = System.currentTimeMillis();
-    private String goldEarned = "0";
-    private int shootX = 1825;
+    String goldEarned = "0";
+    int shootX = 1825;
 
     GameScreen(Data data, Upgrades upgrades,Player player, Guns guns){
         this.upgrades = upgrades;
@@ -197,11 +197,11 @@ class GameScreen {
         removeBullets.add(bullet);
     }
 
-    private float X(float X){
+    float X(float X){
         return X * width/2000f;
     }
 
-    private float Y(float Y){
+    float Y(float Y){
         return Y* height/1000f;
     }
 

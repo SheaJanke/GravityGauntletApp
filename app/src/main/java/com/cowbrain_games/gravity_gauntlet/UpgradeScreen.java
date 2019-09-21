@@ -12,31 +12,68 @@ class UpgradeScreen {
     private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
     private int[][] colors = {{255,255,0,0},{255,255,165,0},{255,255,255,0},{255,0,128,0},{255,0,0,255}};
-    private float[] starX = new float[50];
-    private float[] starY = new float[50];
-    private int[] starSize = new int[50];
+    private Bitmap star;
+    private float[] starX = new float[40];
+    private float[] starY = new float[40];
+    private int[] starSize = new int[40];
+    private boolean[] starIncreaing = new boolean[40];
+    private long tickCounter = 0;
     private long buyTimer = System.currentTimeMillis();
 
-    UpgradeScreen(){
+    UpgradeScreen(Bitmap star){
+        this.star = star;
         for(int a = 0; a < starX.length;a++){
-            starX[a] = (float)Math.random()*X(2000);
-            starY[a] = (float)Math.random()*Y(1000);
-            starSize[a] = (int)(Math.random()*20) + 20;
+            starX[a] =
+                    starY[a] =
+                            starSize[a] = (int)(Math.random()*20) + 20;
+            starIncreaing[a] = (a<20);
+        }
+        int a = 0;
+        while(a < starX.length){
+            float x = (float)Math.random()*X(2000);
+            float y = (float)Math.random()*Y(1000);
+            boolean tooClose = false;
+            for(int b = 0; b < a; b++){
+                if(Math.sqrt(Math.pow(starX[b]-x,2) + Math.pow(starY[b] -y,2)) < X(80)){
+                    tooClose = true;
+                }
+            }
+            if(!tooClose){
+                starX[a] = x;
+                starY[a] = y;
+                a++;
+            }
         }
     }
 
     void tick() {
-
+        if(tickCounter>2) {
+            for (int a = 0; a < starIncreaing.length; a++) {
+                if (starIncreaing[a]) {
+                    starSize[a] = starSize[a] + 1;
+                    if (starSize[a] > 40) {
+                        starIncreaing[a] = false;
+                    }
+                } else {
+                    starSize[a] = starSize[a] - 1;
+                    if (starSize[a] < 20) {
+                        starIncreaing[a] = true;
+                    }
+                }
+            }
+            tickCounter = 0;
+        }
+        tickCounter++;
     }
 
-    void render(Canvas canvas, Upgrades upgrades, Data data, Bitmap star, Bitmap coin) {
+    void render(Canvas canvas, Upgrades upgrades, Data data, Bitmap coin) {
         canvas.drawColor(Color.BLACK);
         Paint paint = new Paint();
         for(int a = 0; a < starX.length; a++){
-            if(starX[a]+starSize[a]*9/7 > X(600) && starX[a]<X(1400)&&starY[a]+starSize[a]>Y(0)&&starY[a]<Y(250)){
+            if(starX[a]+50*9/7f > X(700) && starX[a]<X(1300)&&starY[a]+50>Y(0)&&starY[a]<Y(300)){
                 continue;
             }
-            canvas.drawBitmap(Bitmap.createScaledBitmap(star,9*starSize[a]/7,starSize[a],true),starX[a],starY[a],paint);
+            canvas.drawBitmap(Bitmap.createScaledBitmap(star,9*starSize[a]/7,starSize[a],true),starX[a]-starSize[a]*9/14f,starY[a]-starSize[a]/2f,paint);
         }
         paint.setColor(Color.CYAN);
         paint.setTextSize(X(150));
@@ -170,9 +207,9 @@ class UpgradeScreen {
             startScreen.reset();
             gameView.setGameState(0);
         }else if(e.getX() > X(1700) && e.getX()<X(1990) && e.getY()>Y(0) && e.getY()<Y(140)&& System.currentTimeMillis()-buyTimer > 300){
-            gunScreen.reset();
             gunScreen.setGunOnScreen(data.getAllGunPurchases().indexOf("2"));
             guns.setGunLvl(data.getAllGunPurchases().indexOf("2"));
+            gunScreen.reset();
             gameView.setGameState(4);
         }
     }
