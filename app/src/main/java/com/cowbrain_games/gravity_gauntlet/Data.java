@@ -33,6 +33,19 @@ class Data {
         mEditor.apply();
     }
 
+    int getShootPosition(){
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return mPreferences.getInt("shootPosition",0);
+    }
+
+    void setShootPosition(int pos){
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        mEditor = mPreferences.edit();
+        mEditor.putInt("shootPosition",pos);
+        mEditor.apply();
+    }
+
+
     Float getSensitivity(){
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return mPreferences.getFloat("Sensitivity",1f);

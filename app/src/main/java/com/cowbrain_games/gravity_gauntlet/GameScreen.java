@@ -28,6 +28,7 @@ class GameScreen {
     private long lastMeteor = System.currentTimeMillis();
     private long bossTimer = System.currentTimeMillis();
     private String goldEarned = "0";
+    private int shootX = 1825;
 
     GameScreen(Data data, Upgrades upgrades,Player player, Guns guns){
         this.upgrades = upgrades;
@@ -142,25 +143,30 @@ class GameScreen {
         canvas.drawText(upgrades.simplifyScore(goldEarned),X(150),Y(100),paint);
 
         //shoot icon
+        if(data.getShootPosition() == 0){
+            shootX = 1825;
+        }else{
+            shootX = 175;
+        }
         paint.setStyle(Paint.Style.FILL);
         paint.setStrokeWidth(X(10));
         paint.setColor(Color.RED);
-        canvas.drawCircle(X(1825),Y(825),(int)X(150),paint);
+        canvas.drawCircle(X(shootX),Y(825),(int)X(150),paint);
         paint.setStyle(Paint.Style.STROKE);
         paint.setARGB(255,212,175,55);
-        canvas.drawCircle(X(1825),Y(825),(int)X(150),paint);
-        canvas.drawBitmap(Bitmap.createScaledBitmap(shoot,(int)X(250),(int)X(250),true),X(1700),Y(825)-X(125),paint);
+        canvas.drawCircle(X(shootX),Y(825),(int)X(150),paint);
+        canvas.drawBitmap(Bitmap.createScaledBitmap(shoot,(int)X(250),(int)X(250),true),X(shootX-125),Y(825)-X(125),paint);
         paint.setColor(Color.WHITE);
         paint.setStyle(Paint.Style.FILL);
         paint.setTextSize(X(80));
-        canvas.drawText(guns.getAmmo(),X(1850),Y(660),paint);
-        canvas.drawBitmap(Bitmap.createScaledBitmap(ammo,(int)X(150),(int)X(100),true),X(1730)-X(18)*guns.getAmmo().length(),Y(590),paint);
+        canvas.drawText(guns.getAmmo(),X(shootX+25),Y(660),paint);
+        canvas.drawBitmap(Bitmap.createScaledBitmap(ammo,(int)X(150),(int)X(100),true),X(shootX-95)-X(18)*guns.getAmmo().length(),Y(590),paint);
 
     }
 
     void touched(MotionEvent e, GameView gameView){
         for(int a = 0;a < e.getPointerCount(); a ++){
-            if(Math.pow(e.getX(a)-X(1825),2)+Math.pow(e.getY(a)-Y(825),2)<Math.pow((int)X(150),2)){
+            if(Math.pow(e.getX(a)-X(shootX),2)+Math.pow(e.getY(a)-Y(825),2)<Math.pow((int)X(150),2)){
                 guns.shoot(addBullets);
                 continue;
             }else if(e.getX(a)>X(1875) && e.getX(a)<X(1975) && e.getY(a)>Y(50) && e.getY(a)<Y(150)){

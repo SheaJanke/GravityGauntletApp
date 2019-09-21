@@ -12,8 +12,10 @@ class PauseScreen {
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
     private float x;
     private int tickCounter = 0;
+    private Data data;
 
     PauseScreen(Data data){
+        this.data = data;
         x = X(700) + (data.getSensitivity()-0.5f)*X(300);
     }
 
@@ -59,9 +61,17 @@ class PauseScreen {
 
         //shoot button position
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.GREEN);
+        if(data.getShootPosition() == 0){
+            paint.setColor(Color.GREEN);
+        }else{
+            paint.setColor(Color.RED);
+        }
         canvas.drawRect(X(1000),Y(530), X(1400),Y(660),paint);
-        paint.setColor(Color.RED);
+        if(data.getShootPosition() == 0){
+            paint.setColor(Color.RED);
+        }else{
+            paint.setColor(Color.GREEN);
+        }
         canvas.drawRect(X(600),Y(530), X(1000),Y(660),paint);
         paint.setStyle(Paint.Style.STROKE);
         paint.setARGB(255,212,175,55);
@@ -71,8 +81,8 @@ class PauseScreen {
         paint.setStyle(Paint.Style.FILL);
         paint.setTextSize(X(90));
         paint.setColor(Color.WHITE);
-        canvas.drawText("LEFT",X(800),Y(630),paint);
-        canvas.drawText("RIGHT",X(1200),Y(630),paint);
+        canvas.drawText("LEFT",X(800),Y(625),paint);
+        canvas.drawText("RIGHT",X(1200),Y(625),paint);
         paint.setStyle(Paint.Style.STROKE);
         paint.setARGB(255,212,175,55);
         paint.setStrokeWidth(X(3));
@@ -96,6 +106,15 @@ class PauseScreen {
                 x = X(1300);
             }
             data.setSensitivity((x-X(700))/X(300) + 0.5f);
+        }
+        if(data.getShootPosition() == 0){
+            if(e.getX()>X(600) && e.getX()<X(1000) && e.getY() > Y(530) && e.getY() < Y(660)){
+                data.setShootPosition(1);
+            }
+        }else if(data.getShootPosition() == 1){
+            if(e.getX()>X(1000) && e.getX()<X(1400) && e.getY() > Y(530) && e.getY() < Y(660)){
+                data.setShootPosition(0);
+            }
         }
     }
 
