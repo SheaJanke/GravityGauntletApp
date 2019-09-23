@@ -65,7 +65,7 @@ class Bullets {
         }
     }
 
-    void tick(LinkedList<Meteor> meteors, Upgrades upgrades, Data data, ArrayList<Bullets> removeBullet, ArrayList<Meteor> removeMeteor){
+    void tick(LinkedList<Meteor> meteors, Upgrades upgrades, Data data, ArrayList<Bullets> removeBullet, ArrayList<Meteor> removeMeteor, GameView gameView){
         if(!exploded) {
             if(gunLvl == 4){
                 rotation = guns.getRotation();
@@ -92,7 +92,11 @@ class Bullets {
                     }
                 }else {
                     if (Math.sqrt(Math.pow(x - meteor.getX(), 2) + Math.pow(y - meteor.getY(), 2)) < meteor.getSize() + hitboxRadius[gunLvl]) {
-                        meteor.setHealth(upgrades.subtractScore(meteor.getHealth(), upgrades.getGunDamage(gunLvl)[Integer.parseInt(data.getGunLvls(gunLvl).substring(1, 2))]));
+                        if(gameView.getGameState() == -2){
+                            meteor.setHealth(upgrades.subtractScore(meteor.getHealth(), "1"));
+                        }else{
+                            meteor.setHealth(upgrades.subtractScore(meteor.getHealth(), upgrades.getGunDamage(gunLvl)[Integer.parseInt(data.getGunLvls(gunLvl).substring(1, 2))]));
+                        }
                         if (upgrades.scoreLarger("0.1", meteor.getHealth())) {
                             removeMeteor.add(meteor);
                         }

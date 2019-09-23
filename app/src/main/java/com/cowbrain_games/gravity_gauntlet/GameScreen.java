@@ -47,7 +47,7 @@ class GameScreen {
         player.tick();
         guns.tick(addBullets);
         for(Bullets bullet:bullets){
-            bullet.tick(meteors,upgrades,data,removeBullets,remove);
+            bullet.tick(meteors,upgrades,data,removeBullets,remove,gameView);
         }
         bullets.addAll(addBullets);
         for(Bullets bullet:removeBullets){

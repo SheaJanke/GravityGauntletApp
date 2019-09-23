@@ -16,6 +16,8 @@ class GunScreen {
     Guns guns;
     Data data;
     Upgrades upgrades;
+    private GameView gameView;
+
     private long buyTimer = System.currentTimeMillis();
     private String[] gunCost = {"5.00M","10.0B","5.00t", "5.00q", "10.0Q"};
     private String[][] gunUpgrades = {{"Ammo", "Damage", "Burst"},{"Ammo", "Damage", "Burst"},{"Ammo", "Damage", "Burst"},{"Ammo", "Damage", "Exposion Radius"},{"Ammo", "Damage", "Duration"},{"Ammo", "Damage", "Pull"}};
@@ -32,11 +34,12 @@ class GunScreen {
     private int gunOnScreen;
     private int numberOfGuns = 6;
 
-    GunScreen(Player player, Guns guns, Data data, Upgrades upgrades){
+    GunScreen(Player player, Guns guns, Data data, Upgrades upgrades, GameView gameView){
         this.player = player;
         this.guns = guns;
         this.data = data;
         this.upgrades = upgrades;
+        this.gameView = gameView;
         gunOnScreen = data.getAllGunPurchases().indexOf("2");
         resetBuy();
     }
@@ -48,7 +51,7 @@ class GunScreen {
         }
         guns.tick(addBullets);
         for(Bullets bullet:bullets){
-            bullet.tick(meteors,upgrades,data,removeBullets,removeMeteors);
+            bullet.tick(meteors,upgrades,data,removeBullets,removeMeteors,gameView);
         }
         for(Bullets bullet:addBullets){
             bullets.add(bullet);

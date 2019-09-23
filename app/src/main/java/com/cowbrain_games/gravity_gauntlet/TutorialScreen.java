@@ -16,8 +16,7 @@ public class TutorialScreen extends GameScreen {
         super(data,upgrades,player,guns);
     }
 
-    @Override
-    void render(Canvas canvas, Bitmap coin, Bitmap shoot, Bitmap ammo, Bitmap grenade, Bitmap black_hole) {
+    void render(Canvas canvas, Bitmap coin, Bitmap shoot, Bitmap ammo, Bitmap grenade, Bitmap black_hole, Bitmap arrow) {
         Paint paint = new Paint();
         paint.setColor(Color.RED);
         paint.setTextSize(X(60));
@@ -33,6 +32,12 @@ public class TutorialScreen extends GameScreen {
                 meteor.render(canvas, X(15));
             }
         }
+        bullets.addAll(addBullets);
+        for(Bullets bullet:removeBullets){
+            bullets.remove(bullet);
+        }
+        addBullets.clear();
+        removeBullets.clear();
 
         //drawing health bar
         int healthX = 1600;
@@ -75,7 +80,7 @@ public class TutorialScreen extends GameScreen {
         }
 
         //shoot icon
-        if(state > 2) {
+        if(state > 3) {
             if (data.getShootPosition() == 0) {
                 shootX = 1825;
             } else {
@@ -109,7 +114,38 @@ public class TutorialScreen extends GameScreen {
         paint.setColor(Color.WHITE);
         if(state == 0){
             paint.setTextSize(X(70));
-            canvas.drawText("Move your player by sliding your finger across the screen.",X(1000),Y(850),paint);
+            canvas.drawText("Move your player by sliding your finger",X(1000),Y(850),paint);
+            canvas.drawText("across the screen.",X(1000),Y(920),paint);
+        }else if(state == 1){
+            canvas.drawText("This is your health bar.",X(1000),Y(880),paint);
+            canvas.drawBitmap(Bitmap.createScaledBitmap(arrow, (int)X(150), (int)X(200),true),X(1710), Y(250),paint);
+
+        }else if(state == 2){
+            paint.setTextSize(X(70));
+            canvas.drawText("Meteors spawn at the edge of the screen",X(1000),Y(850),paint);
+            canvas.drawText("and gravity pulls them towards you.",X(1000),Y(920),paint);
+
+        }else if(state == 3){
+            paint.setTextSize(X(70));
+            canvas.drawText("If you hit a meteor, you will lose health.",X(1000),Y(850),paint);
+            canvas.drawText("Stay alive for as long as possible!",X(1000),Y(920),paint);
+
+        }else if(state == 4){
+            paint.setTextSize(X(70));
+            canvas.drawText("Shoot the meteors to make them disappear",X(1000),Y(850),paint);
+            canvas.drawText("You have limited ammo.",X(1000),Y(920),paint);
+        }else if(state == 5){
+            paint.setTextSize(X(70));
+            canvas.drawText("Some meteors are stronger than others",X(1000),Y(850),paint);
+            canvas.drawText("and can take multiple hits to destroy.",X(1000),Y(920),paint);
+        }else if(state == 6){
+            paint.setTextSize(X(100));
+            canvas.drawText("Earn gold by staying alive",X(1000),Y(920),paint);
+            canvas.drawBitmap(Bitmap.createScaledBitmap(arrow, (int)X(150), (int)X(200),true),X(1710), Y(250),paint);
+        }else if(state == 7){
+            paint.setTextSize(X(70));
+            canvas.drawText("You can use gold to upgrade your",X(1000),Y(850),paint);
+            canvas.drawText("player and buy new guns!",X(1000),Y(920),paint);
         }
 
         //draw back button
@@ -117,17 +153,42 @@ public class TutorialScreen extends GameScreen {
 
     @Override
     void tick(GameView gameView, EndScreen endScreen) {
+        goldEarned = upgrades.addScores(goldEarned, "1");
         player.tick();
+        guns.tick(addBullets);
+        for(Bullets bullet: bullets){
+            bullet.tick(meteors,upgrades,data,removeBullets,remove,gameView);
+        }
         if(state > 0){
             for(Meteor meteor: meteors){
                 meteor.tick(player,meteors,this,new LinkedList<Bullets>(), 0);
             }
         }
+        for(Meteor rem : remove){
+            meteors.remove(rem);
+        }
+        remove.clear();
+        if(state == 1 && System.currentTimeMillis()-timer > 3000) {
+            state ++;
+            timer = System.currentTimeMillis();
+            meteors.add(new Meteor((int)X(40),upgrades,0));
+            meteors.add(new Meteor((int)X(50),upgrades,0));
+            meteors.add(new Meteor((int)X(30),upgrades,0));
+        }
+        if(state >= 2 && System.currentTimeMillis()-timer > 5000) {
+            state ++;
+            timer = System.currentTimeMillis();
+            meteors.add(new Meteor((int)X((float)Math.random()*30 + 30),upgrades,0));
+            if(state == 5){
+                meteors.add(new Meteor((int)X(60),upgrades,1));
+            }
+        }
+
     }
 
     @Override
     void reset() {
-        player.reset();
+        player.tutorialReset();
         guns.tutorialReset();
         meteors.clear();
         bullets.clear();
@@ -142,19 +203,15 @@ public class TutorialScreen extends GameScreen {
     @Override
     void touched(MotionEvent e, GameView gameView) {
         for(int a = 0;a < e.getPointerCount(); a ++){
-            if(Math.pow(e.getX(a)-X(shootX),2)+Math.pow(e.getY(a)-Y(825),2)<Math.pow((int)X(150),2) && state == 3){
+            if(Math.pow(e.getX(a)-X(shootX),2)+Math.pow(e.getY(a)-Y(825),2)<Math.pow((int)X(150),2) && state > 3){
                 guns.shoot(addBullets);
-                state++;
                 continue;
-            }else if(e.getX(a)>X(1875) && e.getX(a)<X(1975) && e.getY(a)>Y(50) && e.getY(a)<Y(150)&& state == 4){
-                gameView.setGameState(-1);
             }
-
             player.touched(e,a);
             if(state == 0 && System.currentTimeMillis()-timer > 500){
                 state++;
+                timer = System.currentTimeMillis();
             }
-
             if(e.getX(a)>X(1600) && e.getX(a)<X(1950) && e.getY(a)>Y(25) && e.getY(a) < Y(125)){
                 gameView.setGameState(0);
             }

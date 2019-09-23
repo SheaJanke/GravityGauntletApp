@@ -111,8 +111,14 @@ public class Player {
     }
     void reset(){
         this.weight = upgrades.getPlayerWeight()*Math.pow(1.072,data.getStartLvl());
-        this.health = upgrades.getHealth();
+        health = upgrades.getHealth();
         maxHealth = upgrades.getHealth();
+    }
+
+    void tutorialReset(){
+        weight = 100;
+        health = "100";
+        maxHealth = "100";
     }
 
 

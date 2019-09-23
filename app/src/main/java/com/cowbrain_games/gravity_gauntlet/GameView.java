@@ -34,6 +34,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Bitmap laser_cannon = BitmapFactory.decodeResource(getResources(),R.drawable.laser_cannon);
     private Bitmap black_hole_generator = BitmapFactory.decodeResource(getResources(),R.drawable.black_hole_generator);
     private Bitmap black_hole = BitmapFactory.decodeResource(getResources(),R.drawable.black_hole);
+    private Bitmap arrow = BitmapFactory.decodeResource(getResources(),R.drawable.arrow);
 
     private String tag = "CREATED";
 
@@ -48,7 +49,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         pauseScreen = new PauseScreen(data);
         endScreen = new EndScreen(star,coin,data,gameScreen);
         upgradeScreen = new UpgradeScreen(star);
-        gunScreen = new GunScreen(player,guns,data,upgrades);
+        gunScreen = new GunScreen(player,guns,data,upgrades,this);
         winScreen = new WinScreen();
         tutorialScreen = new TutorialScreen(data,upgrades,player,guns);
 
@@ -113,7 +114,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 gameScreen.render(canvas,coin,shoot,ammo,grenade,black_hole);
                 pauseScreen.render(canvas);
             }else if(gameState == -2){
-                tutorialScreen.render(canvas,coin,shoot,ammo,grenade,black_hole);
+                tutorialScreen.render(canvas,coin,shoot,ammo,grenade,black_hole,arrow);
             }
         }
     }
