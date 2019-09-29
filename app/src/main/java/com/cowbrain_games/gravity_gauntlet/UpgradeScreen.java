@@ -232,6 +232,16 @@ class UpgradeScreen {
         paint.setStrokeWidth(X(10));
         canvas.drawRect(x -X(100),y-X(50),x+X(100),y+X(50),paint);
     }
+    private void drawMaxedButton(Paint paint, Canvas canvas, float x, float y){
+        paint.setColor(Color.WHITE);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawRect(x -X(100),y-X(50),x+X(100),y+X(50),paint);
+        paint.setARGB(255,212,175,55);
+        canvas.drawText("MAXED",x,y+Y(20),paint);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(X(10));
+        canvas.drawRect(x -X(100),y-X(50),x+X(100),y+X(50),paint);
+    }
 
     void reset(){
         buyTimer = System.currentTimeMillis();

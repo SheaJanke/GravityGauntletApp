@@ -40,9 +40,6 @@ class GameScreen {
     }
 
     void tick(GameView gameView, EndScreen endScreen){
-        if(meteorLvl > 99){
-            gameView.setGameState(5);
-        }
         goldEarned = upgrades.addScores(goldEarned, upgrades.multiplyScore(upgrades.getScoreMultiplier(),upgrades.getLvlMultiplier(meteorLvl)*0.60));
         player.tick();
         guns.tick(addBullets);
@@ -55,16 +52,13 @@ class GameScreen {
         }
         addBullets.clear();
         removeBullets.clear();
-        if(System.currentTimeMillis()-lastMeteor>3000 && System.currentTimeMillis()-bossTimer > 20000){
+        if(System.currentTimeMillis()-lastMeteor>3000 && System.currentTimeMillis()-bossTimer > 20000 && meteorLvl < 100){
             addMeteor();
             lastMeteor = System.currentTimeMillis();
             lvlCounter++;
         }
         if(lvlCounter >= 10){
             lvlCounter = 0;
-            if(meteorLvl >= 99){
-                gameView.setGameState(5);
-            }
             meteorLvl++;
             player.setWeight(player.getWeight()*1.1);
             if(meteorLvl%5 == 0){
@@ -73,6 +67,10 @@ class GameScreen {
                 meteorLvl++;
                 player.setWeight(player.getWeight()*1.1);
             }
+        }
+        if(meteorLvl >= 100 && meteors.size() == 0){
+            gameView.setGameState(5);
+            data.setGold(upgrades.simplifyScore(upgrades.addScores(data.getGold(),goldEarned)));
         }
         for(Meteor meteor:meteors){
             if(guns.getGunLvl()==5) {
@@ -110,6 +108,9 @@ class GameScreen {
         //drawing health bar
         int healthX = 1500;
         paint.setColor(Color.RED);
+        canvas.drawText(Integer.toString(meteors.size()),X(1000),Y(100),paint);
+        canvas.drawText(Integer.toString(meteorLvl),X(1000),Y(150),paint);
+
         canvas.drawRect(X(healthX),Y(50),X(healthX+350),Y(150),paint);
         paint.setColor(Color.GREEN);
         canvas.drawRect(X(healthX), Y(50), X(healthX)+(float)upgrades.divideScores(player.getHealth(), player.getMaxHealth()) * X(350), Y(150),paint);
