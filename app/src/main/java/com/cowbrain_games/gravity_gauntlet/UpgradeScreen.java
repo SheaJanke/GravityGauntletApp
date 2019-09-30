@@ -91,7 +91,7 @@ class UpgradeScreen {
         paint.setStyle(Paint.Style.STROKE);
         paint.setARGB(255,212,175,55);
         canvas.drawText(data.getGold(),X(960),Y(260),paint);
-        canvas.drawBitmap(Bitmap.createScaledBitmap(coin,(int)X(100),(int)X(100),true),X(960)+ data.getGold().length()*X(28),Y(170),paint);
+        canvas.drawBitmap(Bitmap.createScaledBitmap(coin,(int)X(100),(int)X(100),true),X(960)+ data.getGold().length()*X(28),Y(178),paint);
         for(int a = 0; a < 2; a ++) {
             for (int b = 0; b < 2; b++) {
                 paint.setStyle(Paint.Style.STROKE);

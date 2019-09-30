@@ -166,7 +166,7 @@ public class TutorialScreen extends GameScreen {
     }
 
     @Override
-    void tick(GameView gameView, EndScreen endScreen) {
+    void tick(GameView gameView, EndScreen endScreen, WinScreen winScreen) {
         if(System.currentTimeMillis()-glitchTimer< 50){
             bullets.clear();
         }

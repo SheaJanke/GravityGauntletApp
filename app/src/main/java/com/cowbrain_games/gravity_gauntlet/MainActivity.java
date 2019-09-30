@@ -2,15 +2,12 @@ package com.cowbrain_games.gravity_gauntlet;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 public class MainActivity extends Activity {
     GameView gameView;
-    private int lastState = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

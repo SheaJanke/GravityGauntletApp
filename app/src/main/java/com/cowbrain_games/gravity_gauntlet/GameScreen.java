@@ -6,9 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.MotionEvent;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedList;
 
 class GameScreen {
@@ -39,7 +37,7 @@ class GameScreen {
 
     }
 
-    void tick(GameView gameView, EndScreen endScreen){
+    void tick(GameView gameView, EndScreen endScreen, WinScreen winScreen){
         goldEarned = upgrades.addScores(goldEarned, upgrades.multiplyScore(upgrades.getScoreMultiplier(),upgrades.getLvlMultiplier(meteorLvl)*0.60));
         player.tick();
         guns.tick(addBullets);
@@ -70,6 +68,7 @@ class GameScreen {
         }
         if(meteorLvl >= 100 && meteors.size() == 0){
             gameView.setGameState(5);
+            winScreen.reset();
             data.setGold(upgrades.simplifyScore(upgrades.addScores(data.getGold(),goldEarned)));
         }
         for(Meteor meteor:meteors){
@@ -108,9 +107,6 @@ class GameScreen {
         //drawing health bar
         int healthX = 1500;
         paint.setColor(Color.RED);
-        canvas.drawText(Integer.toString(meteors.size()),X(1000),Y(100),paint);
-        canvas.drawText(Integer.toString(meteorLvl),X(1000),Y(150),paint);
-
         canvas.drawRect(X(healthX),Y(50),X(healthX+350),Y(150),paint);
         paint.setColor(Color.GREEN);
         canvas.drawRect(X(healthX), Y(50), X(healthX)+(float)upgrades.divideScores(player.getHealth(), player.getMaxHealth()) * X(350), Y(150),paint);
@@ -178,7 +174,7 @@ class GameScreen {
         }
     }
 
-    void addMeteor(){
+    private void addMeteor(){
         meteors.add(new Meteor((int)(Math.pow(Math.random(),2)*X(80) + X(30)),upgrades,meteorLvl));
     }
 
@@ -192,10 +188,6 @@ class GameScreen {
 
     void removeMeteor(Meteor meteor){
         remove.add(meteor);
-    }
-
-    void removeBullet(Bullets bullet){
-        removeBullets.add(bullet);
     }
 
     float X(float X){

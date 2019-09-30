@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -38,7 +37,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         Bitmap laser_cannon = BitmapFactory.decodeResource(getResources(),R.drawable.laser_cannon);
         Bitmap black_hole_generator = BitmapFactory.decodeResource(getResources(),R.drawable.black_hole_generator);
         data = new Data(context);
-        data.reset();
         upgrades = new Upgrades(data);
         Player player = new Player(upgrades,data);
         guns = new Guns(player,upgrades,data,laser_cannon,black_hole_generator,black_hole);
@@ -71,11 +69,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
         thread.setRunning(true);
         thread.start();
-        try {
-            thread.wait(500);
-        }catch (Exception e){
-            Log.i("surfaceCreated", "no wait");
-        }
     }
 
     @Override
@@ -121,7 +114,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if(gameState == 0){
             startScreen.tick();
         }else if(gameState == 1){
-            gameScreen.tick(this,endScreen);
+            gameScreen.tick(this,endScreen,winScreen);
         }else if(gameState == 2){
             endScreen.tick();
         }else if(gameState == 3){
@@ -133,7 +126,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }else if(gameState == -1){
             pauseScreen.tick();
         }else if(gameState == -2){
-            tutorialScreen.tick(this,endScreen);
+            tutorialScreen.tick(this,endScreen, winScreen);
         }
     }
 
@@ -149,7 +142,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 }else if(gameState == 1){
                     gameScreen.touched(e,this);
                 }else if(gameState == 2){
-                    endScreen.touched(e,this, gameScreen, upgradeScreen);
+                    endScreen.touched(e,this, gameScreen, upgradeScreen,gunScreen,startScreen);
                 }else if(gameState == 3){
                     upgradeScreen.touched(e,data,upgrades,gameScreen,this,startScreen,gunScreen,guns);
                 }else if(gameState == 4){

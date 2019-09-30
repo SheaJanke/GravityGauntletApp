@@ -1,7 +1,6 @@
 package com.cowbrain_games.gravity_gauntlet;
 
 import android.graphics.Canvas;
-import android.util.Log;
 import android.view.SurfaceHolder;
 
 public class MainThread extends Thread {
@@ -50,7 +49,6 @@ public class MainThread extends Thread {
                         surfaceHolder.unlockCanvasAndPost(canvas);
                     }catch (Exception e){
                         e.printStackTrace();
-                        Log.i("Debug","failed");
                     }
                 }
             }

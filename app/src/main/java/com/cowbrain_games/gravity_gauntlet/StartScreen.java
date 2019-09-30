@@ -16,10 +16,10 @@ class StartScreen {
     private float[] y = new float[4];
     private double angle = 0;
     private Bitmap star;
-    private float[] starX = new float[40];
-    private float[] starY = new float[40];
-    private int[] starSize = new int[40];
-    private boolean[] starIncreaing = new boolean[40];
+    private float[] starX = new float[50];
+    private float[] starY = new float[50];
+    private int[] starSize = new int[50];
+    private boolean[] starIncreasing = new boolean[50];
     private long tickCounter = 0;
     private long buttonTimer = System.currentTimeMillis();
     StartScreen(Bitmap star){
@@ -28,7 +28,7 @@ class StartScreen {
             starX[a] =
             starY[a] =
             starSize[a] = (int)(Math.random()*20) + 20;
-            starIncreaing[a] = (a<20);
+            starIncreasing[a] = (a<20);
         }
         int a = 0;
         while(a < starX.length){
@@ -55,16 +55,16 @@ class StartScreen {
             y[a] = Y(500) + Y(350)*(float)Math.sin(angle + Math.PI*a/2);
         }
         if(tickCounter>2) {
-             for (int a = 0; a < starIncreaing.length; a++) {
-                 if (starIncreaing[a]) {
+             for (int a = 0; a < starIncreasing.length; a++) {
+                 if (starIncreasing[a]) {
                      starSize[a] = starSize[a] + 1;
                      if (starSize[a] > 40) {
-                         starIncreaing[a] = false;
+                         starIncreasing[a] = false;
                      }
                  } else {
                      starSize[a] = starSize[a] - 1;
                      if (starSize[a] < 20) {
-                         starIncreaing[a] = true;
+                         starIncreasing[a] = true;
                      }
                  }
              }

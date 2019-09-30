@@ -4,8 +4,6 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 class Meteor {
@@ -15,7 +13,6 @@ class Meteor {
     private Upgrades upgrades;
     private int[][] meteorColor = {{255,0,0},{255,128,0},{255,255,0},{0,255,0},{0,255,255},{0,128,255},{0,0,255},{127,0,225},{255,0,255},{128,128,128}};
     private int lvl;
-    private int startPosition = (int)(Math.random()*4);
     private float x;
     private float y;
     private double velX = 0;
@@ -28,6 +25,7 @@ class Meteor {
         this.size = size;
         this.upgrades = upgrades;
         this.lvl = lvl;
+        int startPosition = (int)(Math.random()*4);
         maxHealth = upgrades.multiplyScore(upgrades.getMeteorHealth()[lvl],(double)size/X(60));
         if(size>=X(100))
             maxHealth = upgrades.multiplyScore(maxHealth,2.0);

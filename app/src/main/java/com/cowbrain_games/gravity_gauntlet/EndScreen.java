@@ -18,23 +18,39 @@ class EndScreen {
     private double angle = 0;
     private Bitmap star;
     private Bitmap coin;
-    private float[] starX = new float[40];
-    private float[] starY = new float[40];
-    private int[] starSize = new int[40];
-    private boolean[] starIncreaing = new boolean[40];
+    private float[] starX = new float[50];
+    private float[] starY = new float[50];
+    private int[] starSize = new int[50];
+    private boolean[] starIncreasing = new boolean[50];
     private int tickCounter = 0;
     private Data data;
     private GameScreen gameScreen;
     EndScreen(Bitmap star, Bitmap coin, Data data, GameScreen gameScreen){
-        this.star = star;
         this.coin = coin;
         this.data = data;
         this.gameScreen = gameScreen;
+        this.star = star;
         for(int a = 0; a < starX.length;a++){
-            starX[a] = (float)Math.random()*X(2000);
-            starY[a] = (float)Math.random()*Y(1000);
-            starSize[a] = (int)(Math.random()*20) + 20;
-            starIncreaing[a] = (a<20);
+            starX[a] =
+                    starY[a] =
+                            starSize[a] = (int)(Math.random()*20) + 20;
+            starIncreasing[a] = (a<20);
+        }
+        int a = 0;
+        while(a < starX.length){
+            float x = (float)Math.random()*X(2000);
+            float y = (float)Math.random()*Y(1000);
+            boolean tooClose = false;
+            for(int b = 0; b < a; b++){
+                if(Math.sqrt(Math.pow(starX[b]-x,2) + Math.pow(starY[b] -y,2)) < X(80)){
+                    tooClose = true;
+                }
+            }
+            if(!tooClose){
+                starX[a] = x;
+                starY[a] = y;
+                a++;
+            }
         }
     }
 
@@ -44,17 +60,17 @@ class EndScreen {
             x[a] = X(1000) + X(700)*(float)Math.cos(angle + Math.PI*a/2);
             y[a] = Y(500) + Y(350)*(float)Math.sin(angle + Math.PI*a/2);
         }
-        if(tickCounter>3) {
-            for (int a = 0; a < starIncreaing.length; a++) {
-                if (starIncreaing[a]) {
+        if(tickCounter>2) {
+            for (int a = 0; a < starIncreasing.length; a++) {
+                if (starIncreasing[a]) {
                     starSize[a] = starSize[a] + 1;
-                    if (starSize[a] > 50) {
-                        starIncreaing[a] = false;
+                    if (starSize[a] > 40) {
+                        starIncreasing[a] = false;
                     }
                 } else {
                     starSize[a] = starSize[a] - 1;
                     if (starSize[a] < 20) {
-                        starIncreaing[a] = true;
+                        starIncreasing[a] = true;
                     }
                 }
             }
@@ -68,7 +84,7 @@ class EndScreen {
         Paint paint = new Paint();
         canvas.drawColor(Color.BLACK);
         for(int a = 0; a < starX.length; a++){
-            if(starX[a]+50*9/7 > X(700) && starX[a]<X(1300)&&starY[a]+50>Y(300)&&starY[a]<Y(700)){
+            if(starX[a]+50*9/7f > X(700) && starX[a]<X(1300)&&starY[a]+50>Y(300)&&starY[a]<Y(700)){
                 continue;
             }
             canvas.drawBitmap(Bitmap.createScaledBitmap(star,9*starSize[a]/7,starSize[a],true),starX[a]-starSize[a]*9/14f,starY[a]-starSize[a]/2f,paint);
@@ -113,8 +129,8 @@ class EndScreen {
         paint.setTextSize(X(80));
         canvas.drawText("PLAY AGAIN",x[0],y[0]+Y(30),paint);
         canvas.drawText("UPGRADES",x[1],y[1]+Y(30),paint);
-        canvas.drawText("HOW TO PLAY",x[2],y[2]+Y(25),paint);
-        canvas.drawText("COMPETITIVE",x[3],y[3]+Y(25),paint);
+        canvas.drawText("GUNS",x[2],y[2]+Y(25),paint);
+        canvas.drawText("MENU",x[3],y[3]+Y(25),paint);
         paint.setColor(Color.BLACK);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(X(3));
@@ -122,8 +138,8 @@ class EndScreen {
         paint.setTextSize(X(80));
         canvas.drawText("PLAY AGAIN",x[0],y[0]+Y(30),paint);
         canvas.drawText("UPGRADES",x[1],y[1]+Y(30),paint);
-        canvas.drawText("HOW TO PLAY",x[2],y[2]+Y(25),paint);
-        canvas.drawText("COMPETITIVE",x[3],y[3]+Y(25),paint);
+        canvas.drawText("GUNS",x[2],y[2]+Y(25),paint);
+        canvas.drawText("MENU",x[3],y[3]+Y(25),paint);
 
 
 
@@ -132,7 +148,7 @@ class EndScreen {
         beginTime = System.currentTimeMillis();
     }
 
-    void touched(MotionEvent e, GameView gameView, GameScreen gameScreen, UpgradeScreen upgradeScreen){
+    void touched(MotionEvent e, GameView gameView, GameScreen gameScreen, UpgradeScreen upgradeScreen, GunScreen gunScreen, StartScreen startScreen){
         if(System.currentTimeMillis()-beginTime >500) {
             if (e.getX() > x[0] - X(300) && e.getX() < x[0] + X(300) && e.getY() > y[0] - Y(100) && e.getY() < y[0] + (100)) {
                 gameScreen.reset();
@@ -140,6 +156,12 @@ class EndScreen {
             }else if (e.getX() > x[1] - X(300) && e.getX() < x[1] + X(300) && e.getY() > y[1] - Y(100) && e.getY() < y[1] + (100)) {
                 upgradeScreen.reset();
                 gameView.setGameState(3);
+            }else if (e.getX() > x[2] - X(300) && e.getX() < x[2] + X(300) && e.getY() > y[2] - Y(100) && e.getY() < y[2] + (100)) {
+                gunScreen.reset();
+                gameView.setGameState(4);
+            }else if (e.getX() > x[3] - X(300) && e.getX() < x[3] + X(300) && e.getY() > y[3] - Y(100) && e.getY() < y[3] + (100)) {
+                startScreen.reset();
+                gameView.setGameState(0);
             }
         }
     }
