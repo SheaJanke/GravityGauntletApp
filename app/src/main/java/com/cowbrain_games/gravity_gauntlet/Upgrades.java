@@ -6,12 +6,12 @@ import java.util.Locale;
 
 class Upgrades {
     private String[] health = new String[100];
-    private String[] meteorHealth = new String[100];
+    private String[] meteorHealth = new String[102];
     private String[] healthCost = new String[100];
     private String[] startLvlCost = new String[100];
     private String[] scoreMultiplier = new String[100];
     private String[] scoreMultiplierCost = new String[100];
-    private double[] lvlMultiplier = new double[100];
+    private double[] lvlMultiplier = new double[102];
     private double[] playerWeight = new double[100];
     private String[] playerWeightCost = new String[100];
     private String[][] gunDamage = new String[6][10];
@@ -88,7 +88,7 @@ class Upgrades {
             lvlMultiplier[a] =  lvlMultiplier[a-1] * 1.2;
         }
         for(int a = 1; a < startLvlCost.length; a ++){
-            startLvlCost[a] = simplifyScore(multiplyScore(startLvlCost[a-1],1.5));
+            startLvlCost[a] = simplifyScore(multiplyScore(startLvlCost[a-1],1.53));
         }
         for(int a = 1; a < playerWeight.length; a++){
             playerWeight[a] =  playerWeight[a-1] * 0.9;
@@ -107,7 +107,7 @@ class Upgrades {
             }
         }
         for(int a = 1; a < gunAmmo[0].length; a++){
-            String[] ammoAdd = {"15","30","60","3","2","1"};
+            String[] ammoAdd = {"15","30","60","3","2","2"};
             for(int b = 0; b<gunAmmo.length; b++){
                 gunAmmo[b][a] = addScores(gunAmmo[b][a-1],ammoAdd[b]);
                 gunAmmoCost[b][a] = simplifyScore(multiplyScore(gunAmmoCost[b][a-1],2.5));

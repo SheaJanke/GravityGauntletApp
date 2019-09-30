@@ -13,7 +13,7 @@ import java.util.LinkedList;
 
 class GunScreen {
     Player player;
-    Guns guns;
+    private Guns guns;
     Data data;
     Upgrades upgrades;
     private GameView gameView;
@@ -257,7 +257,7 @@ class GunScreen {
         this.gunOnScreen = gunOnScreen;
     }
 
-    void resetBuy() {
+    private void resetBuy() {
         for(int a = 0; a < numberOfGuns; a ++) {
             gunValues[a][0] = upgrades.getGunAmmo(a)[Integer.parseInt(data.getGunLvls(a).substring(0, 1))];
             gunValues[a][1] = upgrades.getGunDamage(a)[Integer.parseInt(data.getGunLvls(a).substring(1, 2))];

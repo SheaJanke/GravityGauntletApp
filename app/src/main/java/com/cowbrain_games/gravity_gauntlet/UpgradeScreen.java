@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 class UpgradeScreen {
     private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
-    private int[][] colors = {{255,255,0,0},{255,255,165,0},{255,255,255,0},{255,0,128,0},{255,0,0,255}};
+    private int[] maxUpgrades = {75,96,73,73};
     private Bitmap star;
     private float[] starX = new float[40];
     private float[] starY = new float[40];
@@ -116,48 +116,118 @@ class UpgradeScreen {
                 canvas.drawArc(X(850) + a*X(1000), Y(300) + b * Y(250), X(950) + a * X(1000), Y(500) + b * Y(250), -90f, 180f, true, paint);
             }
         }
-        paint.setARGB(255,212,175,55);
-        paint.setTextSize(X(60));
-        canvas.drawText("Max Health",X(350),Y(360),paint);
-        canvas.drawText("Start Lvl",X(1350),Y(360),paint);
-        canvas.drawText("Score Multiplier",X(350),Y(610),paint);
-        canvas.drawText("Player Weight",X(1350),Y(610),paint);
-        paint.setColor(Color.WHITE);
-        canvas.drawText(upgrades.simplifyScore(upgrades.getNextHealthCost()),X(685),Y(480),paint);
-        canvas.drawText(upgrades.simplifyScore(upgrades.getNextStartLvlCost()),X(1685),Y(480),paint);
-        canvas.drawText(upgrades.simplifyScore(upgrades.getNextScoreMultiplierCost()),X(685),Y(730),paint);
-        canvas.drawText(upgrades.simplifyScore(upgrades.getNextPlayerWeightCost()),X(1685),Y(730),paint);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(X(3));
-        paint.setARGB(255,212,175,55);
-        canvas.drawText(upgrades.simplifyScore(upgrades.getNextHealthCost()),X(685),Y(480),paint);
-        canvas.drawText(upgrades.simplifyScore(upgrades.getNextStartLvlCost()),X(1685),Y(480),paint);
-        canvas.drawText(upgrades.simplifyScore(upgrades.getNextScoreMultiplierCost()),X(685),Y(730),paint);
-        canvas.drawText(upgrades.simplifyScore(upgrades.getNextPlayerWeightCost()),X(1685),Y(730),paint);
+        //max health
+        if(data.getMaxHealthLvl() < maxUpgrades[0]) {
+            paint.setARGB(255, 212, 175, 55);
+            paint.setTextSize(X(60));
+            canvas.drawText("Max Health", X(350), Y(360), paint);
+            paint.setColor(Color.WHITE);
+            canvas.drawText(upgrades.simplifyScore(upgrades.getNextHealthCost()), X(685), Y(480), paint);
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(X(3));
+            paint.setARGB(255, 212, 175, 55);
+            canvas.drawText(upgrades.simplifyScore(upgrades.getNextHealthCost()), X(685), Y(480), paint);
+            paint.setStyle(Paint.Style.FILL);
+            paint.setTextSize(X(50));
+            paint.setColor(Color.BLUE);
+            canvas.drawText("Current: " + upgrades.simplifyScore(upgrades.getHealth()), X(350), Y(420), paint);
+            canvas.drawText("Next: " + upgrades.simplifyScore(upgrades.getNextHealth()), X(350), Y(470), paint);
+            canvas.drawBitmap(Bitmap.createScaledBitmap(coin, (int) X(60), (int) X(60), true), X(685) + upgrades.simplifyScore(upgrades.getNextHealthCost()).length() * X(18), Y(430), paint);
+            drawUpgradeButton(paint, canvas, X(720), Y(370));
+        }else{
+            paint.setARGB(255, 212, 175, 55);
+            paint.setTextSize(X(60));
+            canvas.drawText("Max Health", X(350), Y(390), paint);
+            paint.setColor(Color.BLUE);
+            canvas.drawText(upgrades.simplifyScore(upgrades.getHealth()), X(350), Y(450), paint);
+            drawMaxedButton(paint, canvas,X(720),Y(400));
+        }
 
         paint.setStyle(Paint.Style.FILL);
-        paint.setTextSize(X(50));
-        paint.setColor(Color.BLUE);
-        canvas.drawText("Current: " + upgrades.simplifyScore(upgrades.getHealth()), X(350), Y(420),paint);
-        canvas.drawText("Next: " + upgrades.simplifyScore(upgrades.getNextHealth()), X(350), Y(470),paint);
-        canvas.drawText("Current: " + upgrades.simplifyScore(Double.toString(upgrades.getPlayerWeight())), X(1350), Y(670),paint);
-        canvas.drawText("Next: " + upgrades.simplifyScore(Double.toString(upgrades.getNextPlayerWeight())), X(1350), Y(720),paint);
-        paint.setARGB(255,0,128,255);
-        canvas.drawText("Current: " + data.getStartLvl(), X(1350), Y(420),paint);
-        canvas.drawText("Next: " + (data.getStartLvl()+1), X(1350), Y(470),paint);
-        canvas.drawText("Current: " + upgrades.simplifyScore(upgrades.getScoreMultiplier()), X(350), Y(670),paint);
-        canvas.drawText("Next: " + upgrades.simplifyScore(upgrades.getNextScoreMultiplier()), X(350), Y(720),paint);
+        //start lvl
+        if(data.getStartLvl() < maxUpgrades[1]) {
+            paint.setARGB(255, 212, 175, 55);
+            paint.setTextSize(X(60));
+            canvas.drawText("Start Lvl",X(1350),Y(360),paint);
+            paint.setColor(Color.WHITE);
+            canvas.drawText(upgrades.simplifyScore(upgrades.getNextStartLvlCost()),X(1685),Y(480),paint);
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(X(3));
+            paint.setARGB(255, 212, 175, 55);
+            canvas.drawText(upgrades.simplifyScore(upgrades.getNextStartLvlCost()),X(1685),Y(480),paint);
+            paint.setStyle(Paint.Style.FILL);
+            paint.setTextSize(X(50));
+            paint.setARGB(255,0,128,255);
+            canvas.drawText("Current: " + data.getStartLvl(), X(1350), Y(420),paint);
+            canvas.drawText("Next: " + (data.getStartLvl()+1), X(1350), Y(470),paint);
+            canvas.drawBitmap(Bitmap.createScaledBitmap(coin,(int)X(60),(int)X(60),true),X(1685)+ upgrades.simplifyScore(upgrades.getNextStartLvlCost()).length()*X(18),Y(430),paint);
+            drawUpgradeButton(paint,canvas,X(1720),Y(370));
+        }else{
+            paint.setARGB(255, 212, 175, 55);
+            paint.setTextSize(X(60));
+            canvas.drawText("Start Lvl", X(1350), Y(390), paint);
+            paint.setARGB(255,0,128,255);
+            canvas.drawText(Integer.toString(data.getStartLvl()), X(1350), Y(450), paint);
+            drawMaxedButton(paint, canvas,X(1720),Y(400));
+        }
+        paint.setStyle(Paint.Style.FILL);
+        //scoreMultiplier
+        if(data.getScoreMultiplierLvl() < maxUpgrades[2]) {
+            paint.setARGB(255, 212, 175, 55);
+            paint.setTextSize(X(60));
+            canvas.drawText("Score Multiplier",X(350),Y(610),paint);
+            paint.setColor(Color.WHITE);
+            canvas.drawText(upgrades.simplifyScore(upgrades.getNextScoreMultiplierCost()),X(685),Y(730),paint);
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(X(3));
+            paint.setARGB(255, 212, 175, 55);
+            canvas.drawText(upgrades.simplifyScore(upgrades.getNextScoreMultiplierCost()),X(685),Y(730),paint);
+            paint.setStyle(Paint.Style.FILL);
+            paint.setTextSize(X(50));
+            paint.setARGB(255,0,128,255);
+            canvas.drawText("Current: " + upgrades.simplifyScore(upgrades.getScoreMultiplier()), X(350), Y(670),paint);
+            canvas.drawText("Next: " + upgrades.simplifyScore(upgrades.getNextScoreMultiplier()), X(350), Y(720),paint);
+            canvas.drawBitmap(Bitmap.createScaledBitmap(coin,(int)X(60),(int)X(60),true),X(685)+ upgrades.simplifyScore(upgrades.getNextScoreMultiplierCost()).length()*X(18),Y(680),paint);
+            drawUpgradeButton(paint,canvas,X(720),Y(620));
+        }else{
+            paint.setARGB(255, 212, 175, 55);
+            paint.setTextSize(X(60));
+            canvas.drawText("Score Multiplier", X(350), Y(640), paint);
+            paint.setARGB(255,0,128,255);
+            canvas.drawText(upgrades.simplifyScore(upgrades.getScoreMultiplier()), X(350), Y(700), paint);
+            drawMaxedButton(paint, canvas,X(720),Y(650));
+        }
+        paint.setStyle(Paint.Style.FILL);
 
-        canvas.drawBitmap(Bitmap.createScaledBitmap(coin,(int)X(60),(int)X(60),true),X(685)+ upgrades.simplifyScore(upgrades.getNextHealthCost()).length()*X(18),Y(430),paint);
-        canvas.drawBitmap(Bitmap.createScaledBitmap(coin,(int)X(60),(int)X(60),true),X(685)+ upgrades.simplifyScore(upgrades.getNextScoreMultiplierCost()).length()*X(18),Y(680),paint);
-        canvas.drawBitmap(Bitmap.createScaledBitmap(coin,(int)X(60),(int)X(60),true),X(1685)+ upgrades.simplifyScore(upgrades.getNextStartLvlCost()).length()*X(18),Y(430),paint);
-        canvas.drawBitmap(Bitmap.createScaledBitmap(coin,(int)X(60),(int)X(60),true),X(1685)+ upgrades.simplifyScore(upgrades.getNextPlayerWeightCost()).length()*X(18),Y(680),paint);
+        //player weight
+        if(data.getPlayerWeightLvl() < maxUpgrades[3]) {
+            paint.setARGB(255, 212, 175, 55);
+            paint.setTextSize(X(60));
+            canvas.drawText("Player Weight",X(1350),Y(610),paint);
+            paint.setColor(Color.WHITE);
+            canvas.drawText(upgrades.simplifyScore(upgrades.getNextPlayerWeightCost()),X(1685),Y(730),paint);
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(X(3));
+            paint.setARGB(255, 212, 175, 55);
+            canvas.drawText(upgrades.simplifyScore(upgrades.getNextPlayerWeightCost()),X(1685),Y(730),paint);
+            paint.setStyle(Paint.Style.FILL);
+            paint.setTextSize(X(50));
+            paint.setColor(Color.BLUE);
+            canvas.drawText("Current: " + upgrades.simplifyScore(Double.toString(upgrades.getPlayerWeight()*10)), X(1350), Y(670),paint);
+            canvas.drawText("Next: " + upgrades.simplifyScore(Double.toString(upgrades.getNextPlayerWeight()*10)), X(1350), Y(720),paint);
+            canvas.drawBitmap(Bitmap.createScaledBitmap(coin,(int)X(60),(int)X(60),true),X(1685)+ upgrades.simplifyScore(upgrades.getNextPlayerWeightCost()).length()*X(18),Y(680),paint);
+            drawUpgradeButton(paint,canvas,X(1720),Y(620));
+        }else{
+            paint.setARGB(255, 212, 175, 55);
+            paint.setTextSize(X(60));
+            canvas.drawText("Player Weight", X(1350), Y(640), paint);
+            paint.setColor(Color.BLUE);
+            canvas.drawText(upgrades.simplifyScore(Double.toString(upgrades.getPlayerWeight()*10)), X(1350), Y(700), paint);
+            drawMaxedButton(paint, canvas,X(1720),Y(650));
+        }
 
-        drawUpgradeButton(paint,canvas,X(720),Y(370));
-        drawUpgradeButton(paint,canvas,X(1720),Y(370));
-        drawUpgradeButton(paint,canvas,X(720),Y(620));
-        drawUpgradeButton(paint,canvas,X(1720),Y(620));
 
+        //other buttons
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(Color.WHITE);
         paint.setTextSize(X(90));
@@ -176,25 +246,25 @@ class UpgradeScreen {
     }
 
     void touched(MotionEvent e, Data data, Upgrades upgrades, GameScreen gameScreen, GameView gameView, StartScreen startScreen, GunScreen gunScreen, Guns guns) {
-        if(e.getX() > X(620) && e.getX()<X(820) && e.getY()>Y(320) && e.getY()<Y(420)&& upgrades.scoreLarger(data.getGold(),upgrades.getNextHealthCost())){
+        if(e.getX() > X(620) && e.getX()<X(820) && e.getY()>Y(320) && e.getY()<Y(420)&& upgrades.scoreLarger(data.getGold(),upgrades.getNextHealthCost()) && data.getMaxHealthLvl()<maxUpgrades[0]){
             if(System.currentTimeMillis()-buyTimer > 500) {
                 data.setGold(upgrades.subtractScore(data.getGold(), upgrades.getNextHealthCost()));
                 data.setMaxHealthLvl(data.getMaxHealthLvl() + 1);
                 buyTimer = System.currentTimeMillis();
             }
-        }else if(e.getX() > X(1620) && e.getX()<X(1820) && e.getY()>Y(320) && e.getY()<Y(420)&& upgrades.scoreLarger(data.getGold(),upgrades.getNextStartLvlCost())){
+        }else if(e.getX() > X(1620) && e.getX()<X(1820) && e.getY()>Y(320) && e.getY()<Y(420)&& upgrades.scoreLarger(data.getGold(),upgrades.getNextStartLvlCost())&& data.getStartLvl()<maxUpgrades[1]){
             if(System.currentTimeMillis()-buyTimer > 500) {
                 data.setGold(upgrades.subtractScore(data.getGold(), upgrades.getNextStartLvlCost()));
                 data.setStartLvl(data.getStartLvl() + 1);
                 buyTimer = System.currentTimeMillis();
             }
-        }else if(e.getX() > X(620) && e.getX()<X(820) && e.getY()>Y(570) && e.getY()<Y(670)&& upgrades.scoreLarger(data.getGold(),upgrades.getNextScoreMultiplierCost())){
+        }else if(e.getX() > X(620) && e.getX()<X(820) && e.getY()>Y(570) && e.getY()<Y(670)&& upgrades.scoreLarger(data.getGold(),upgrades.getNextScoreMultiplierCost())&& data.getScoreMultiplierLvl()<maxUpgrades[2]){
             if(System.currentTimeMillis()-buyTimer > 500) {
                 data.setGold(upgrades.subtractScore(data.getGold(), upgrades.getNextScoreMultiplierCost()));
                 data.setScoreMultiplierLvl(data.getScoreMultiplierLvl() + 1);
                 buyTimer = System.currentTimeMillis();
             }
-        }else if(e.getX() > X(1620) && e.getX()<X(1820) && e.getY()>Y(570) && e.getY()<Y(670)&& upgrades.scoreLarger(data.getGold(),upgrades.getNextPlayerWeightCost())){
+        }else if(e.getX() > X(1620) && e.getX()<X(1820) && e.getY()>Y(570) && e.getY()<Y(670)&& upgrades.scoreLarger(data.getGold(),upgrades.getNextPlayerWeightCost())&& data.getPlayerWeightLvl()<maxUpgrades[3]){
             if(System.currentTimeMillis()-buyTimer > 500) {
                 data.setGold(upgrades.subtractScore(data.getGold(), upgrades.getNextPlayerWeightCost()));
                 data.setPlayerWeightLvl(data.getPlayerWeightLvl() + 1);
@@ -235,6 +305,7 @@ class UpgradeScreen {
     private void drawMaxedButton(Paint paint, Canvas canvas, float x, float y){
         paint.setColor(Color.WHITE);
         paint.setStyle(Paint.Style.FILL);
+        paint.setTextSize(X(50));
         canvas.drawRect(x -X(100),y-X(50),x+X(100),y+X(50),paint);
         paint.setARGB(255,212,175,55);
         canvas.drawText("MAXED",x,y+Y(20),paint);

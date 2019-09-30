@@ -69,7 +69,7 @@ public class TutorialScreen extends GameScreen {
         canvas.drawText("BACK", X(1775), Y(100),paint);
 
         //draw gold earned
-        if(state >= 7) {
+        if(state >= 8) {
             paint.setColor(Color.WHITE);
             paint.setStyle(Paint.Style.FILL);
             paint.setTextAlign(Paint.Align.CENTER);

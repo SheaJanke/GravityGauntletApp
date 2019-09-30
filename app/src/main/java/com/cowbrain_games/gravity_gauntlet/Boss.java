@@ -1,13 +1,12 @@
 package com.cowbrain_games.gravity_gauntlet;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 
 import java.util.LinkedList;
 
-public class Boss extends Meteor {
+class Boss extends Meteor {
     private int spawnedMeteors = 0;
     private Upgrades upgrades;
     Boss(int size, Upgrades upgrades, int lvl) {

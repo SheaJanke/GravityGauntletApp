@@ -21,28 +21,26 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private WinScreen winScreen;
     private TutorialScreen tutorialScreen;
     private Data data;
-    private Player player;
     private Guns guns;
-    private int gameState = 5;
-    private Bitmap star = BitmapFactory.decodeResource(getResources(),R.drawable.star);
+    private int gameState = 0;
     private Bitmap coin = BitmapFactory.decodeResource(getResources(),R.drawable.coin);
     private Bitmap shoot = BitmapFactory.decodeResource(getResources(),R.drawable.shoot);
     private Bitmap ammo = BitmapFactory.decodeResource(getResources(),R.drawable.ammo);
     private Bitmap next = BitmapFactory.decodeResource(getResources(),R.drawable.next);
     private Bitmap lock = BitmapFactory.decodeResource(getResources(),R.drawable.lock);
     private Bitmap grenade = BitmapFactory.decodeResource(getResources(),R.drawable.grenade);
-    private Bitmap laser_cannon = BitmapFactory.decodeResource(getResources(),R.drawable.laser_cannon);
-    private Bitmap black_hole_generator = BitmapFactory.decodeResource(getResources(),R.drawable.black_hole_generator);
     private Bitmap black_hole = BitmapFactory.decodeResource(getResources(),R.drawable.black_hole);
     private Bitmap arrow = BitmapFactory.decodeResource(getResources(),R.drawable.arrow);
 
-    private String tag = "CREATED";
-
     public GameView(Context context){
         super(context);
+        Bitmap star = BitmapFactory.decodeResource(getResources(),R.drawable.star);
+        Bitmap laser_cannon = BitmapFactory.decodeResource(getResources(),R.drawable.laser_cannon);
+        Bitmap black_hole_generator = BitmapFactory.decodeResource(getResources(),R.drawable.black_hole_generator);
         data = new Data(context);
+        data.reset();
         upgrades = new Upgrades(data);
-        player = new Player(upgrades,data);
+        Player player = new Player(upgrades,data);
         guns = new Guns(player,upgrades,data,laser_cannon,black_hole_generator,black_hole);
         startScreen = new StartScreen(star);
         gameScreen = new GameScreen(data,upgrades,player,guns);
@@ -184,9 +182,5 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     int getGameState(){
         return gameState;
-    }
-
-    MainThread getThread(){
-        return thread;
     }
 }
